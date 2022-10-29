@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <string name="app_name">warshtcomnew</string>
+    <string name="facebook_app_id">https://warshtcomnew.firebaseapp.com/__/auth/handler</string>
+               <string name="fb_login_protocol_scheme">fbhttps://warshtcomnew.firebaseapp.com/__/auth/handler</string>
+</resources>
