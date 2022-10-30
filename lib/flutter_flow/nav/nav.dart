@@ -108,14 +108,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                   : AddPostWidget(),
             ),
             FFRoute(
-              name: 'ServiceProvide',
-              path: 'serviceProvide',
-              builder: (context, params) => ServiceProvideWidget(),
-            ),
-            FFRoute(
               name: 'ServiceRequest',
               path: 'serviceRequest',
               builder: (context, params) => ServiceRequestWidget(),
+            ),
+            FFRoute(
+              name: 'ServiceProvide',
+              path: 'serviceProvide',
+              builder: (context, params) => ServiceProvideWidget(),
             ),
             FFRoute(
               name: 'LoginPage',
@@ -168,17 +168,27 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     ParamType.DocumentReference,
                     true,
                     'reveiws'),
+                userInformation: params.getParam('userInformation',
+                    ParamType.DocumentReference, false, 'users'),
               ),
             ),
             FFRoute(
               name: 'AddReveiw',
               path: 'addReveiw',
-              builder: (context, params) => AddReveiwWidget(),
+              builder: (context, params) => AddReveiwWidget(
+                addingReview: params.getParam('addingReview',
+                    ParamType.DocumentReference, false, 'reveiws'),
+                userInformation2: params.getParam('userInformation2',
+                    ParamType.DocumentReference, false, 'users'),
+              ),
             ),
             FFRoute(
               name: 'AddReveiw2',
               path: 'addReveiw2',
-              builder: (context, params) => AddReveiw2Widget(),
+              builder: (context, params) => AddReveiw2Widget(
+                addReview: params.getParam(
+                    'addReview', ParamType.DocumentReference, false, 'reveiws'),
+              ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),

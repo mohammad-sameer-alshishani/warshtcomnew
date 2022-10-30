@@ -12,9 +12,11 @@ class AllReviewPageWidget extends StatefulWidget {
   const AllReviewPageWidget({
     Key? key,
     this.userReviewRef,
+    this.userInformation,
   }) : super(key: key);
 
   final List<DocumentReference>? userReviewRef;
+  final DocumentReference? userInformation;
 
   @override
   _AllReviewPageWidgetState createState() => _AllReviewPageWidgetState();
@@ -31,7 +33,15 @@ class _AllReviewPageWidgetState extends State<AllReviewPageWidget> {
       backgroundColor: Color(0xFFF1F4F8),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          context.pushNamed('AddReveiw');
+          context.pushNamed(
+            'AddReveiw',
+            queryParams: {
+              'userInformation2': serializeParam(
+                widget.userInformation,
+                ParamType.DocumentReference,
+              ),
+            }.withoutNulls,
+          );
         },
         backgroundColor: FlutterFlowTheme.of(context).tertiaryColor,
         elevation: 8,

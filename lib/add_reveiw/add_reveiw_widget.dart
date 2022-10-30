@@ -11,7 +11,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class AddReveiwWidget extends StatefulWidget {
-  const AddReveiwWidget({Key? key}) : super(key: key);
+  const AddReveiwWidget({
+    Key? key,
+    this.addingReview,
+    this.userInformation2,
+  }) : super(key: key);
+
+  final DocumentReference? addingReview;
+  final DocumentReference? userInformation2;
 
   @override
   _AddReveiwWidgetState createState() => _AddReveiwWidgetState();
@@ -125,20 +132,27 @@ class _AddReveiwWidgetState extends State<AddReveiwWidget> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(8, 12, 8, 0),
-                            child: LinearPercentIndicator(
-                              percent: 0.5,
-                              width: MediaQuery.of(context).size.width * 0.96,
-                              lineHeight: 16,
-                              animation: true,
-                              progressColor:
-                                  FlutterFlowTheme.of(context).tertiaryColor,
-                              backgroundColor: Color(0xFFE0E3E7),
-                              barRadius: Radius.circular(24),
-                              padding: EdgeInsets.zero,
-                            ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+                                child: LinearPercentIndicator(
+                                  percent: 0.5,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.92,
+                                  lineHeight: 16,
+                                  animation: true,
+                                  progressColor: FlutterFlowTheme.of(context)
+                                      .tertiaryColor,
+                                  backgroundColor: Color(0xFFE0E3E7),
+                                  barRadius: Radius.circular(24),
+                                  padding: EdgeInsets.zero,
+                                ),
+                              ),
+                            ],
                           ),
                           Row(
                             mainAxisSize: MainAxisSize.max,
@@ -245,19 +259,14 @@ class _AddReveiwWidgetState extends State<AddReveiwWidget> {
                                     0, 32, 0, 32),
                                 child: FFButtonWidget(
                                   onPressed: () async {
-                                    final usersUpdateData = {
-                                      'user_rate': FieldValue.arrayUnion([
-                                        valueOrDefault<double>(
-                                          sliderValue,
-                                          3.0,
-                                        )
-                                      ]),
-                                    };
-                                    await listViewUsersRecord.reference
-                                        .update(usersUpdateData);
-
                                     context.pushNamed(
                                       'AddReveiw2',
+                                      queryParams: {
+                                        'addReview': serializeParam(
+                                          widget.addingReview,
+                                          ParamType.DocumentReference,
+                                        ),
+                                      }.withoutNulls,
                                       extra: <String, dynamic>{
                                         kTransitionInfoKey: TransitionInfo(
                                           hasTransition: true,
@@ -267,6 +276,13 @@ class _AddReveiwWidgetState extends State<AddReveiwWidget> {
                                         ),
                                       },
                                     );
+
+                                    final usersUpdateData = {
+                                      'user_rate':
+                                          FieldValue.arrayUnion([sliderValue]),
+                                    };
+                                    await listViewUsersRecord.reference
+                                        .update(usersUpdateData);
                                   },
                                   text: 'الخطوة التالية',
                                   options: FFButtonOptions(
