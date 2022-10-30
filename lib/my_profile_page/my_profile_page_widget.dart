@@ -7,6 +7,7 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/upload_media.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -320,53 +321,61 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                               ),
                                                             ),
                                                           ),
-                                                          Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            children: [
-                                                              InkWell(
-                                                                onLongPress:
-                                                                    () async {
-                                                                  await Share.share(
-                                                                      myProfilePageUsersRecord
-                                                                          .uid!);
-                                                                },
-                                                                child:
-                                                                    SelectionArea(
-                                                                        child:
-                                                                            Text(
-                                                                  currentUserUid,
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyText1
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Noto Kufi Arabic',
-                                                                        fontSize:
-                                                                            12,
-                                                                      ),
-                                                                )),
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            3,
-                                                                            0,
-                                                                            3,
-                                                                            0),
-                                                                child:
-                                                                    SelectionArea(
-                                                                        child:
-                                                                            Text(
-                                                                  ': ID',
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyText1,
-                                                                )),
-                                                              ),
-                                                            ],
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        10,
+                                                                        0,
+                                                                        0,
+                                                                        0),
+                                                            child: Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              children: [
+                                                                InkWell(
+                                                                  onLongPress:
+                                                                      () async {
+                                                                    await Share.share(
+                                                                        myProfilePageUsersRecord
+                                                                            .uid!);
+                                                                  },
+                                                                  child:
+                                                                      SelectionArea(
+                                                                          child:
+                                                                              Text(
+                                                                    currentUserUid,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyText1
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Noto Kufi Arabic',
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                  )),
+                                                                ),
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          3,
+                                                                          0,
+                                                                          3,
+                                                                          0),
+                                                                  child:
+                                                                      SelectionArea(
+                                                                          child:
+                                                                              Text(
+                                                                    ': ID',
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyText1,
+                                                                  )),
+                                                                ),
+                                                              ],
+                                                            ),
                                                           ),
                                                         ],
                                                       ),
@@ -438,7 +447,8 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                             path: '',
                                                           ));
                                                         },
-                                                        child: Text(
+                                                        child: SelectionArea(
+                                                            child: Text(
                                                           currentPhoneNumber,
                                                           style: FlutterFlowTheme
                                                                   .of(context)
@@ -450,7 +460,7 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                                         context)
                                                                     .primaryText,
                                                               ),
-                                                        ),
+                                                        )),
                                                       ),
                                                     ),
                                                   ),
@@ -476,7 +486,8 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                             .fromSTEB(
                                                                 10, 0, 0, 0),
                                                     child: AuthUserStreamWidget(
-                                                      child: Text(
+                                                      child: SelectionArea(
+                                                          child: AutoSizeText(
                                                         valueOrDefault(
                                                             currentUserDocument
                                                                 ?.userWork,
@@ -492,7 +503,7 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                                           context)
                                                                       .primaryText,
                                                                 ),
-                                                      ),
+                                                      )),
                                                     ),
                                                   ),
                                                 ],
@@ -511,28 +522,31 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                         .primaryColor,
                                                     size: 24,
                                                   ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                                10, 0, 0, 0),
-                                                    child: AuthUserStreamWidget(
-                                                      child: Text(
-                                                        valueOrDefault(
-                                                            currentUserDocument
-                                                                ?.userBio,
-                                                            ''),
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyText1
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Noto Kufi Arabic',
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .primaryText,
-                                                                ),
+                                                  Expanded(
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  10, 0, 0, 0),
+                                                      child:
+                                                          AuthUserStreamWidget(
+                                                        child: SelectionArea(
+                                                            child: AutoSizeText(
+                                                          valueOrDefault(
+                                                              currentUserDocument
+                                                                  ?.userBio,
+                                                              ''),
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .bodyText1
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Noto Kufi Arabic',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                              ),
+                                                        )),
                                                       ),
                                                     ),
                                                   ),

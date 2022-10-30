@@ -118,7 +118,10 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                 () => setState(() {}),
                               ),
                               onFieldSubmitted: (_) async {
-                                final usersUpdateData = createUsersRecordData();
+                                final usersUpdateData = {
+                                  'search_history': FieldValue.arrayUnion(
+                                      [textController!.text]),
+                                };
                                 await currentUserReference!
                                     .update(usersUpdateData);
                               },
@@ -188,7 +191,7 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                       padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.9,
-                        height: 200,
+                        height: 120,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -306,11 +309,18 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                   child: Align(
                                     alignment: AlignmentDirectional(0, 0),
                                     child: FutureBuilder<List<UsersRecord>>(
-                                      future: (_firestoreRequestCompleter ??=
-                                              Completer<List<UsersRecord>>()
-                                                ..complete(
-                                                    queryUsersRecordOnce()))
-                                          .future,
+                                      future: queryUsersRecordOnce(
+                                        queryBuilder: (usersRecord) =>
+                                            usersRecord.whereArrayContainsAny(
+                                                'search_history',
+                                                columnUsersRecord.searchHistory!
+                                                            .toList() !=
+                                                        ''
+                                                    ? columnUsersRecord
+                                                        .searchHistory!
+                                                        .toList()
+                                                    : null),
+                                      ),
                                       builder: (context, snapshot) {
                                         // Customize what your widget looks like when it's loading.
                                         if (!snapshot.hasData) {
@@ -352,29 +362,91 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                               final listViewUsersRecord =
                                                   listViewUsersRecordList[
                                                       listViewIndex];
-                                              return Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(2, 2, 2, 2),
-                                                child: Text(
-                                                  columnUsersRecord
-                                                      .searchHistory!
-                                                      .toList()
-                                                      .contains(
-                                                          columnUsersRecord !=
-                                                              null)
-                                                      .toString(),
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .subtitle2
-                                                      .override(
-                                                        fontFamily:
-                                                            'Noto Kufi Arabic',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryColor,
+                                              return FutureBuilder<UsersRecord>(
+                                                future:
+                                                    UsersRecord.getDocumentOnce(
+                                                        listViewUsersRecord
+                                                            .reference),
+                                                builder: (context, snapshot) {
+                                                  // Customize what your widget looks like when it's loading.
+                                                  if (!snapshot.hasData) {
+                                                    return Center(
+                                                      child: SizedBox(
+                                                        width: 50,
+                                                        height: 50,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryColor,
+                                                        ),
                                                       ),
-                                                ),
+                                                    );
+                                                  }
+                                                  final rowUsersRecord =
+                                                      snapshot.data!;
+                                                  return Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    2, 2, 2, 2),
+                                                        child: Text(
+                                                          columnUsersRecord
+                                                              .searchHistory!
+                                                              .toList()
+                                                              .length
+                                                              .toString(),
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .subtitle2
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Noto Kufi Arabic',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryColor,
+                                                              ),
+                                                        ),
+                                                      ),
+                                                      InkWell(
+                                                        onTap: () async {
+                                                          final usersUpdateData =
+                                                              {
+                                                            'search_history':
+                                                                FieldValue
+                                                                    .arrayRemove([
+                                                              columnUsersRecord
+                                                                  .searchHistory!
+                                                                  .toList()
+                                                                  .where((e) =>
+                                                                      columnUsersRecord !=
+                                                                      null)
+                                                                  .toList()
+                                                                  .length
+                                                                  .toString()
+                                                            ]),
+                                                          };
+                                                          await columnUsersRecord
+                                                              .reference
+                                                              .update(
+                                                                  usersUpdateData);
+                                                        },
+                                                        child: Icon(
+                                                          Icons.delete,
+                                                          color: Colors.black,
+                                                          size: 20,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
                                               );
                                             },
                                           ),
@@ -523,9 +595,10 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                               padding:
                                   EdgeInsetsDirectional.fromSTEB(16, 4, 16, 8),
                               child: FutureBuilder<List<UsersRecord>>(
-                                future: queryUsersRecordOnce(
-                                  singleRecord: true,
-                                ),
+                                future: (_firestoreRequestCompleter ??=
+                                        Completer<List<UsersRecord>>()
+                                          ..complete(queryUsersRecordOnce()))
+                                    .future,
                                 builder: (context, snapshot) {
                                   // Customize what your widget looks like when it's loading.
                                   if (!snapshot.hasData) {
@@ -544,14 +617,6 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                       snapshot.data!
                                           .where((u) => u.uid != currentUserUid)
                                           .toList();
-                                  // Return an empty Container when the document does not exist.
-                                  if (snapshot.data!.isEmpty) {
-                                    return Container();
-                                  }
-                                  final usersCardUsersRecord =
-                                      usersCardUsersRecordList.isNotEmpty
-                                          ? usersCardUsersRecordList.first
-                                          : null;
                                   return Container(
                                     width: double.infinity,
                                     height: 60,
@@ -579,8 +644,8 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                             borderRadius:
                                                 BorderRadius.circular(26),
                                             child: CachedNetworkImage(
-                                              imageUrl: usersCardUsersRecord!
-                                                  .photoUrl!,
+                                              imageUrl:
+                                                  listViewUsersRecord.photoUrl!,
                                               width: 36,
                                               height: 36,
                                               fit: BoxFit.cover,
@@ -598,7 +663,7 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    usersCardUsersRecord!
+                                                    listViewUsersRecord
                                                         .displayName!,
                                                     style: FlutterFlowTheme.of(
                                                             context)
@@ -616,7 +681,7 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                                         MainAxisSize.max,
                                                     children: [
                                                       Text(
-                                                        usersCardUsersRecord!
+                                                        listViewUsersRecord
                                                             .email!,
                                                         style:
                                                             FlutterFlowTheme.of(
@@ -635,7 +700,7 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                                 'UserProfilePage',
                                                 queryParams: {
                                                   'userInfo': serializeParam(
-                                                    usersCardUsersRecord!
+                                                    listViewUsersRecord
                                                         .reference,
                                                     ParamType.DocumentReference,
                                                   ),
