@@ -1,4 +1,3 @@
-import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_expanded_image_view.dart';
@@ -30,8 +29,8 @@ class UserProfilePageWidget extends StatefulWidget {
 
 class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
     with TickerProviderStateMixin {
-  Completer<List<PostsRecord>>? _firestoreRequestCompleter;
-  Completer<UsersRecord>? _documentRequestCompleter;
+  Completer<List<PostsRecord>>? _firestoreRequestCompleter2;
+  Completer<List<UsersRecord>>? _firestoreRequestCompleter1;
   double? ratingBarValue1;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -43,11 +42,13 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
-          child: FutureBuilder<UsersRecord>(
-            future: (_documentRequestCompleter ??= Completer<UsersRecord>()
-                  ..complete(
-                      UsersRecord.getDocumentOnce(currentUserReference!)))
-                .future,
+          child: FutureBuilder<List<UsersRecord>>(
+            future:
+                (_firestoreRequestCompleter1 ??= Completer<List<UsersRecord>>()
+                      ..complete(queryUsersRecordOnce(
+                        singleRecord: true,
+                      )))
+                    .future,
             builder: (context, snapshot) {
               // Customize what your widget looks like when it's loading.
               if (!snapshot.hasData) {
@@ -61,11 +62,18 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                   ),
                 );
               }
-              final columnUsersRecord = snapshot.data!;
+              List<UsersRecord> columnUsersRecordList = snapshot.data!;
+              // Return an empty Container when the document does not exist.
+              if (snapshot.data!.isEmpty) {
+                return Container();
+              }
+              final columnUsersRecord = columnUsersRecordList.isNotEmpty
+                  ? columnUsersRecordList.first
+                  : null;
               return RefreshIndicator(
                 onRefresh: () async {
-                  setState(() => _documentRequestCompleter = null);
-                  await waitForDocumentRequestCompleter();
+                  setState(() => _firestoreRequestCompleter1 = null);
+                  await waitForFirestoreRequestCompleter1();
                 },
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
@@ -117,27 +125,27 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                                               child:
                                                   FlutterFlowExpandedImageView(
                                                 image: CachedNetworkImage(
-                                                  imageUrl: columnUsersRecord
+                                                  imageUrl: columnUsersRecord!
                                                       .photoUrl!,
                                                   fit: BoxFit.contain,
                                                 ),
                                                 allowRotation: true,
-                                                tag:
-                                                    columnUsersRecord.photoUrl!,
+                                                tag: columnUsersRecord!
+                                                    .photoUrl!,
                                                 useHeroAnimation: true,
                                               ),
                                             ),
                                           );
                                         },
                                         child: Hero(
-                                          tag: columnUsersRecord.photoUrl!,
+                                          tag: columnUsersRecord!.photoUrl!,
                                           transitionOnUserGestures: true,
                                           child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(60),
                                             child: CachedNetworkImage(
                                               imageUrl:
-                                                  columnUsersRecord.photoUrl!,
+                                                  columnUsersRecord!.photoUrl!,
                                               width: 80,
                                               height: 80,
                                               fit: BoxFit.fill,
@@ -148,43 +156,41 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                                     ),
                                   ),
                                 ),
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          columnUsersRecord.displayName!,
-                                          textAlign: TextAlign.end,
-                                          style: FlutterFlowTheme.of(context)
-                                              .title3
-                                              .override(
-                                                fontFamily: 'Noto Kufi Arabic',
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                        ),
-                                        Row(
+                                Expanded(
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Column(
                                           mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
+                                            Text(
+                                              columnUsersRecord!.displayName!,
+                                              textAlign: TextAlign.end,
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .title3
+                                                  .override(
+                                                    fontFamily:
+                                                        'Noto Kufi Arabic',
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryText,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                            ),
                                             Padding(
                                               padding: EdgeInsetsDirectional
-                                                  .fromSTEB(0, 0, 0, 8),
-                                              child: Column(
+                                                  .fromSTEB(0, 5, 0, 5),
+                                              child: Row(
                                                 mainAxisSize: MainAxisSize.max,
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   Align(
                                                     alignment:
@@ -196,8 +202,6 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                                                               .fromSTEB(
                                                                   0, 0, 0, 10),
                                                       child: Container(
-                                                        width: 45,
-                                                        height: 25,
                                                         decoration:
                                                             BoxDecoration(
                                                           color: FlutterFlowTheme
@@ -216,7 +220,7 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                                                               AlignmentDirectional(
                                                                   0, 0),
                                                           child: Text(
-                                                            columnUsersRecord
+                                                            columnUsersRecord!
                                                                 .userWork!,
                                                             textAlign: TextAlign
                                                                 .center,
@@ -239,6 +243,9 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                                                   Row(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                     children: [
                                                       Padding(
                                                         padding:
@@ -276,9 +283,9 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                                             ),
                                           ],
                                         ),
-                                      ],
-                                    ),
-                                  ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -310,7 +317,10 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                                     ),
                                     direction: Axis.horizontal,
                                     initialRating: ratingBarValue1 ??=
-                                        columnUsersRecord.userRate!,
+                                        columnUsersRecord!.userRate!
+                                            .toList()
+                                            .length
+                                            .toDouble(),
                                     unratedColor: Color(0xFF9E9E9E),
                                     itemCount: 5,
                                     itemSize: 22,
@@ -321,7 +331,10 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                                         8, 0, 0, 0),
                                     child: Text(
                                       valueOrDefault<String>(
-                                        columnUsersRecord.userRate?.toString(),
+                                        columnUsersRecord!.userRate!
+                                            .toList()
+                                            .length
+                                            .toString(),
                                         '3.0',
                                       ),
                                       style: FlutterFlowTheme.of(context)
@@ -349,7 +362,7 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                           children: [
                             Expanded(
                               child: Text(
-                                columnUsersRecord.userBio!,
+                                columnUsersRecord!.userBio!,
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(
@@ -378,13 +391,13 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
                         child: FutureBuilder<List<PostsRecord>>(
-                          future: (_firestoreRequestCompleter ??=
+                          future: (_firestoreRequestCompleter2 ??=
                                   Completer<List<PostsRecord>>()
                                     ..complete(queryPostsRecordOnce(
                                       queryBuilder: (postsRecord) => postsRecord
                                           .where('post_user',
                                               isEqualTo:
-                                                  columnUsersRecord.reference)
+                                                  columnUsersRecord!.reference)
                                           .orderBy('time_posted',
                                               descending: true),
                                     )))
@@ -408,8 +421,8 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                             return RefreshIndicator(
                               onRefresh: () async {
                                 setState(
-                                    () => _firestoreRequestCompleter = null);
-                                await waitForFirestoreRequestCompleter();
+                                    () => _firestoreRequestCompleter2 = null);
+                                await waitForFirestoreRequestCompleter2();
                               },
                               child: ListView.builder(
                                 padding: EdgeInsets.zero,
@@ -623,7 +636,7 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                                                                             0,
                                                                             0),
                                                                 child: Text(
-                                                                  columnUsersRecord
+                                                                  columnUsersRecord!
                                                                       .userLocation!,
                                                                   style: FlutterFlowTheme.of(
                                                                           context)
@@ -679,7 +692,7 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                                   'allReviewPage',
                                   queryParams: {
                                     'userReviewRef': serializeParam(
-                                      columnUsersRecord.allReviews!.toList(),
+                                      columnUsersRecord!.allReviews!.toList(),
                                       ParamType.DocumentReference,
                                       true,
                                     ),
@@ -1034,7 +1047,7 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
     );
   }
 
-  Future waitForDocumentRequestCompleter({
+  Future waitForFirestoreRequestCompleter1({
     double minWait = 0,
     double maxWait = double.infinity,
   }) async {
@@ -1042,14 +1055,14 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
     while (true) {
       await Future.delayed(Duration(milliseconds: 50));
       final timeElapsed = stopwatch.elapsedMilliseconds;
-      final requestComplete = _documentRequestCompleter?.isCompleted ?? false;
+      final requestComplete = _firestoreRequestCompleter1?.isCompleted ?? false;
       if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
         break;
       }
     }
   }
 
-  Future waitForFirestoreRequestCompleter({
+  Future waitForFirestoreRequestCompleter2({
     double minWait = 0,
     double maxWait = double.infinity,
   }) async {
@@ -1057,7 +1070,7 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
     while (true) {
       await Future.delayed(Duration(milliseconds: 50));
       final timeElapsed = stopwatch.elapsedMilliseconds;
-      final requestComplete = _firestoreRequestCompleter?.isCompleted ?? false;
+      final requestComplete = _firestoreRequestCompleter2?.isCompleted ?? false;
       if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
         break;
       }

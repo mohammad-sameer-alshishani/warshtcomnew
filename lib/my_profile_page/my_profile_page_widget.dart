@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyProfilePageWidget extends StatefulWidget {
   const MyProfilePageWidget({
@@ -430,19 +431,26 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                             .fromSTEB(
                                                                 10, 0, 0, 0),
                                                     child: AuthUserStreamWidget(
-                                                      child: Text(
-                                                        currentPhoneNumber,
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyText1
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Noto Kufi Arabic',
-                                                                  color: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .primaryText,
-                                                                ),
+                                                      child: InkWell(
+                                                        onLongPress: () async {
+                                                          await launchUrl(Uri(
+                                                            scheme: 'tel',
+                                                            path: '',
+                                                          ));
+                                                        },
+                                                        child: Text(
+                                                          currentPhoneNumber,
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .bodyText1
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Noto Kufi Arabic',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                              ),
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
@@ -948,8 +956,10 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                                     valueOrDefault<
                                                                         String>(
                                                                       myProfilePageUsersRecord
-                                                                          .userRate
-                                                                          ?.toString(),
+                                                                          .userRate!
+                                                                          .toList()
+                                                                          .length
+                                                                          .toString(),
                                                                       '3',
                                                                     ),
                                                                     style: FlutterFlowTheme.of(

@@ -761,6 +761,17 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                           100, 10, 100, 10),
                                       child: FFButtonWidget(
                                         onPressed: () async {
+                                          context.pushNamedAuth(
+                                            'CreateUserPage',
+                                            mounted,
+                                            queryParams: {
+                                              'createUserRef': serializeParam(
+                                                currentUserReference,
+                                                ParamType.DocumentReference,
+                                              ),
+                                            }.withoutNulls,
+                                          );
+
                                           GoRouter.of(context)
                                               .prepareAuthEvent();
                                           if (passwordSignUpController?.text !=
@@ -801,17 +812,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                           await UsersRecord.collection
                                               .doc(user.uid)
                                               .update(usersCreateData);
-
-                                          context.pushNamedAuth(
-                                            'CreateUserPage',
-                                            mounted,
-                                            queryParams: {
-                                              'createUserRef': serializeParam(
-                                                currentUserReference,
-                                                ParamType.DocumentReference,
-                                              ),
-                                            }.withoutNulls,
-                                          );
                                         },
                                         text: 'تسجيل',
                                         options: FFButtonOptions(

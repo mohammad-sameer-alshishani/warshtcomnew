@@ -5,8 +5,8 @@ import '../flutter_flow/flutter_flow_drop_down.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../flutter_flow/random_data_util.dart' as random_data;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -220,6 +220,17 @@ class _CreateUserPageWidgetState extends State<CreateUserPageWidget> {
                               EdgeInsetsDirectional.fromSTEB(40, 10, 40, 5),
                           child: TextFormField(
                             controller: userNameController,
+                            onChanged: (_) => EasyDebounce.debounce(
+                              'userNameController',
+                              Duration(milliseconds: 2000),
+                              () async {
+                                final usersUpdateData = createUsersRecordData(
+                                  displayName: userNameController!.text,
+                                );
+                                await currentUserReference!
+                                    .update(usersUpdateData);
+                              },
+                            ),
                             obscureText: false,
                             decoration: InputDecoration(
                               labelText: 'اسم المستخدم',
@@ -272,6 +283,17 @@ class _CreateUserPageWidgetState extends State<CreateUserPageWidget> {
                               EdgeInsetsDirectional.fromSTEB(40, 10, 40, 5),
                           child: TextFormField(
                             controller: userWorkController,
+                            onChanged: (_) => EasyDebounce.debounce(
+                              'userWorkController',
+                              Duration(milliseconds: 2000),
+                              () async {
+                                final usersUpdateData = createUsersRecordData(
+                                  userWork: userWorkController!.text,
+                                );
+                                await currentUserReference!
+                                    .update(usersUpdateData);
+                              },
+                            ),
                             obscureText: false,
                             decoration: InputDecoration(
                               labelText: 'المهنة',
@@ -324,6 +346,17 @@ class _CreateUserPageWidgetState extends State<CreateUserPageWidget> {
                               EdgeInsetsDirectional.fromSTEB(40, 10, 40, 5),
                           child: TextFormField(
                             controller: userBioController,
+                            onChanged: (_) => EasyDebounce.debounce(
+                              'userBioController',
+                              Duration(milliseconds: 2000),
+                              () async {
+                                final usersUpdateData = createUsersRecordData(
+                                  userBio: userBioController!.text,
+                                );
+                                await currentUserReference!
+                                    .update(usersUpdateData);
+                              },
+                            ),
                             obscureText: false,
                             decoration: InputDecoration(
                               labelText: 'الوصف',
@@ -375,6 +408,17 @@ class _CreateUserPageWidgetState extends State<CreateUserPageWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(40, 5, 40, 5),
                           child: TextFormField(
                             controller: phoneNumberController,
+                            onChanged: (_) => EasyDebounce.debounce(
+                              'phoneNumberController',
+                              Duration(milliseconds: 2000),
+                              () async {
+                                final usersUpdateData = createUsersRecordData(
+                                  phoneNumber: phoneNumberController!.text,
+                                );
+                                await currentUserReference!
+                                    .update(usersUpdateData);
+                              },
+                            ),
                             obscureText: false,
                             decoration: InputDecoration(
                               labelText: 'رقم الهاتف',
@@ -436,8 +480,14 @@ class _CreateUserPageWidgetState extends State<CreateUserPageWidget> {
                               'العقبة',
                               'معان'
                             ],
-                            onChanged: (val) =>
-                                setState(() => choseLocationValue = val),
+                            onChanged: (val) async {
+                              setState(() => choseLocationValue = val);
+                              final usersUpdateData = createUsersRecordData(
+                                userLocation: choseLocationValue,
+                              );
+                              await currentUserReference!
+                                  .update(usersUpdateData);
+                            },
                             width: 180,
                             height: 65,
                             textStyle: FlutterFlowTheme.of(context)
@@ -465,27 +515,7 @@ class _CreateUserPageWidgetState extends State<CreateUserPageWidget> {
                               EdgeInsetsDirectional.fromSTEB(100, 10, 100, 10),
                           child: FFButtonWidget(
                             onPressed: () async {
-                              final usersUpdateData = createUsersRecordData(
-                                displayName: userNameController!.text,
-                                photoUrl: currentUserPhoto,
-                                uid: random_data.randomString(
-                                  6,
-                                  6,
-                                  false,
-                                  false,
-                                  false,
-                                ),
-                                userGender: userGenderValue,
-                                userLocation: choseLocationValue,
-                                phoneNumber: phoneNumberController!.text,
-                                createdTime: getCurrentTimestamp,
-                                userWork: userWorkController!.text,
-                                userBio: userBioController!.text,
-                              );
-                              await currentUserReference!
-                                  .update(usersUpdateData);
-
-                              context.pushNamed('LoginPage');
+                              context.pushNamed('HomePage');
                             },
                             text: 'انشاء حسابي',
                             options: FFButtonOptions(

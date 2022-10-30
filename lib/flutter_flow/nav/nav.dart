@@ -113,17 +113,17 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => ServiceProvideWidget(),
             ),
             FFRoute(
+              name: 'ServiceRequest',
+              path: 'serviceRequest',
+              builder: (context, params) => ServiceRequestWidget(),
+            ),
+            FFRoute(
               name: 'LoginPage',
               path: 'loginPage',
               builder: (context, params) => LoginPageWidget(
                 userRecordRef: params.getParam('userRecordRef',
                     ParamType.DocumentReference, false, 'users'),
               ),
-            ),
-            FFRoute(
-              name: 'ServiceRequest',
-              path: 'serviceRequest',
-              builder: (context, params) => ServiceRequestWidget(),
             ),
             FFRoute(
               name: 'MyProfilePage',
@@ -144,19 +144,19 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ),
             ),
             FFRoute(
-              name: 'CreateUserPage',
-              path: 'createUserPage',
-              builder: (context, params) => CreateUserPageWidget(
-                createUserRef: params.getParam('createUserRef',
-                    ParamType.DocumentReference, false, 'users'),
-              ),
-            ),
-            FFRoute(
               name: 'UserProfilePage',
               path: 'userProfilePage',
               builder: (context, params) => UserProfilePageWidget(
                 userInfo: params.getParam(
                     'userInfo', ParamType.DocumentReference, false, 'users'),
+              ),
+            ),
+            FFRoute(
+              name: 'CreateUserPage',
+              path: 'createUserPage',
+              builder: (context, params) => CreateUserPageWidget(
+                createUserRef: params.getParam('createUserRef',
+                    ParamType.DocumentReference, false, 'users'),
               ),
             ),
             FFRoute(

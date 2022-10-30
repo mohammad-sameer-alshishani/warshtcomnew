@@ -31,9 +31,6 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
   @BuiltValueField(wireName: 'user_location')
   String? get userLocation;
 
-  @BuiltValueField(wireName: 'user_rate')
-  double? get userRate;
-
   @BuiltValueField(wireName: 'user_work')
   String? get userWork;
 
@@ -49,6 +46,15 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
   @BuiltValueField(wireName: 'all_reviews')
   BuiltList<DocumentReference>? get allReviews;
 
+  @BuiltValueField(wireName: 'user_rate')
+  BuiltList<double>? get userRate;
+
+  @BuiltValueField(wireName: 'all_posts')
+  BuiltList<DocumentReference>? get allPosts;
+
+  @BuiltValueField(wireName: 'search_history')
+  BuiltList<String>? get searchHistory;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -61,11 +67,13 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
     ..phoneNumber = ''
     ..userGender = ''
     ..userLocation = ''
-    ..userRate = 0.0
     ..userWork = ''
     ..userBio = ''
     ..likedPosts = ListBuilder()
-    ..allReviews = ListBuilder();
+    ..allReviews = ListBuilder()
+    ..userRate = ListBuilder()
+    ..allPosts = ListBuilder()
+    ..searchHistory = ListBuilder();
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('users');
@@ -97,7 +105,6 @@ Map<String, dynamic> createUsersRecordData({
   String? phoneNumber,
   String? userGender,
   String? userLocation,
-  double? userRate,
   String? userWork,
   String? userBio,
   DateTime? updatedTime,
@@ -114,12 +121,14 @@ Map<String, dynamic> createUsersRecordData({
         ..phoneNumber = phoneNumber
         ..userGender = userGender
         ..userLocation = userLocation
-        ..userRate = userRate
         ..userWork = userWork
         ..userBio = userBio
         ..updatedTime = updatedTime
         ..likedPosts = null
-        ..allReviews = null,
+        ..allReviews = null
+        ..userRate = null
+        ..allPosts = null
+        ..searchHistory = null,
     ),
   );
 

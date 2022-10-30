@@ -245,10 +245,14 @@ class _AddReveiwWidgetState extends State<AddReveiwWidget> {
                                     0, 32, 0, 32),
                                 child: FFButtonWidget(
                                   onPressed: () async {
-                                    final usersUpdateData =
-                                        createUsersRecordData(
-                                      userRate: sliderValue,
-                                    );
+                                    final usersUpdateData = {
+                                      'user_rate': FieldValue.arrayUnion([
+                                        valueOrDefault<double>(
+                                          sliderValue,
+                                          3.0,
+                                        )
+                                      ]),
+                                    };
                                     await listViewUsersRecord.reference
                                         .update(usersUpdateData);
 

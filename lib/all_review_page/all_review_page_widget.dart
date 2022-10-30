@@ -200,7 +200,8 @@ class _AllReviewPageWidgetState extends State<AllReviewPageWidget> {
                                           child: Text(
                                             valueOrDefault<String>(
                                               formatNumber(
-                                                topCardUsersRecord!.userRate,
+                                                topCardUsersRecord!.userRate!
+                                                    .toList(),
                                                 formatType: FormatType.compact,
                                               ),
                                               '3.0',
