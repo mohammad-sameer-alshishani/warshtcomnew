@@ -7,6 +7,7 @@ import '../flutter_flow/flutter_flow_toggle_icon.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/permissions_util.dart';
 import 'dart:async';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -414,15 +415,20 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                                 mainAxisSize: MainAxisSize.max,
                                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                 children: [
-                                                                                  Text(
-                                                                                    socialPostUsersRecord.displayName!,
-                                                                                    maxLines: 1,
-                                                                                    style: FlutterFlowTheme.of(context).subtitle1.override(
-                                                                                          fontFamily: 'Noto Kufi Arabic',
-                                                                                          color: FlutterFlowTheme.of(context).tertiaryColor,
-                                                                                          fontSize: 18,
-                                                                                          fontWeight: FontWeight.w600,
-                                                                                        ),
+                                                                                  Expanded(
+                                                                                    child: AutoSizeText(
+                                                                                      socialPostUsersRecord.displayName!.maybeHandleOverflow(
+                                                                                        maxChars: 20,
+                                                                                        replacement: '…',
+                                                                                      ),
+                                                                                      maxLines: 1,
+                                                                                      style: FlutterFlowTheme.of(context).subtitle1.override(
+                                                                                            fontFamily: 'Noto Kufi Arabic',
+                                                                                            color: FlutterFlowTheme.of(context).tertiaryColor,
+                                                                                            fontSize: 18,
+                                                                                            fontWeight: FontWeight.w600,
+                                                                                          ),
+                                                                                    ),
                                                                                   ),
                                                                                   Row(
                                                                                     mainAxisSize: MainAxisSize.max,
@@ -430,9 +436,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                                       Padding(
                                                                                         padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                                                                                         child: Text(
-                                                                                          valueOrDefault<String>(
-                                                                                            socialPostUsersRecord.userRate!.toList().toString(),
-                                                                                            '3',
+                                                                                          formatNumber(
+                                                                                            socialPostUsersRecord.userRate!.toList().length,
+                                                                                            formatType: FormatType.decimal,
+                                                                                            decimalType: DecimalType.periodDecimal,
                                                                                           ),
                                                                                           style: FlutterFlowTheme.of(context).bodyText1.override(
                                                                                                 fontFamily: 'Noto Kufi Arabic',
@@ -667,7 +674,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                     Container(
                                                                   width: double
                                                                       .infinity,
-                                                                  height: 50,
+                                                                  height: 100,
                                                                   decoration:
                                                                       BoxDecoration(
                                                                     borderRadius:

@@ -15,10 +15,12 @@ class AddReveiwWidget extends StatefulWidget {
     Key? key,
     this.addingReview,
     this.userInformation2,
+    this.test2,
   }) : super(key: key);
 
   final DocumentReference? addingReview;
   final DocumentReference? userInformation2;
+  final DocumentReference? test2;
 
   @override
   _AddReveiwWidgetState createState() => _AddReveiwWidgetState();
@@ -281,8 +283,7 @@ class _AddReveiwWidgetState extends State<AddReveiwWidget> {
                                       'user_rate':
                                           FieldValue.arrayUnion([sliderValue]),
                                     };
-                                    await listViewUsersRecord.reference
-                                        .update(usersUpdateData);
+                                    await widget.test2!.update(usersUpdateData);
                                   },
                                   text: 'الخطوة التالية',
                                   options: FFButtonOptions(

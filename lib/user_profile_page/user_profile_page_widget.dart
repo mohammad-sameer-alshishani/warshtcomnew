@@ -367,13 +367,10 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             8, 0, 0, 0),
                                         child: Text(
-                                          valueOrDefault<String>(
-                                            columnUsersRecord!.userRate!
-                                                .toList()
-                                                .length
-                                                .toString(),
-                                            '3.0',
-                                          ),
+                                          userProfilePageUsersRecord.userRate!
+                                              .toList()
+                                              .length
+                                              .toString(),
                                           style: FlutterFlowTheme.of(context)
                                               .subtitle1
                                               .override(
@@ -749,6 +746,10 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                                         ),
                                         'userInformation': serializeParam(
                                           widget.userInfo,
+                                          ParamType.DocumentReference,
+                                        ),
+                                        'testAddingRate': serializeParam(
+                                          userProfilePageUsersRecord.reference,
                                           ParamType.DocumentReference,
                                         ),
                                       }.withoutNulls,

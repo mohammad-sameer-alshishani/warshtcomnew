@@ -13,10 +13,12 @@ class AllReviewPageWidget extends StatefulWidget {
     Key? key,
     this.userReviewRef,
     this.userInformation,
+    this.testAddingRate,
   }) : super(key: key);
 
   final List<DocumentReference>? userReviewRef;
   final DocumentReference? userInformation;
+  final DocumentReference? testAddingRate;
 
   @override
   _AllReviewPageWidgetState createState() => _AllReviewPageWidgetState();
@@ -38,6 +40,10 @@ class _AllReviewPageWidgetState extends State<AllReviewPageWidget> {
             queryParams: {
               'userInformation2': serializeParam(
                 widget.userInformation,
+                ParamType.DocumentReference,
+              ),
+              'test2': serializeParam(
+                widget.testAddingRate,
                 ParamType.DocumentReference,
               ),
             }.withoutNulls,

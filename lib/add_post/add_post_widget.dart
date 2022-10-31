@@ -4,11 +4,17 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart'
     as smooth_page_indicator;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddPostWidget extends StatefulWidget {
-  const AddPostWidget({Key? key}) : super(key: key);
+  const AddPostWidget({
+    Key? key,
+    this.addedReview,
+  }) : super(key: key);
+
+  final DocumentReference? addedReview;
 
   @override
   _AddPostWidgetState createState() => _AddPostWidgetState();

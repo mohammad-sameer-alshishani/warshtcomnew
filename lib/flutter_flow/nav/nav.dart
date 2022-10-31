@@ -105,7 +105,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'addPost',
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'AddPost')
-                  : AddPostWidget(),
+                  : AddPostWidget(
+                      addedReview: params.getParam('addedReview',
+                          ParamType.DocumentReference, false, 'reveiws'),
+                    ),
             ),
             FFRoute(
               name: 'ServiceRequest',
@@ -116,14 +119,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'ServiceProvide',
               path: 'serviceProvide',
               builder: (context, params) => ServiceProvideWidget(),
-            ),
-            FFRoute(
-              name: 'LoginPage',
-              path: 'loginPage',
-              builder: (context, params) => LoginPageWidget(
-                userRecordRef: params.getParam('userRecordRef',
-                    ParamType.DocumentReference, false, 'users'),
-              ),
             ),
             FFRoute(
               name: 'MyProfilePage',
@@ -144,11 +139,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ),
             ),
             FFRoute(
-              name: 'UserProfilePage',
-              path: 'userProfilePage',
-              builder: (context, params) => UserProfilePageWidget(
-                userInfo: params.getParam(
-                    'userInfo', ParamType.DocumentReference, false, 'users'),
+              name: 'LoginPage',
+              path: 'loginPage',
+              builder: (context, params) => LoginPageWidget(
+                userRecordRef: params.getParam('userRecordRef',
+                    ParamType.DocumentReference, false, 'users'),
               ),
             ),
             FFRoute(
@@ -157,6 +152,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => CreateUserPageWidget(
                 createUserRef: params.getParam('createUserRef',
                     ParamType.DocumentReference, false, 'users'),
+              ),
+            ),
+            FFRoute(
+              name: 'UserProfilePage',
+              path: 'userProfilePage',
+              builder: (context, params) => UserProfilePageWidget(
+                userInfo: params.getParam(
+                    'userInfo', ParamType.DocumentReference, false, 'users'),
               ),
             ),
             FFRoute(
@@ -170,6 +173,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     'reveiws'),
                 userInformation: params.getParam('userInformation',
                     ParamType.DocumentReference, false, 'users'),
+                testAddingRate: params.getParam('testAddingRate',
+                    ParamType.DocumentReference, false, 'users'),
               ),
             ),
             FFRoute(
@@ -180,6 +185,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     ParamType.DocumentReference, false, 'reveiws'),
                 userInformation2: params.getParam('userInformation2',
                     ParamType.DocumentReference, false, 'users'),
+                test2: params.getParam(
+                    'test2', ParamType.DocumentReference, false, 'users'),
               ),
             ),
             FFRoute(

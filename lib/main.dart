@@ -137,7 +137,7 @@ class _NavBarPageState extends State<NavBarPage> {
         tabBackgroundColor: Color(0x00000000),
         tabBorderRadius: 100,
         tabMargin: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+        padding: EdgeInsetsDirectional.fromSTEB(12, 12, 12, 12),
         gap: 0,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         duration: Duration(milliseconds: 500),
