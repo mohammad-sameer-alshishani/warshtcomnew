@@ -137,18 +137,18 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ),
             ),
             FFRoute(
-              name: 'LoginPage',
-              path: 'loginPage',
-              builder: (context, params) => LoginPageWidget(
-                userRecordRef: params.getParam('userRecordRef',
-                    ParamType.DocumentReference, false, 'users'),
-              ),
-            ),
-            FFRoute(
               name: 'CreateUserPage',
               path: 'createUserPage',
               builder: (context, params) => CreateUserPageWidget(
                 createUserRef: params.getParam('createUserRef',
+                    ParamType.DocumentReference, false, 'users'),
+              ),
+            ),
+            FFRoute(
+              name: 'LoginPage',
+              path: 'loginPage',
+              builder: (context, params) => LoginPageWidget(
+                userRecordRef: params.getParam('userRecordRef',
                     ParamType.DocumentReference, false, 'users'),
               ),
             ),

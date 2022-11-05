@@ -68,15 +68,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
           onTap: () => FocusScope.of(context).unfocus(),
           child: Container(
             width: double.infinity,
-            height: double.infinity,
             decoration: BoxDecoration(
               color: FlutterFlowTheme.of(context).primaryBackground,
-              image: DecorationImage(
-                fit: BoxFit.contain,
-                image: Image.asset(
-                  'assets/images/pngwing.com_(1).png',
-                ).image,
-              ),
             ),
             alignment: AlignmentDirectional(0, 0),
             child: Column(
@@ -112,7 +105,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                     child: Column(
                       children: [
                         TabBar(
-                          isScrollable: true,
                           labelColor: FlutterFlowTheme.of(context).primaryText,
                           unselectedLabelColor:
                               FlutterFlowTheme.of(context).alternate,
