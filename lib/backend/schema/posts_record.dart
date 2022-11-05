@@ -53,6 +53,9 @@ abstract class PostsRecord implements Built<PostsRecord, PostsRecordBuilder> {
   @BuiltValueField(wireName: 'post_ID')
   String? get postID;
 
+  @BuiltValueField(wireName: 'post_user_name')
+  String? get postUserName;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -70,7 +73,8 @@ abstract class PostsRecord implements Built<PostsRecord, PostsRecordBuilder> {
     ..priceType = ''
     ..postUserLocation = ''
     ..postUserPhoto = ''
-    ..postID = '';
+    ..postID = ''
+    ..postUserName = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('posts');
@@ -108,6 +112,7 @@ Map<String, dynamic> createPostsRecordData({
   String? postUserLocation,
   String? postUserPhoto,
   String? postID,
+  String? postUserName,
 }) {
   final firestoreData = serializers.toFirestore(
     PostsRecord.serializer,
@@ -127,7 +132,8 @@ Map<String, dynamic> createPostsRecordData({
         ..priceType = priceType
         ..postUserLocation = postUserLocation
         ..postUserPhoto = postUserPhoto
-        ..postID = postID,
+        ..postID = postID
+        ..postUserName = postUserName,
     ),
   );
 

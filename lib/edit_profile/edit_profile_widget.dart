@@ -42,8 +42,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<UsersRecord>(
-      future: UsersRecord.getDocumentOnce(widget.userRecordRef!),
+    return StreamBuilder<UsersRecord>(
+      stream: UsersRecord.getDocument(widget.userRecordRef!),
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
         if (!snapshot.hasData) {

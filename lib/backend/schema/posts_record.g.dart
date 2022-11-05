@@ -125,6 +125,13 @@ class _$PostsRecordSerializer implements StructuredSerializer<PostsRecord> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.postUserName;
+    if (value != null) {
+      result
+        ..add('post_user_name')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.ffRef;
     if (value != null) {
       result
@@ -212,6 +219,10 @@ class _$PostsRecordSerializer implements StructuredSerializer<PostsRecord> {
           result.postID = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'post_user_name':
+          result.postUserName = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -257,6 +268,8 @@ class _$PostsRecord extends PostsRecord {
   @override
   final String? postID;
   @override
+  final String? postUserName;
+  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$PostsRecord([void Function(PostsRecordBuilder)? updates]) =>
@@ -278,6 +291,7 @@ class _$PostsRecord extends PostsRecord {
       this.postUserLocation,
       this.postUserPhoto,
       this.postID,
+      this.postUserName,
       this.ffRef})
       : super._();
 
@@ -307,6 +321,7 @@ class _$PostsRecord extends PostsRecord {
         postUserLocation == other.postUserLocation &&
         postUserPhoto == other.postUserPhoto &&
         postID == other.postID &&
+        postUserName == other.postUserName &&
         ffRef == other.ffRef;
   }
 
@@ -328,25 +343,27 @@ class _$PostsRecord extends PostsRecord {
                                                         $jc(
                                                             $jc(
                                                                 $jc(
-                                                                    0,
-                                                                    postPhoto
+                                                                    $jc(
+                                                                        0,
+                                                                        postPhoto
+                                                                            .hashCode),
+                                                                    postTitle
                                                                         .hashCode),
-                                                                postTitle
+                                                                postDescription
                                                                     .hashCode),
-                                                            postDescription
-                                                                .hashCode),
-                                                        postUser.hashCode),
-                                                    timePosted.hashCode),
-                                                numComments.hashCode),
-                                            numVotes.hashCode),
-                                        likedBy.hashCode),
-                                    numLikes.hashCode),
-                                price.hashCode),
-                            postType.hashCode),
-                        priceType.hashCode),
-                    postUserLocation.hashCode),
-                postUserPhoto.hashCode),
-            postID.hashCode),
+                                                            postUser.hashCode),
+                                                        timePosted.hashCode),
+                                                    numComments.hashCode),
+                                                numVotes.hashCode),
+                                            likedBy.hashCode),
+                                        numLikes.hashCode),
+                                    price.hashCode),
+                                postType.hashCode),
+                            priceType.hashCode),
+                        postUserLocation.hashCode),
+                    postUserPhoto.hashCode),
+                postID.hashCode),
+            postUserName.hashCode),
         ffRef.hashCode));
   }
 
@@ -368,6 +385,7 @@ class _$PostsRecord extends PostsRecord {
           ..add('postUserLocation', postUserLocation)
           ..add('postUserPhoto', postUserPhoto)
           ..add('postID', postID)
+          ..add('postUserName', postUserName)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -442,6 +460,10 @@ class PostsRecordBuilder implements Builder<PostsRecord, PostsRecordBuilder> {
   String? get postID => _$this._postID;
   set postID(String? postID) => _$this._postID = postID;
 
+  String? _postUserName;
+  String? get postUserName => _$this._postUserName;
+  set postUserName(String? postUserName) => _$this._postUserName = postUserName;
+
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -468,6 +490,7 @@ class PostsRecordBuilder implements Builder<PostsRecord, PostsRecordBuilder> {
       _postUserLocation = $v.postUserLocation;
       _postUserPhoto = $v.postUserPhoto;
       _postID = $v.postID;
+      _postUserName = $v.postUserName;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -508,6 +531,7 @@ class PostsRecordBuilder implements Builder<PostsRecord, PostsRecordBuilder> {
               postUserLocation: postUserLocation,
               postUserPhoto: postUserPhoto,
               postID: postID,
+              postUserName: postUserName,
               ffRef: ffRef);
     } catch (_) {
       late String _$failedField;

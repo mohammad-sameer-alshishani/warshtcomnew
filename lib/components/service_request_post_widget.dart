@@ -173,6 +173,7 @@ class _ServiceRequestPostWidgetState extends State<ServiceRequestPostWidget> {
                         children: [
                           Row(
                             mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
                                 'أريد ',

@@ -89,16 +89,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                           'users'),
                       postRecordRef: params.getParam('postRecordRef',
                           ParamType.DocumentReference, false, 'posts'),
-                      createUserRef: params.getParam('createUserRef',
-                          ParamType.DocumentReference, false, 'users'),
                     ),
-            ),
-            FFRoute(
-              name: 'SearchPage',
-              path: 'searchPage',
-              builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'SearchPage')
-                  : SearchPageWidget(),
             ),
             FFRoute(
               name: 'AddPost',
@@ -119,6 +110,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'ServiceProvide',
               path: 'serviceProvide',
               builder: (context, params) => ServiceProvideWidget(),
+            ),
+            FFRoute(
+              name: 'SearchPage',
+              path: 'searchPage',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'SearchPage')
+                  : SearchPageWidget(),
             ),
             FFRoute(
               name: 'MyProfilePage',
@@ -163,6 +161,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ),
             ),
             FFRoute(
+              name: 'AddReveiw',
+              path: 'addReveiw',
+              builder: (context, params) => AddReveiwWidget(
+                userToReviewRef: params.getParam('userToReviewRef',
+                    ParamType.DocumentReference, false, 'users'),
+                reviewPar: params.getParam<DocumentReference>(
+                    'reviewPar', ParamType.DocumentReference, true, 'reveiws'),
+              ),
+            ),
+            FFRoute(
               name: 'allReviewPage',
               path: 'allReviewPage',
               builder: (context, params) => AllReviewPageWidget(
@@ -173,28 +181,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     'reveiws'),
                 userInformation: params.getParam('userInformation',
                     ParamType.DocumentReference, false, 'users'),
-                testAddingRate: params.getParam('testAddingRate',
-                    ParamType.DocumentReference, false, 'users'),
-              ),
-            ),
-            FFRoute(
-              name: 'AddReveiw',
-              path: 'addReveiw',
-              builder: (context, params) => AddReveiwWidget(
-                addingReview: params.getParam('addingReview',
-                    ParamType.DocumentReference, false, 'reveiws'),
-                userInformation2: params.getParam('userInformation2',
-                    ParamType.DocumentReference, false, 'users'),
-                test2: params.getParam(
-                    'test2', ParamType.DocumentReference, false, 'users'),
-              ),
-            ),
-            FFRoute(
-              name: 'AddReveiw2',
-              path: 'addReveiw2',
-              builder: (context, params) => AddReveiw2Widget(
-                addReview: params.getParam(
-                    'addReview', ParamType.DocumentReference, false, 'reveiws'),
               ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
@@ -368,13 +354,11 @@ class FFRoute {
                 )
               : builder(context, ffParams);
           final child = appStateNotifier.loading
-              ? Center(
-                  child: SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: CircularProgressIndicator(
-                      color: FlutterFlowTheme.of(context).primaryColor,
-                    ),
+              ? Container(
+                  color: Colors.transparent,
+                  child: Image.asset(
+                    'assets/images/Photo_1667408219990.png',
+                    fit: BoxFit.cover,
                   ),
                 )
               : page;

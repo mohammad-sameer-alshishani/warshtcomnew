@@ -108,8 +108,8 @@ class _ServiceRequestWidgetState extends State<ServiceRequestWidget> {
                     ),
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
-                      child: FutureBuilder<List<PostsRecord>>(
-                        future: queryPostsRecordOnce(
+                      child: StreamBuilder<List<PostsRecord>>(
+                        stream: queryPostsRecord(
                           queryBuilder: (postsRecord) => postsRecord
                               .orderBy('time_posted', descending: true),
                         ),
@@ -151,6 +151,7 @@ class _ServiceRequestWidgetState extends State<ServiceRequestWidget> {
                                   true,
                                   true,
                                 ),
+                                postUserName: currentUserDisplayName,
                               );
                               await PostsRecord.collection
                                   .doc()

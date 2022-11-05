@@ -4,38 +4,40 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
 class AddReveiwWidget extends StatefulWidget {
   const AddReveiwWidget({
     Key? key,
-    this.addingReview,
-    this.userInformation2,
-    this.test2,
+    this.userToReviewRef,
+    this.reviewPar,
   }) : super(key: key);
 
-  final DocumentReference? addingReview;
-  final DocumentReference? userInformation2;
-  final DocumentReference? test2;
+  final DocumentReference? userToReviewRef;
+  final List<DocumentReference>? reviewPar;
 
   @override
   _AddReveiwWidgetState createState() => _AddReveiwWidgetState();
 }
 
 class _AddReveiwWidgetState extends State<AddReveiwWidget> {
-  Completer<UsersRecord>? _documentRequestCompleter;
+  TextEditingController? textController;
   double? sliderValue;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-
+    textController = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    textController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -46,34 +48,42 @@ class _AddReveiwWidgetState extends State<AddReveiwWidget> {
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         automaticallyImplyLeading: false,
-        title: Text(
-          'التقييم',
-          textAlign: TextAlign.center,
-          style: FlutterFlowTheme.of(context).title1.override(
-                fontFamily: 'Outfit',
-                color: FlutterFlowTheme.of(context).primaryText,
-                fontSize: 32,
-                fontWeight: FontWeight.w500,
-              ),
+        leading: Container(
+          width: 100,
+          height: 100,
+          decoration: BoxDecoration(
+            color: FlutterFlowTheme.of(context).secondaryBackground,
+          ),
+        ),
+        title: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'اضف مراجعتك',
+              textAlign: TextAlign.center,
+              style: FlutterFlowTheme.of(context).title2.override(
+                    fontFamily: 'Noto Kufi Arabic',
+                    color: FlutterFlowTheme.of(context).primaryColor,
+                  ),
+            ),
+          ],
         ),
         actions: [
-          Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
-            child: FlutterFlowIconButton(
-              borderColor: Colors.transparent,
-              borderRadius: 30,
-              borderWidth: 1,
-              buttonSize: 50,
-              fillColor: FlutterFlowTheme.of(context).primaryBackground,
-              icon: Icon(
-                Icons.close_rounded,
-                color: FlutterFlowTheme.of(context).primaryColor,
-                size: 30,
-              ),
-              onPressed: () async {
-                context.pushNamed('UserProfilePage');
-              },
+          FlutterFlowIconButton(
+            borderColor: Colors.transparent,
+            borderRadius: 30,
+            borderWidth: 1,
+            buttonSize: 50,
+            fillColor: FlutterFlowTheme.of(context).primaryBackground,
+            icon: Icon(
+              Icons.close_rounded,
+              color: FlutterFlowTheme.of(context).primaryColor,
+              size: 30,
             ),
+            onPressed: () async {
+              context.pop();
+            },
           ),
         ],
         centerTitle: false,
@@ -82,259 +92,261 @@ class _AddReveiwWidgetState extends State<AddReveiwWidget> {
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(
-                child: FutureBuilder<UsersRecord>(
-                  future: (_documentRequestCompleter ??= Completer<
-                          UsersRecord>()
-                        ..complete(
-                            UsersRecord.getDocumentOnce(currentUserReference!)))
-                      .future,
-                  builder: (context, snapshot) {
-                    // Customize what your widget looks like when it's loading.
-                    if (!snapshot.hasData) {
-                      return Center(
-                        child: SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: CircularProgressIndicator(
-                            color: FlutterFlowTheme.of(context).primaryColor,
-                          ),
-                        ),
-                      );
-                    }
-                    final listViewUsersRecord = snapshot.data!;
-                    return RefreshIndicator(
-                      onRefresh: () async {
-                        setState(() => _documentRequestCompleter = null);
-                        await waitForDocumentRequestCompleter();
-                      },
-                      child: ListView(
-                        padding: EdgeInsets.zero,
-                        scrollDirection: Axis.vertical,
-                        children: [
-                          Align(
-                            alignment: AlignmentDirectional(-1, 0),
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 12, 0, 0),
-                              child: Text(
-                                'الخطوة 1/2',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyText2
-                                    .override(
-                                      fontFamily: 'Outfit',
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryColor,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                              ),
+          child: StreamBuilder<UsersRecord>(
+            stream: UsersRecord.getDocument(widget.userToReviewRef!),
+            builder: (context, snapshot) {
+              // Customize what your widget looks like when it's loading.
+              if (!snapshot.hasData) {
+                return Center(
+                  child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: CircularProgressIndicator(
+                      color: FlutterFlowTheme.of(context).primaryColor,
+                    ),
+                  ),
+                );
+              }
+              final listViewUsersRecord = snapshot.data!;
+              return ListView(
+                padding: EdgeInsets.zero,
+                scrollDirection: Axis.vertical,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'التقييم',
+                        textAlign: TextAlign.center,
+                        style: FlutterFlowTheme.of(context).title1.override(
+                              fontFamily: 'Outfit',
+                              color: FlutterFlowTheme.of(context).primaryText,
+                              fontSize: 32,
+                              fontWeight: FontWeight.w500,
                             ),
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-                                child: LinearPercentIndicator(
-                                  percent: 0.5,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.92,
-                                  lineHeight: 16,
-                                  animation: true,
-                                  progressColor: FlutterFlowTheme.of(context)
-                                      .tertiaryColor,
-                                  backgroundColor: Color(0xFFE0E3E7),
-                                  barRadius: Radius.circular(24),
-                                  padding: EdgeInsets.zero,
-                                ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'كم هو تقييمك لهذا الشخص من 1-5 ؟',
+                          textAlign: TextAlign.center,
+                          style: FlutterFlowTheme.of(context)
+                              .bodyText1
+                              .override(
+                                fontFamily: 'Noto Kufi Arabic',
+                                color:
+                                    FlutterFlowTheme.of(context).tertiaryColor,
                               ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    16, 100, 0, 0),
-                                child: Text(
-                                  'التقييم',
-                                  textAlign: TextAlign.center,
-                                  style: FlutterFlowTheme.of(context)
-                                      .title1
-                                      .override(
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Icon(
+                        Icons.star_rounded,
+                        color: Color(0xFFF5CC06),
+                        size: 40,
+                      ),
+                      Icon(
+                        Icons.star_rounded,
+                        color: Color(0xFFF5CC06),
+                        size: 40,
+                      ),
+                      Icon(
+                        Icons.star_rounded,
+                        color: Color(0xFFF5CC06),
+                        size: 40,
+                      ),
+                      Icon(
+                        Icons.star_rounded,
+                        color: Color(0xFFF5CC06),
+                        size: 40,
+                      ),
+                      Icon(
+                        Icons.star_rounded,
+                        color: Color(0xFFF5CC06),
+                        size: 40,
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
+                    child: Slider.adaptive(
+                      activeColor: FlutterFlowTheme.of(context).tertiaryColor,
+                      inactiveColor: Color(0xFFE0E3E7),
+                      min: 1,
+                      max: 5,
+                      value: sliderValue ??= 3,
+                      label: sliderValue.toString(),
+                      divisions: 4,
+                      onChanged: (newValue) {
+                        setState(() => sliderValue = newValue);
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'رأيك يهمنا',
+                              textAlign: TextAlign.center,
+                              style:
+                                  FlutterFlowTheme.of(context).title1.override(
                                         fontFamily: 'Outfit',
                                         color: FlutterFlowTheme.of(context)
                                             .primaryText,
                                         fontSize: 32,
                                         fontWeight: FontWeight.w500,
                                       ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(16, 8, 0, 0),
-                                child: Text(
-                                  'كم هو تقييمك لهذا الشخص من 1-5 ؟',
-                                  textAlign: TextAlign.center,
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Noto Kufi Arabic',
-                                        color: FlutterFlowTheme.of(context)
-                                            .tertiaryColor,
-                                      ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(16, 44, 16, 0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Icon(
-                                  Icons.star_rounded,
-                                  color: Color(0xFFF5CC06),
-                                  size: 40,
-                                ),
-                                Icon(
-                                  Icons.star_rounded,
-                                  color: Color(0xFFF5CC06),
-                                  size: 40,
-                                ),
-                                Icon(
-                                  Icons.star_rounded,
-                                  color: Color(0xFFF5CC06),
-                                  size: 40,
-                                ),
-                                Icon(
-                                  Icons.star_rounded,
-                                  color: Color(0xFFF5CC06),
-                                  size: 40,
-                                ),
-                                Icon(
-                                  Icons.star_rounded,
-                                  color: Color(0xFFF5CC06),
-                                  size: 40,
-                                ),
-                              ],
                             ),
-                          ),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
-                            child: Slider.adaptive(
-                              activeColor:
-                                  FlutterFlowTheme.of(context).tertiaryColor,
-                              inactiveColor: Color(0xFFE0E3E7),
-                              min: 1,
-                              max: 5,
-                              value: sliderValue ??= 3,
-                              label: sliderValue.toString(),
-                              divisions: 4,
-                              onChanged: (newValue) {
-                                setState(() => sliderValue = newValue);
-                              },
-                            ),
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0, 32, 0, 32),
-                                child: FFButtonWidget(
-                                  onPressed: () async {
-                                    context.pushNamed(
-                                      'AddReveiw2',
-                                      queryParams: {
-                                        'addReview': serializeParam(
-                                          widget.addingReview,
-                                          ParamType.DocumentReference,
-                                        ),
-                                      }.withoutNulls,
-                                      extra: <String, dynamic>{
-                                        kTransitionInfoKey: TransitionInfo(
-                                          hasTransition: true,
-                                          transitionType:
-                                              PageTransitionType.fade,
-                                          duration: Duration(milliseconds: 0),
-                                        ),
-                                      },
-                                    );
-
-                                    final usersUpdateData = {
-                                      'user_rate':
-                                          FieldValue.arrayUnion([sliderValue]),
-                                    };
-                                    await widget.test2!.update(usersUpdateData);
-                                  },
-                                  text: 'الخطوة التالية',
-                                  options: FFButtonOptions(
-                                    width: 300,
-                                    height: 50,
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'ما هو رايك -اخبرنا المزيد-؟',
+                              textAlign: TextAlign.center,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Noto Kufi Arabic',
                                     color: FlutterFlowTheme.of(context)
                                         .tertiaryColor,
-                                    textStyle: FlutterFlowTheme.of(context)
-                                        .subtitle2
-                                        .override(
-                                          fontFamily: 'Outfit',
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryBackground,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                    elevation: 3,
-                                    borderSide: BorderSide(
-                                      color: Colors.transparent,
-                                      width: 1,
-                                    ),
                                   ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  controller: textController,
+                                  autofocus: true,
+                                  obscureText: false,
+                                  decoration: InputDecoration(
+                                    hintText: 'اكتب رأيك ',
+                                    hintStyle:
+                                        FlutterFlowTheme.of(context).bodyText2,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(13),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(13),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(13),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(13),
+                                    ),
+                                    filled: true,
+                                    fillColor: Color(0xCFDBE2E7),
+                                    contentPadding:
+                                        EdgeInsetsDirectional.fromSTEB(
+                                            10, 10, 10, 10),
+                                  ),
+                                  style: FlutterFlowTheme.of(context).bodyText1,
+                                  maxLines: 7,
                                 ),
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 30, 0, 0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FFButtonWidget(
+                          onPressed: () async {
+                            final reveiwsCreateData = createReveiwsRecordData(
+                              createdAt: getCurrentTimestamp,
+                              reviewText: '',
+                              reviewedBy: currentUserReference,
+                              reviewedPerson: widget.userToReviewRef,
+                              rating: sliderValue,
+                            );
+                            await ReveiwsRecord.collection
+                                .doc()
+                                .set(reveiwsCreateData);
+                            context.pop();
+                          },
+                          text: 'تم',
+                          options: FFButtonOptions(
+                            width: 300,
+                            height: 50,
+                            color: FlutterFlowTheme.of(context).tertiaryColor,
+                            textStyle:
+                                FlutterFlowTheme.of(context).subtitle2.override(
+                                      fontFamily: 'Outfit',
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryBackground,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                            elevation: 3,
+                            borderSide: BorderSide(
+                              color: Colors.transparent,
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),
     );
-  }
-
-  Future waitForDocumentRequestCompleter({
-    double minWait = 0,
-    double maxWait = double.infinity,
-  }) async {
-    final stopwatch = Stopwatch()..start();
-    while (true) {
-      await Future.delayed(Duration(milliseconds: 50));
-      final timeElapsed = stopwatch.elapsedMilliseconds;
-      final requestComplete = _documentRequestCompleter?.isCompleted ?? false;
-      if (timeElapsed > maxWait || (requestComplete && timeElapsed > minWait)) {
-        break;
-      }
-    }
   }
 }

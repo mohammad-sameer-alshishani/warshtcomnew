@@ -129,8 +129,8 @@ class _CreateUserPageWidgetState extends State<CreateUserPageWidget> {
                           child: Padding(
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(40, 0, 0, 0),
-                            child: FutureBuilder<List<UsersRecord>>(
-                              future: queryUsersRecordOnce(
+                            child: StreamBuilder<List<UsersRecord>>(
+                              stream: queryUsersRecord(
                                 singleRecord: true,
                               ),
                               builder: (context, snapshot) {

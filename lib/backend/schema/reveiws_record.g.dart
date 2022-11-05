@@ -34,12 +34,6 @@ class _$ReveiwsRecordSerializer implements StructuredSerializer<ReveiwsRecord> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    value = object.rating;
-    if (value != null) {
-      result
-        ..add('rating')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
-    }
     value = object.reviewUserPhoto;
     if (value != null) {
       result
@@ -54,6 +48,21 @@ class _$ReveiwsRecordSerializer implements StructuredSerializer<ReveiwsRecord> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 DocumentReference, const [const FullType.nullable(Object)])));
+    }
+    value = object.reviewedPerson;
+    if (value != null) {
+      result
+        ..add('reviewed_person')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(
+                DocumentReference, const [const FullType.nullable(Object)])));
+    }
+    value = object.rating;
+    if (value != null) {
+      result
+        ..add('rating')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(double)));
     }
     value = object.ffRef;
     if (value != null) {
@@ -86,10 +95,6 @@ class _$ReveiwsRecordSerializer implements StructuredSerializer<ReveiwsRecord> {
           result.reviewText = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
-        case 'rating':
-          result.rating = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
-          break;
         case 'review_user_photo':
           result.reviewUserPhoto = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
@@ -99,6 +104,16 @@ class _$ReveiwsRecordSerializer implements StructuredSerializer<ReveiwsRecord> {
               specifiedType: const FullType(DocumentReference, const [
                 const FullType.nullable(Object)
               ])) as DocumentReference<Object?>?;
+          break;
+        case 'reviewed_person':
+          result.reviewedPerson = serializers.deserialize(value,
+              specifiedType: const FullType(DocumentReference, const [
+                const FullType.nullable(Object)
+              ])) as DocumentReference<Object?>?;
+          break;
+        case 'rating':
+          result.rating = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double?;
           break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
@@ -119,11 +134,13 @@ class _$ReveiwsRecord extends ReveiwsRecord {
   @override
   final String? reviewText;
   @override
-  final int? rating;
-  @override
   final String? reviewUserPhoto;
   @override
   final DocumentReference<Object?>? reviewedBy;
+  @override
+  final DocumentReference<Object?>? reviewedPerson;
+  @override
+  final double? rating;
   @override
   final DocumentReference<Object?>? ffRef;
 
@@ -133,9 +150,10 @@ class _$ReveiwsRecord extends ReveiwsRecord {
   _$ReveiwsRecord._(
       {this.createdAt,
       this.reviewText,
-      this.rating,
       this.reviewUserPhoto,
       this.reviewedBy,
+      this.reviewedPerson,
+      this.rating,
       this.ffRef})
       : super._();
 
@@ -152,9 +170,10 @@ class _$ReveiwsRecord extends ReveiwsRecord {
     return other is ReveiwsRecord &&
         createdAt == other.createdAt &&
         reviewText == other.reviewText &&
-        rating == other.rating &&
         reviewUserPhoto == other.reviewUserPhoto &&
         reviewedBy == other.reviewedBy &&
+        reviewedPerson == other.reviewedPerson &&
+        rating == other.rating &&
         ffRef == other.ffRef;
   }
 
@@ -163,10 +182,12 @@ class _$ReveiwsRecord extends ReveiwsRecord {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc($jc(0, createdAt.hashCode), reviewText.hashCode),
-                    rating.hashCode),
-                reviewUserPhoto.hashCode),
-            reviewedBy.hashCode),
+                $jc(
+                    $jc($jc($jc(0, createdAt.hashCode), reviewText.hashCode),
+                        reviewUserPhoto.hashCode),
+                    reviewedBy.hashCode),
+                reviewedPerson.hashCode),
+            rating.hashCode),
         ffRef.hashCode));
   }
 
@@ -175,9 +196,10 @@ class _$ReveiwsRecord extends ReveiwsRecord {
     return (newBuiltValueToStringHelper(r'ReveiwsRecord')
           ..add('createdAt', createdAt)
           ..add('reviewText', reviewText)
-          ..add('rating', rating)
           ..add('reviewUserPhoto', reviewUserPhoto)
           ..add('reviewedBy', reviewedBy)
+          ..add('reviewedPerson', reviewedPerson)
+          ..add('rating', rating)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -195,10 +217,6 @@ class ReveiwsRecordBuilder
   String? get reviewText => _$this._reviewText;
   set reviewText(String? reviewText) => _$this._reviewText = reviewText;
 
-  int? _rating;
-  int? get rating => _$this._rating;
-  set rating(int? rating) => _$this._rating = rating;
-
   String? _reviewUserPhoto;
   String? get reviewUserPhoto => _$this._reviewUserPhoto;
   set reviewUserPhoto(String? reviewUserPhoto) =>
@@ -208,6 +226,15 @@ class ReveiwsRecordBuilder
   DocumentReference<Object?>? get reviewedBy => _$this._reviewedBy;
   set reviewedBy(DocumentReference<Object?>? reviewedBy) =>
       _$this._reviewedBy = reviewedBy;
+
+  DocumentReference<Object?>? _reviewedPerson;
+  DocumentReference<Object?>? get reviewedPerson => _$this._reviewedPerson;
+  set reviewedPerson(DocumentReference<Object?>? reviewedPerson) =>
+      _$this._reviewedPerson = reviewedPerson;
+
+  double? _rating;
+  double? get rating => _$this._rating;
+  set rating(double? rating) => _$this._rating = rating;
 
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
@@ -222,9 +249,10 @@ class ReveiwsRecordBuilder
     if ($v != null) {
       _createdAt = $v.createdAt;
       _reviewText = $v.reviewText;
-      _rating = $v.rating;
       _reviewUserPhoto = $v.reviewUserPhoto;
       _reviewedBy = $v.reviewedBy;
+      _reviewedPerson = $v.reviewedPerson;
+      _rating = $v.rating;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -250,9 +278,10 @@ class ReveiwsRecordBuilder
         new _$ReveiwsRecord._(
             createdAt: createdAt,
             reviewText: reviewText,
-            rating: rating,
             reviewUserPhoto: reviewUserPhoto,
             reviewedBy: reviewedBy,
+            reviewedPerson: reviewedPerson,
+            rating: rating,
             ffRef: ffRef);
     replace(_$result);
     return _$result;

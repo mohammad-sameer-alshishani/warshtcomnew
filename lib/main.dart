@@ -18,6 +18,8 @@ void main() async {
   await Firebase.initializeApp();
   await FlutterFlowTheme.initialize();
 
+  FFAppState(); // Initialize FFAppState
+
   runApp(MyApp());
 }
 
@@ -118,8 +120,8 @@ class _NavBarPageState extends State<NavBarPage> {
   Widget build(BuildContext context) {
     final tabs = {
       'HomePage': HomePageWidget(),
-      'SearchPage': SearchPageWidget(),
       'AddPost': AddPostWidget(),
+      'SearchPage': SearchPageWidget(),
       'MyProfilePage': MyProfilePageWidget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
@@ -149,14 +151,14 @@ class _NavBarPageState extends State<NavBarPage> {
             iconSize: 24,
           ),
           GButton(
-            icon: Icons.search_rounded,
+            icon: currentIndex == 1
+                ? Icons.add_circle
+                : Icons.add_circle_outline_rounded,
             text: '',
             iconSize: 24,
           ),
           GButton(
-            icon: currentIndex == 2
-                ? Icons.add_circle
-                : Icons.add_circle_outline_rounded,
+            icon: Icons.search_rounded,
             text: '',
             iconSize: 24,
           ),

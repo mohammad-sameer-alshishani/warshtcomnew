@@ -16,13 +16,16 @@ abstract class ReveiwsRecord
   @BuiltValueField(wireName: 'review_text')
   String? get reviewText;
 
-  int? get rating;
-
   @BuiltValueField(wireName: 'review_user_photo')
   String? get reviewUserPhoto;
 
   @BuiltValueField(wireName: 'reviewed_by')
   DocumentReference? get reviewedBy;
+
+  @BuiltValueField(wireName: 'reviewed_person')
+  DocumentReference? get reviewedPerson;
+
+  double? get rating;
 
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
@@ -30,8 +33,8 @@ abstract class ReveiwsRecord
 
   static void _initializeBuilder(ReveiwsRecordBuilder builder) => builder
     ..reviewText = ''
-    ..rating = 0
-    ..reviewUserPhoto = '';
+    ..reviewUserPhoto = ''
+    ..rating = 0.0;
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('reveiws');
@@ -57,9 +60,10 @@ abstract class ReveiwsRecord
 Map<String, dynamic> createReveiwsRecordData({
   DateTime? createdAt,
   String? reviewText,
-  int? rating,
   String? reviewUserPhoto,
   DocumentReference? reviewedBy,
+  DocumentReference? reviewedPerson,
+  double? rating,
 }) {
   final firestoreData = serializers.toFirestore(
     ReveiwsRecord.serializer,
@@ -67,9 +71,10 @@ Map<String, dynamic> createReveiwsRecordData({
       (r) => r
         ..createdAt = createdAt
         ..reviewText = reviewText
-        ..rating = rating
         ..reviewUserPhoto = reviewUserPhoto
-        ..reviewedBy = reviewedBy,
+        ..reviewedBy = reviewedBy
+        ..reviewedPerson = reviewedPerson
+        ..rating = rating,
     ),
   );
 

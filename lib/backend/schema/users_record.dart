@@ -43,9 +43,6 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
   @BuiltValueField(wireName: 'liked_posts')
   BuiltList<DocumentReference>? get likedPosts;
 
-  @BuiltValueField(wireName: 'all_reviews')
-  BuiltList<DocumentReference>? get allReviews;
-
   @BuiltValueField(wireName: 'user_rate')
   BuiltList<double>? get userRate;
 
@@ -54,6 +51,12 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
 
   @BuiltValueField(wireName: 'search_history')
   BuiltList<String>? get searchHistory;
+
+  @BuiltValueField(wireName: 'all_reviews_about_me')
+  BuiltList<DocumentReference>? get allReviewsAboutMe;
+
+  @BuiltValueField(wireName: 'all_reviews_by_me')
+  BuiltList<DocumentReference>? get allReviewsByMe;
 
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
@@ -70,10 +73,11 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
     ..userWork = ''
     ..userBio = ''
     ..likedPosts = ListBuilder()
-    ..allReviews = ListBuilder()
     ..userRate = ListBuilder()
     ..allPosts = ListBuilder()
-    ..searchHistory = ListBuilder();
+    ..searchHistory = ListBuilder()
+    ..allReviewsAboutMe = ListBuilder()
+    ..allReviewsByMe = ListBuilder();
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('users');
@@ -125,10 +129,11 @@ Map<String, dynamic> createUsersRecordData({
         ..userBio = userBio
         ..updatedTime = updatedTime
         ..likedPosts = null
-        ..allReviews = null
         ..userRate = null
         ..allPosts = null
-        ..searchHistory = null,
+        ..searchHistory = null
+        ..allReviewsAboutMe = null
+        ..allReviewsByMe = null,
     ),
   );
 
