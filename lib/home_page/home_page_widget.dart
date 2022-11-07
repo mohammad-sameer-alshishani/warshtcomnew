@@ -13,6 +13,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'package:text_search/text_search.dart';
 
 class HomePageWidget extends StatefulWidget {
   const HomePageWidget({
@@ -29,6 +30,7 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
+  List<String> simpleSearchResults = [];
   List<String>? choiceChipsValues;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -134,8 +136,18 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             .jobsTypes
                             .map((label) => ChipData(label))
                             .toList(),
-                        onChanged: (val) =>
-                            setState(() => choiceChipsValues = val),
+                        onChanged: (val) async {
+                          setState(() => choiceChipsValues = val);
+                          setState(() {
+                            simpleSearchResults = TextSearch(choiceChipsValues
+                                    .map((str) => TextSearchItem(str, [str]))
+                                    .toList())
+                                .search(choiceChipsValues!.length.toString())
+                                .map((r) => r.object)
+                                .take(5)
+                                .toList();
+                          });
+                        },
                         selectedChipStyle: ChipStyle(
                           backgroundColor:
                               FlutterFlowTheme.of(context).primaryColor,
