@@ -369,250 +369,254 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                                     setState(() => FFAppState()
                                                         .searchActive = false);
                                                   },
-                                                  child: ListView.builder(
-                                                    padding: EdgeInsets.zero,
-                                                    shrinkWrap: true,
-                                                    scrollDirection:
-                                                        Axis.vertical,
-                                                    itemCount:
-                                                        noSearchPerson.length,
-                                                    itemBuilder: (context,
-                                                        noSearchPersonIndex) {
-                                                      final noSearchPersonItem =
-                                                          noSearchPerson[
-                                                              noSearchPersonIndex];
-                                                      return Container(
-                                                        width: double.infinity,
-                                                        height: 90,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryBackground,
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                              blurRadius: 3,
-                                                              color: Color(
-                                                                  0x32000000),
-                                                              offset:
-                                                                  Offset(0, 1),
-                                                            )
-                                                          ],
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
-                                                        ),
-                                                        child: Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            ClipRRect(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .only(
-                                                                bottomLeft: Radius
-                                                                    .circular(
-                                                                        8),
-                                                                bottomRight:
-                                                                    Radius
-                                                                        .circular(
-                                                                            0),
-                                                                topLeft: Radius
-                                                                    .circular(
-                                                                        8),
-                                                                topRight: Radius
-                                                                    .circular(
-                                                                        0),
-                                                              ),
-                                                              child:
-                                                                  Image.asset(
-                                                                'assets/images/Photo_1667408356874.png',
-                                                                width: 90,
-                                                                height: 90,
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                              ),
-                                                            ),
-                                                            Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                AutoSizeText(
+                                                  child: SingleChildScrollView(
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      children: List.generate(
+                                                          noSearchPerson.length,
+                                                          (noSearchPersonIndex) {
+                                                        final noSearchPersonItem =
+                                                            noSearchPerson[
+                                                                noSearchPersonIndex];
+                                                        return StreamBuilder<
+                                                            UsersRecord>(
+                                                          stream: UsersRecord
+                                                              .getDocument(
                                                                   noSearchPersonItem
-                                                                      .displayName!
-                                                                      .maybeHandleOverflow(
-                                                                    maxChars:
-                                                                        20,
-                                                                    replacement:
-                                                                        '…',
+                                                                      .reference),
+                                                          builder: (context,
+                                                              snapshot) {
+                                                            // Customize what your widget looks like when it's loading.
+                                                            if (!snapshot
+                                                                .hasData) {
+                                                              return Center(
+                                                                child: SizedBox(
+                                                                  width: 50,
+                                                                  height: 50,
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primaryColor,
                                                                   ),
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .title3
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Outfit',
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .primaryText,
-                                                                        fontSize:
-                                                                            14,
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                      ),
                                                                 ),
-                                                                Row(
+                                                              );
+                                                            }
+                                                            final containerUsersRecord =
+                                                                snapshot.data!;
+                                                            return InkWell(
+                                                              onTap: () async {
+                                                                context
+                                                                    .pushNamed(
+                                                                  'UserProfilePage',
+                                                                  queryParams: {
+                                                                    'userInfo':
+                                                                        serializeParam(
+                                                                      containerUsersRecord
+                                                                          .reference,
+                                                                      ParamType
+                                                                          .DocumentReference,
+                                                                    ),
+                                                                  }.withoutNulls,
+                                                                );
+                                                              },
+                                                              child: Container(
+                                                                width: double
+                                                                    .infinity,
+                                                                height: 90,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryBackground,
+                                                                  boxShadow: [
+                                                                    BoxShadow(
+                                                                      blurRadius:
+                                                                          3,
+                                                                      color: Color(
+                                                                          0x32000000),
+                                                                      offset:
+                                                                          Offset(
+                                                                              0,
+                                                                              1),
+                                                                    )
+                                                                  ],
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              8),
+                                                                ),
+                                                                child: Row(
                                                                   mainAxisSize:
                                                                       MainAxisSize
                                                                           .max,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
                                                                   children: [
                                                                     Padding(
                                                                       padding: EdgeInsetsDirectional
                                                                           .fromSTEB(
+                                                                              10,
+                                                                              0,
+                                                                              0,
+                                                                              0),
+                                                                      child:
+                                                                          ClipRRect(
+                                                                        borderRadius:
+                                                                            BorderRadius.only(
+                                                                          bottomLeft:
+                                                                              Radius.circular(8),
+                                                                          bottomRight:
+                                                                              Radius.circular(0),
+                                                                          topLeft:
+                                                                              Radius.circular(8),
+                                                                          topRight:
+                                                                              Radius.circular(0),
+                                                                        ),
+                                                                        child: Image
+                                                                            .asset(
+                                                                          'assets/images/Photo_1667408356874.png',
+                                                                          width:
+                                                                              60,
+                                                                          height:
+                                                                              60,
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    Column(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .center,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        AutoSizeText(
+                                                                          noSearchPersonItem
+                                                                              .displayName!
+                                                                              .maybeHandleOverflow(
+                                                                            maxChars:
+                                                                                20,
+                                                                            replacement:
+                                                                                '…',
+                                                                          ),
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .title3
+                                                                              .override(
+                                                                                fontFamily: 'Outfit',
+                                                                                color: FlutterFlowTheme.of(context).primaryText,
+                                                                                fontSize: 14,
+                                                                                fontWeight: FontWeight.w500,
+                                                                              ),
+                                                                        ),
+                                                                        Row(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.max,
+                                                                          children: [
+                                                                            Padding(
+                                                                              padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                                              child: AutoSizeText(
+                                                                                noSearchPersonItem.userWork!.maybeHandleOverflow(
+                                                                                  maxChars: 15,
+                                                                                  replacement: '…',
+                                                                                ),
+                                                                                maxLines: 1,
+                                                                                style: FlutterFlowTheme.of(context).bodyText2.override(
+                                                                                      fontFamily: 'Outfit',
+                                                                                      color: Color(0xFF7C8791),
+                                                                                      fontSize: 14,
+                                                                                      fontWeight: FontWeight.normal,
+                                                                                    ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                        Padding(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
                                                                               0,
                                                                               4,
                                                                               0,
                                                                               0),
-                                                                      child:
-                                                                          AutoSizeText(
-                                                                        noSearchPersonItem
-                                                                            .userWork!
-                                                                            .maybeHandleOverflow(
-                                                                          maxChars:
-                                                                              15,
-                                                                          replacement:
-                                                                              '…',
-                                                                        ),
-                                                                        maxLines:
-                                                                            1,
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .bodyText2
-                                                                            .override(
-                                                                              fontFamily: 'Outfit',
-                                                                              color: Color(0xFF7C8791),
-                                                                              fontSize: 14,
-                                                                              fontWeight: FontWeight.normal,
+                                                                          child:
+                                                                              AutoSizeText(
+                                                                            noSearchPersonItem.phoneNumber!.maybeHandleOverflow(
+                                                                              maxChars: 10,
+                                                                              replacement: '…',
                                                                             ),
-                                                                      ),
+                                                                            style: FlutterFlowTheme.of(context).bodyText2.override(
+                                                                                  fontFamily: 'Outfit',
+                                                                                  color: FlutterFlowTheme.of(context).tertiaryColor,
+                                                                                  fontSize: 14,
+                                                                                  fontWeight: FontWeight.normal,
+                                                                                ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    Column(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .start,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        Row(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.max,
+                                                                          children: [
+                                                                            AutoSizeText(
+                                                                              'عدد التقييمات ',
+                                                                              style: FlutterFlowTheme.of(context).title3.override(
+                                                                                    fontFamily: 'Outfit',
+                                                                                    color: FlutterFlowTheme.of(context).primaryText,
+                                                                                    fontSize: 14,
+                                                                                    fontWeight: FontWeight.w500,
+                                                                                  ),
+                                                                            ),
+                                                                            Padding(
+                                                                              padding: EdgeInsetsDirectional.fromSTEB(3, 0, 5, 0),
+                                                                              child: AutoSizeText(
+                                                                                valueOrDefault<String>(
+                                                                                  formatNumber(
+                                                                                    noSearchPersonItem.userRate!.toList().length,
+                                                                                    formatType: FormatType.compact,
+                                                                                  ),
+                                                                                  '0',
+                                                                                ).maybeHandleOverflow(
+                                                                                  maxChars: 30,
+                                                                                  replacement: '…',
+                                                                                ),
+                                                                                style: FlutterFlowTheme.of(context).title3.override(
+                                                                                      fontFamily: 'Outfit',
+                                                                                      color: FlutterFlowTheme.of(context).primaryText,
+                                                                                      fontSize: 14,
+                                                                                      fontWeight: FontWeight.w500,
+                                                                                    ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ],
                                                                     ),
                                                                   ],
                                                                 ),
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0,
-                                                                          4,
-                                                                          0,
-                                                                          0),
-                                                                  child:
-                                                                      AutoSizeText(
-                                                                    noSearchPersonItem
-                                                                        .phoneNumber!
-                                                                        .maybeHandleOverflow(
-                                                                      maxChars:
-                                                                          10,
-                                                                      replacement:
-                                                                          '…',
-                                                                    ),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyText2
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Outfit',
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).tertiaryColor,
-                                                                          fontSize:
-                                                                              14,
-                                                                          fontWeight:
-                                                                              FontWeight.normal,
-                                                                        ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  children: [
-                                                                    AutoSizeText(
-                                                                      'عدد التقييمات ',
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .title3
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Outfit',
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).primaryText,
-                                                                            fontSize:
-                                                                                14,
-                                                                            fontWeight:
-                                                                                FontWeight.w500,
-                                                                          ),
-                                                                    ),
-                                                                    Padding(
-                                                                      padding: EdgeInsetsDirectional
-                                                                          .fromSTEB(
-                                                                              3,
-                                                                              0,
-                                                                              5,
-                                                                              0),
-                                                                      child:
-                                                                          AutoSizeText(
-                                                                        valueOrDefault<
-                                                                            String>(
-                                                                          formatNumber(
-                                                                            noSearchPersonItem.userRate!.toList().length,
-                                                                            formatType:
-                                                                                FormatType.compact,
-                                                                          ),
-                                                                          '0',
-                                                                        ).maybeHandleOverflow(
-                                                                          maxChars:
-                                                                              30,
-                                                                          replacement:
-                                                                              '…',
-                                                                        ),
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .title3
-                                                                            .override(
-                                                                              fontFamily: 'Outfit',
-                                                                              color: FlutterFlowTheme.of(context).primaryText,
-                                                                              fontSize: 14,
-                                                                              fontWeight: FontWeight.w500,
-                                                                            ),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      );
-                                                    },
+                                                              ),
+                                                            );
+                                                          },
+                                                        );
+                                                      }),
+                                                    ),
                                                   ),
                                                 );
                                               },
@@ -628,251 +632,255 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                                     setState(() => FFAppState()
                                                         .searchActive = false);
                                                   },
-                                                  child: ListView.builder(
-                                                    padding: EdgeInsets.zero,
-                                                    shrinkWrap: true,
-                                                    scrollDirection:
-                                                        Axis.vertical,
-                                                    itemCount:
-                                                        resultSearchPerson
-                                                            .length,
-                                                    itemBuilder: (context,
-                                                        resultSearchPersonIndex) {
-                                                      final resultSearchPersonItem =
-                                                          resultSearchPerson[
-                                                              resultSearchPersonIndex];
-                                                      return Container(
-                                                        width: double.infinity,
-                                                        height: 90,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryBackground,
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                              blurRadius: 3,
-                                                              color: Color(
-                                                                  0x32000000),
-                                                              offset:
-                                                                  Offset(0, 1),
-                                                            )
-                                                          ],
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
-                                                        ),
-                                                        child: Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            ClipRRect(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .only(
-                                                                bottomLeft: Radius
-                                                                    .circular(
-                                                                        8),
-                                                                bottomRight:
-                                                                    Radius
-                                                                        .circular(
-                                                                            0),
-                                                                topLeft: Radius
-                                                                    .circular(
-                                                                        8),
-                                                                topRight: Radius
-                                                                    .circular(
-                                                                        0),
-                                                              ),
-                                                              child:
-                                                                  Image.asset(
-                                                                'assets/images/Photo_1667408356874.png',
-                                                                width: 90,
-                                                                height: 90,
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                              ),
-                                                            ),
-                                                            Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                AutoSizeText(
+                                                  child: SingleChildScrollView(
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      children: List.generate(
+                                                          resultSearchPerson
+                                                              .length,
+                                                          (resultSearchPersonIndex) {
+                                                        final resultSearchPersonItem =
+                                                            resultSearchPerson[
+                                                                resultSearchPersonIndex];
+                                                        return StreamBuilder<
+                                                            UsersRecord>(
+                                                          stream: UsersRecord
+                                                              .getDocument(
                                                                   resultSearchPersonItem
-                                                                      .displayName!
-                                                                      .maybeHandleOverflow(
-                                                                    maxChars:
-                                                                        20,
-                                                                    replacement:
-                                                                        '…',
+                                                                      .reference),
+                                                          builder: (context,
+                                                              snapshot) {
+                                                            // Customize what your widget looks like when it's loading.
+                                                            if (!snapshot
+                                                                .hasData) {
+                                                              return Center(
+                                                                child: SizedBox(
+                                                                  width: 50,
+                                                                  height: 50,
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primaryColor,
                                                                   ),
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .title3
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Outfit',
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .primaryText,
-                                                                        fontSize:
-                                                                            14,
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                      ),
                                                                 ),
-                                                                Row(
+                                                              );
+                                                            }
+                                                            final containerUsersRecord =
+                                                                snapshot.data!;
+                                                            return InkWell(
+                                                              onTap: () async {
+                                                                context
+                                                                    .pushNamed(
+                                                                  'UserProfilePage',
+                                                                  queryParams: {
+                                                                    'userInfo':
+                                                                        serializeParam(
+                                                                      containerUsersRecord
+                                                                          .reference,
+                                                                      ParamType
+                                                                          .DocumentReference,
+                                                                    ),
+                                                                  }.withoutNulls,
+                                                                );
+                                                              },
+                                                              child: Container(
+                                                                width: double
+                                                                    .infinity,
+                                                                height: 90,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryBackground,
+                                                                  boxShadow: [
+                                                                    BoxShadow(
+                                                                      blurRadius:
+                                                                          3,
+                                                                      color: Color(
+                                                                          0x32000000),
+                                                                      offset:
+                                                                          Offset(
+                                                                              0,
+                                                                              1),
+                                                                    )
+                                                                  ],
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              8),
+                                                                ),
+                                                                child: Row(
                                                                   mainAxisSize:
                                                                       MainAxisSize
                                                                           .max,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
                                                                   children: [
                                                                     Padding(
                                                                       padding: EdgeInsetsDirectional
                                                                           .fromSTEB(
+                                                                              10,
+                                                                              0,
+                                                                              0,
+                                                                              0),
+                                                                      child:
+                                                                          ClipRRect(
+                                                                        borderRadius:
+                                                                            BorderRadius.only(
+                                                                          bottomLeft:
+                                                                              Radius.circular(8),
+                                                                          bottomRight:
+                                                                              Radius.circular(0),
+                                                                          topLeft:
+                                                                              Radius.circular(8),
+                                                                          topRight:
+                                                                              Radius.circular(0),
+                                                                        ),
+                                                                        child: Image
+                                                                            .asset(
+                                                                          'assets/images/Photo_1667408356874.png',
+                                                                          width:
+                                                                              60,
+                                                                          height:
+                                                                              60,
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    Column(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .center,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        AutoSizeText(
+                                                                          resultSearchPersonItem
+                                                                              .displayName!
+                                                                              .maybeHandleOverflow(
+                                                                            maxChars:
+                                                                                20,
+                                                                            replacement:
+                                                                                '…',
+                                                                          ),
+                                                                          style: FlutterFlowTheme.of(context)
+                                                                              .title3
+                                                                              .override(
+                                                                                fontFamily: 'Outfit',
+                                                                                color: FlutterFlowTheme.of(context).primaryText,
+                                                                                fontSize: 14,
+                                                                                fontWeight: FontWeight.w500,
+                                                                              ),
+                                                                        ),
+                                                                        Row(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.max,
+                                                                          children: [
+                                                                            Padding(
+                                                                              padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                                              child: AutoSizeText(
+                                                                                resultSearchPersonItem.userWork!.maybeHandleOverflow(
+                                                                                  maxChars: 15,
+                                                                                  replacement: '…',
+                                                                                ),
+                                                                                maxLines: 1,
+                                                                                style: FlutterFlowTheme.of(context).bodyText2.override(
+                                                                                      fontFamily: 'Outfit',
+                                                                                      color: Color(0xFF7C8791),
+                                                                                      fontSize: 14,
+                                                                                      fontWeight: FontWeight.normal,
+                                                                                    ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                        Padding(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
                                                                               0,
                                                                               4,
                                                                               0,
                                                                               0),
-                                                                      child:
-                                                                          AutoSizeText(
-                                                                        resultSearchPersonItem
-                                                                            .userWork!
-                                                                            .maybeHandleOverflow(
-                                                                          maxChars:
-                                                                              15,
-                                                                          replacement:
-                                                                              '…',
-                                                                        ),
-                                                                        maxLines:
-                                                                            1,
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .bodyText2
-                                                                            .override(
-                                                                              fontFamily: 'Outfit',
-                                                                              color: Color(0xFF7C8791),
-                                                                              fontSize: 14,
-                                                                              fontWeight: FontWeight.normal,
+                                                                          child:
+                                                                              AutoSizeText(
+                                                                            resultSearchPersonItem.phoneNumber!.maybeHandleOverflow(
+                                                                              maxChars: 10,
+                                                                              replacement: '…',
                                                                             ),
-                                                                      ),
+                                                                            style: FlutterFlowTheme.of(context).bodyText2.override(
+                                                                                  fontFamily: 'Outfit',
+                                                                                  color: FlutterFlowTheme.of(context).tertiaryColor,
+                                                                                  fontSize: 14,
+                                                                                  fontWeight: FontWeight.normal,
+                                                                                ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    Column(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .start,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        Row(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.max,
+                                                                          children: [
+                                                                            AutoSizeText(
+                                                                              'عدد التقييمات ',
+                                                                              style: FlutterFlowTheme.of(context).title3.override(
+                                                                                    fontFamily: 'Outfit',
+                                                                                    color: FlutterFlowTheme.of(context).primaryText,
+                                                                                    fontSize: 14,
+                                                                                    fontWeight: FontWeight.w500,
+                                                                                  ),
+                                                                            ),
+                                                                            Padding(
+                                                                              padding: EdgeInsetsDirectional.fromSTEB(3, 0, 5, 0),
+                                                                              child: AutoSizeText(
+                                                                                valueOrDefault<String>(
+                                                                                  formatNumber(
+                                                                                    resultSearchPersonItem.userRate!.toList().length,
+                                                                                    formatType: FormatType.compact,
+                                                                                  ),
+                                                                                  '0',
+                                                                                ).maybeHandleOverflow(
+                                                                                  maxChars: 30,
+                                                                                  replacement: '…',
+                                                                                ),
+                                                                                style: FlutterFlowTheme.of(context).title3.override(
+                                                                                      fontFamily: 'Outfit',
+                                                                                      color: FlutterFlowTheme.of(context).primaryText,
+                                                                                      fontSize: 14,
+                                                                                      fontWeight: FontWeight.w500,
+                                                                                    ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ],
                                                                     ),
                                                                   ],
                                                                 ),
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0,
-                                                                          4,
-                                                                          0,
-                                                                          0),
-                                                                  child:
-                                                                      AutoSizeText(
-                                                                    resultSearchPersonItem
-                                                                        .phoneNumber!
-                                                                        .maybeHandleOverflow(
-                                                                      maxChars:
-                                                                          10,
-                                                                      replacement:
-                                                                          '…',
-                                                                    ),
-                                                                    style: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyText2
-                                                                        .override(
-                                                                          fontFamily:
-                                                                              'Outfit',
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).tertiaryColor,
-                                                                          fontSize:
-                                                                              14,
-                                                                          fontWeight:
-                                                                              FontWeight.normal,
-                                                                        ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  children: [
-                                                                    AutoSizeText(
-                                                                      'عدد التقييمات ',
-                                                                      style: FlutterFlowTheme.of(
-                                                                              context)
-                                                                          .title3
-                                                                          .override(
-                                                                            fontFamily:
-                                                                                'Outfit',
-                                                                            color:
-                                                                                FlutterFlowTheme.of(context).primaryText,
-                                                                            fontSize:
-                                                                                14,
-                                                                            fontWeight:
-                                                                                FontWeight.w500,
-                                                                          ),
-                                                                    ),
-                                                                    Padding(
-                                                                      padding: EdgeInsetsDirectional
-                                                                          .fromSTEB(
-                                                                              3,
-                                                                              0,
-                                                                              5,
-                                                                              0),
-                                                                      child:
-                                                                          AutoSizeText(
-                                                                        valueOrDefault<
-                                                                            String>(
-                                                                          formatNumber(
-                                                                            resultSearchPersonItem.userRate!.toList().length,
-                                                                            formatType:
-                                                                                FormatType.compact,
-                                                                          ),
-                                                                          '0',
-                                                                        ).maybeHandleOverflow(
-                                                                          maxChars:
-                                                                              30,
-                                                                          replacement:
-                                                                              '…',
-                                                                        ),
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .title3
-                                                                            .override(
-                                                                              fontFamily: 'Outfit',
-                                                                              color: FlutterFlowTheme.of(context).primaryText,
-                                                                              fontSize: 14,
-                                                                              fontWeight: FontWeight.w500,
-                                                                            ),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      );
-                                                    },
+                                                              ),
+                                                            );
+                                                          },
+                                                        );
+                                                      }),
+                                                    ),
                                                   ),
                                                 );
                                               },

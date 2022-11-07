@@ -121,8 +121,8 @@ class _NavBarPageState extends State<NavBarPage> {
     final tabs = {
       'HomePage': HomePageWidget(),
       'AddPost': AddPostWidget(),
-      'SearchPage': SearchPageWidget(),
       'MyProfilePage': MyProfilePageWidget(),
+      'SearchPage': SearchPageWidget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
     return Scaffold(
@@ -158,14 +158,14 @@ class _NavBarPageState extends State<NavBarPage> {
             iconSize: 24,
           ),
           GButton(
-            icon: Icons.search_rounded,
+            icon: currentIndex == 2
+                ? Icons.person_rounded
+                : Icons.person_outline_rounded,
             text: '',
             iconSize: 24,
           ),
           GButton(
-            icon: currentIndex == 3
-                ? Icons.person_rounded
-                : Icons.person_outline_rounded,
+            icon: Icons.search_rounded,
             text: '',
             iconSize: 24,
           )

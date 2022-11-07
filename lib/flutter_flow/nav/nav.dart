@@ -112,13 +112,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => ServiceProvideWidget(),
             ),
             FFRoute(
-              name: 'SearchPage',
-              path: 'searchPage',
-              builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'SearchPage')
-                  : SearchPageWidget(),
-            ),
-            FFRoute(
               name: 'MyProfilePage',
               path: 'myProfilePage',
               builder: (context, params) => params.isEmpty
@@ -127,6 +120,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                       userRefRecieve: params.getParam('userRefRecieve',
                           ParamType.DocumentReference, false, 'users'),
                     ),
+            ),
+            FFRoute(
+              name: 'SearchPage',
+              path: 'searchPage',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'SearchPage')
+                  : SearchPageWidget(),
             ),
             FFRoute(
               name: 'EditProfile',

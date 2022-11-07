@@ -51,6 +51,17 @@ class FFAppState {
     _recentSearches.remove(_value);
     prefs.setStringList('ff_recentSearches', _recentSearches);
   }
+
+  List<String> jobsTypes = [
+    'نجار',
+    'حداد',
+    'بليط',
+    'دهين',
+    'قصير',
+    'مقاول',
+    'كهربجي',
+    'مواسيرجي'
+  ];
 }
 
 LatLng? _latLngFromString(String? val) {

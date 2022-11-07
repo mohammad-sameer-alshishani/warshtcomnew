@@ -3,8 +3,8 @@ export 'home_page/home_page_widget.dart' show HomePageWidget;
 export 'add_post/add_post_widget.dart' show AddPostWidget;
 export 'service_request/service_request_widget.dart' show ServiceRequestWidget;
 export 'service_provide/service_provide_widget.dart' show ServiceProvideWidget;
-export 'search_page/search_page_widget.dart' show SearchPageWidget;
 export 'my_profile_page/my_profile_page_widget.dart' show MyProfilePageWidget;
+export 'search_page/search_page_widget.dart' show SearchPageWidget;
 export 'edit_profile/edit_profile_widget.dart' show EditProfileWidget;
 export 'create_user_page/create_user_page_widget.dart'
     show CreateUserPageWidget;

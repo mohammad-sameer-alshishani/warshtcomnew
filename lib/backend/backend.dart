@@ -7,6 +7,8 @@ import '../flutter_flow/flutter_flow_util.dart';
 import 'schema/users_record.dart';
 import 'schema/posts_record.dart';
 import 'schema/reveiws_record.dart';
+import 'schema/request_post_record.dart';
+import 'schema/jobs_types_record.dart';
 import 'schema/serializers.dart';
 
 export 'dart:async' show StreamSubscription;
@@ -17,6 +19,8 @@ export 'schema/serializers.dart';
 export 'schema/users_record.dart';
 export 'schema/posts_record.dart';
 export 'schema/reveiws_record.dart';
+export 'schema/request_post_record.dart';
+export 'schema/jobs_types_record.dart';
 
 /// Functions to query UsersRecords (as a Stream and as a Future).
 Stream<List<UsersRecord>> queryUsersRecord({
@@ -138,6 +142,90 @@ Future<FFFirestorePage<ReveiwsRecord>> queryReveiwsRecordPage({
     queryCollectionPage(
       ReveiwsRecord.collection,
       ReveiwsRecord.serializer,
+      queryBuilder: queryBuilder,
+      nextPageMarker: nextPageMarker,
+      pageSize: pageSize,
+      isStream: isStream,
+    );
+
+/// Functions to query RequestPostRecords (as a Stream and as a Future).
+Stream<List<RequestPostRecord>> queryRequestPostRecord({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollection(
+      RequestPostRecord.collection,
+      RequestPostRecord.serializer,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<List<RequestPostRecord>> queryRequestPostRecordOnce({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollectionOnce(
+      RequestPostRecord.collection,
+      RequestPostRecord.serializer,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<FFFirestorePage<RequestPostRecord>> queryRequestPostRecordPage({
+  Query Function(Query)? queryBuilder,
+  DocumentSnapshot? nextPageMarker,
+  required int pageSize,
+  required bool isStream,
+}) =>
+    queryCollectionPage(
+      RequestPostRecord.collection,
+      RequestPostRecord.serializer,
+      queryBuilder: queryBuilder,
+      nextPageMarker: nextPageMarker,
+      pageSize: pageSize,
+      isStream: isStream,
+    );
+
+/// Functions to query JobsTypesRecords (as a Stream and as a Future).
+Stream<List<JobsTypesRecord>> queryJobsTypesRecord({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollection(
+      JobsTypesRecord.collection,
+      JobsTypesRecord.serializer,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<List<JobsTypesRecord>> queryJobsTypesRecordOnce({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollectionOnce(
+      JobsTypesRecord.collection,
+      JobsTypesRecord.serializer,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<FFFirestorePage<JobsTypesRecord>> queryJobsTypesRecordPage({
+  Query Function(Query)? queryBuilder,
+  DocumentSnapshot? nextPageMarker,
+  required int pageSize,
+  required bool isStream,
+}) =>
+    queryCollectionPage(
+      JobsTypesRecord.collection,
+      JobsTypesRecord.serializer,
       queryBuilder: queryBuilder,
       nextPageMarker: nextPageMarker,
       pageSize: pageSize,

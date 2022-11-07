@@ -315,20 +315,37 @@ class _AllReviewPageWidgetState extends State<AllReviewPageWidget> {
                             color: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
                           ),
-                          child: Builder(
-                            builder: (context) {
-                              final allReviewsAboutUser =
-                                  widget.userReviewRef?.toList() ?? [];
+                          child: StreamBuilder<List<ReveiwsRecord>>(
+                            stream: queryReveiwsRecord(
+                              queryBuilder: (reveiwsRecord) => reveiwsRecord
+                                  .where('reviewed_person',
+                                      isEqualTo: widget.userInformation)
+                                  .orderBy('created_at'),
+                            ),
+                            builder: (context, snapshot) {
+                              // Customize what your widget looks like when it's loading.
+                              if (!snapshot.hasData) {
+                                return Center(
+                                  child: SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: CircularProgressIndicator(
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryColor,
+                                    ),
+                                  ),
+                                );
+                              }
+                              List<ReveiwsRecord> listViewReveiwsRecordList =
+                                  snapshot.data!;
                               return ListView.builder(
                                 padding: EdgeInsets.zero,
                                 shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
-                                itemCount: allReviewsAboutUser.length,
-                                itemBuilder:
-                                    (context, allReviewsAboutUserIndex) {
-                                  final allReviewsAboutUserItem =
-                                      allReviewsAboutUser[
-                                          allReviewsAboutUserIndex];
+                                itemCount: listViewReveiwsRecordList.length,
+                                itemBuilder: (context, listViewIndex) {
+                                  final listViewReveiwsRecord =
+                                      listViewReveiwsRecordList[listViewIndex];
                                   return Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         16, 12, 16, 0),

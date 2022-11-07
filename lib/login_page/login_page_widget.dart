@@ -304,6 +304,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                               fontSize: 15,
                                               fontWeight: FontWeight.w500,
                                             ),
+                                        elevation: 0,
                                         borderSide: BorderSide(
                                           color: FlutterFlowTheme.of(context)
                                               .primaryColor,
@@ -313,31 +314,19 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                       ),
                                     ),
                                   ),
-                                  FFButtonWidget(
-                                    onPressed: () {
-                                      print('Button pressed ...');
-                                    },
-                                    text: 'نسيت كلمة المرور؟',
-                                    options: FFButtonOptions(
-                                      width: 160,
-                                      height: 40,
-                                      color: Color(0x00212121),
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .subtitle2
-                                          .override(
-                                            fontFamily: 'Noto Kufi Arabic',
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondaryText,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                      borderSide: BorderSide(
-                                        color: Colors.transparent,
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(27),
-                                    ),
-                                  ),
+                                  SelectionArea(
+                                      child: Text(
+                                    'نسيت كلمة المرور؟',
+                                    textAlign: TextAlign.center,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Noto Kufi Arabic',
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryText,
+                                          fontSize: 16,
+                                        ),
+                                  )),
                                   Row(
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -989,6 +978,18 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                                   10, 10, 10, 10),
                                           child: InkWell(
                                             onTap: () async {
+                                              context.pushNamedAuth(
+                                                'CreateUserPage',
+                                                mounted,
+                                                queryParams: {
+                                                  'createUserRef':
+                                                      serializeParam(
+                                                    currentUserReference,
+                                                    ParamType.DocumentReference,
+                                                  ),
+                                                }.withoutNulls,
+                                              );
+
                                               GoRouter.of(context)
                                                   .prepareAuthEvent();
                                               final user =
@@ -997,9 +998,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                               if (user == null) {
                                                 return;
                                               }
-
-                                              context.goNamedAuth(
-                                                  'HomePage', mounted);
                                             },
                                             child: Container(
                                               width: 50,

@@ -34,9 +34,22 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
   bool isMediaUploading = false;
   String uploadedFileUrl = '';
 
+  ScrollController? listViewk;
+  ScrollController? columnController1;
+  ScrollController? columnController2;
+  ScrollController? columnController3;
   double? ratingBarValue;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool? switchValue;
+
+  @override
+  void initState() {
+    super.initState();
+    columnController1 = ScrollController();
+    columnController2 = ScrollController();
+    columnController3 = ScrollController();
+    listViewk = ScrollController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +72,22 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
         return Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+          floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              await listViewk?.animateTo(
+                0,
+                duration: Duration(milliseconds: 500),
+                curve: Curves.ease,
+              );
+            },
+            backgroundColor: Color(0x47FFFFFF),
+            elevation: 8,
+            child: Icon(
+              Icons.upgrade_rounded,
+              color: FlutterFlowTheme.of(context).primaryColor,
+              size: 40,
+            ),
+          ),
           drawer: Container(
             width: MediaQuery.of(context).size.width * 0.7,
             child: Drawer(
@@ -842,208 +871,512 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                               child: TabBarView(
                                 children: [
                                   KeepAliveWidgetWrapper(
-                                    builder: (context) => AuthUserStreamWidget(
-                                      child: Builder(
-                                        builder: (context) {
-                                          final myPosts = (currentUserDocument
-                                                      ?.allPosts
-                                                      ?.toList() ??
-                                                  [])
-                                              .toList();
-                                          return SingleChildScrollView(
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children:
-                                                  List.generate(myPosts.length,
-                                                      (myPostsIndex) {
-                                                final myPostsItem =
-                                                    myPosts[myPostsIndex];
-                                                return Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(5, 0, 5, 15),
-                                                  child: StreamBuilder<
-                                                      PostsRecord>(
-                                                    stream:
-                                                        PostsRecord.getDocument(
-                                                            myPostsItem),
-                                                    builder:
-                                                        (context, snapshot) {
-                                                      // Customize what your widget looks like when it's loading.
-                                                      if (!snapshot.hasData) {
-                                                        return Center(
-                                                          child: SizedBox(
-                                                            width: 50,
-                                                            height: 50,
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .primaryColor,
-                                                            ),
-                                                          ),
-                                                        );
-                                                      }
-                                                      final socialPostPostsRecord =
-                                                          snapshot.data!;
-                                                      return Container(
-                                                        width: double.infinity,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(0),
-                                                          shape: BoxShape
-                                                              .rectangle,
+                                    builder: (context) =>
+                                        StreamBuilder<List<PostsRecord>>(
+                                      stream: queryPostsRecord(
+                                        queryBuilder: (postsRecord) =>
+                                            postsRecord
+                                                .where('post_user',
+                                                    isEqualTo:
+                                                        myProfilePageUsersRecord
+                                                            .reference)
+                                                .orderBy('time_posted',
+                                                    descending: true),
+                                      ),
+                                      builder: (context, snapshot) {
+                                        // Customize what your widget looks like when it's loading.
+                                        if (!snapshot.hasData) {
+                                          return Center(
+                                            child: SizedBox(
+                                              width: 50,
+                                              height: 50,
+                                              child: CircularProgressIndicator(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryColor,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        List<PostsRecord>
+                                            columnPostsRecordList =
+                                            snapshot.data!;
+                                        return Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: List.generate(
+                                              columnPostsRecordList.length,
+                                              (columnIndex) {
+                                            final columnPostsRecord =
+                                                columnPostsRecordList[
+                                                    columnIndex];
+                                            return Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(5, 0, 5, 15),
+                                              child: StreamBuilder<
+                                                  List<PostsRecord>>(
+                                                stream: queryPostsRecord(),
+                                                builder: (context, snapshot) {
+                                                  // Customize what your widget looks like when it's loading.
+                                                  if (!snapshot.hasData) {
+                                                    return Center(
+                                                      child: SizedBox(
+                                                        width: 50,
+                                                        height: 50,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryColor,
                                                         ),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(4,
-                                                                      4, 4, 4),
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            8,
-                                                                            8,
-                                                                            10,
-                                                                            4),
-                                                                child: Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    Expanded(
-                                                                      child:
-                                                                          InkWell(
-                                                                        onTap:
-                                                                            () async {
-                                                                          context
-                                                                              .pushNamed(
-                                                                            'UserProfilePage',
-                                                                            extra: <String,
-                                                                                dynamic>{
-                                                                              kTransitionInfoKey: TransitionInfo(
-                                                                                hasTransition: true,
-                                                                                transitionType: PageTransitionType.fade,
-                                                                                duration: Duration(milliseconds: 300),
-                                                                              ),
-                                                                            },
-                                                                          );
+                                                      ),
+                                                    );
+                                                  }
+                                                  List<PostsRecord>
+                                                      socialPostPostsRecordList =
+                                                      snapshot.data!;
+                                                  return Container(
+                                                    width: double.infinity,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              0),
+                                                      shape: BoxShape.rectangle,
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  4, 4, 4, 4),
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        8,
+                                                                        8,
+                                                                        10,
+                                                                        4),
+                                                            child: Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Expanded(
+                                                                  child:
+                                                                      InkWell(
+                                                                    onTap:
+                                                                        () async {
+                                                                      context
+                                                                          .pushNamed(
+                                                                        'UserProfilePage',
+                                                                        extra: <
+                                                                            String,
+                                                                            dynamic>{
+                                                                          kTransitionInfoKey:
+                                                                              TransitionInfo(
+                                                                            hasTransition:
+                                                                                true,
+                                                                            transitionType:
+                                                                                PageTransitionType.fade,
+                                                                            duration:
+                                                                                Duration(milliseconds: 300),
+                                                                          ),
                                                                         },
-                                                                        child:
-                                                                            Row(
-                                                                          mainAxisSize:
-                                                                              MainAxisSize.max,
-                                                                          children: [
-                                                                            Container(
-                                                                              width: 50,
-                                                                              height: 50,
-                                                                              clipBehavior: Clip.antiAlias,
-                                                                              decoration: BoxDecoration(
-                                                                                shape: BoxShape.circle,
-                                                                              ),
-                                                                              child: Image.asset(
-                                                                                'assets/images/Photo_1667408356874.png',
-                                                                                fit: BoxFit.cover,
-                                                                              ),
-                                                                            ),
-                                                                            Expanded(
-                                                                              child: Padding(
-                                                                                padding: EdgeInsetsDirectional.fromSTEB(12, 4, 0, 4),
-                                                                                child: Column(
+                                                                      );
+                                                                    },
+                                                                    child: Row(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      children: [
+                                                                        Container(
+                                                                          width:
+                                                                              50,
+                                                                          height:
+                                                                              50,
+                                                                          clipBehavior:
+                                                                              Clip.antiAlias,
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            shape:
+                                                                                BoxShape.circle,
+                                                                          ),
+                                                                          child:
+                                                                              Image.asset(
+                                                                            'assets/images/Photo_1667408356874.png',
+                                                                            fit:
+                                                                                BoxFit.cover,
+                                                                          ),
+                                                                        ),
+                                                                        Expanded(
+                                                                          child:
+                                                                              Padding(
+                                                                            padding: EdgeInsetsDirectional.fromSTEB(
+                                                                                12,
+                                                                                4,
+                                                                                0,
+                                                                                4),
+                                                                            child:
+                                                                                Column(
+                                                                              mainAxisSize: MainAxisSize.max,
+                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                              children: [
+                                                                                Row(
                                                                                   mainAxisSize: MainAxisSize.max,
-                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                   children: [
+                                                                                    Expanded(
+                                                                                      child: AutoSizeText(
+                                                                                        myProfilePageUsersRecord.displayName!.maybeHandleOverflow(
+                                                                                          maxChars: 20,
+                                                                                          replacement: '…',
+                                                                                        ),
+                                                                                        maxLines: 1,
+                                                                                        style: FlutterFlowTheme.of(context).subtitle1.override(
+                                                                                              fontFamily: 'Noto Kufi Arabic',
+                                                                                              color: FlutterFlowTheme.of(context).tertiaryColor,
+                                                                                              fontSize: 18,
+                                                                                              fontWeight: FontWeight.w600,
+                                                                                            ),
+                                                                                      ),
+                                                                                    ),
                                                                                     Row(
                                                                                       mainAxisSize: MainAxisSize.max,
-                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                       children: [
-                                                                                        Expanded(
-                                                                                          child: AutoSizeText(
-                                                                                            myProfilePageUsersRecord.displayName!.maybeHandleOverflow(
-                                                                                              maxChars: 20,
-                                                                                              replacement: '…',
-                                                                                            ),
-                                                                                            maxLines: 1,
-                                                                                            style: FlutterFlowTheme.of(context).subtitle1.override(
+                                                                                        Padding(
+                                                                                          padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                                                                          child: Text(
+                                                                                            myProfilePageUsersRecord.userRate!.toList().length.toString(),
+                                                                                            style: FlutterFlowTheme.of(context).bodyText1.override(
                                                                                                   fontFamily: 'Noto Kufi Arabic',
-                                                                                                  color: FlutterFlowTheme.of(context).tertiaryColor,
-                                                                                                  fontSize: 18,
+                                                                                                  fontSize: 14,
                                                                                                   fontWeight: FontWeight.w600,
                                                                                                 ),
                                                                                           ),
                                                                                         ),
-                                                                                        Row(
-                                                                                          mainAxisSize: MainAxisSize.max,
-                                                                                          children: [
-                                                                                            Padding(
-                                                                                              padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                                                                                              child: Text(
-                                                                                                myProfilePageUsersRecord.userRate!.toList().length.toString(),
-                                                                                                style: FlutterFlowTheme.of(context).bodyText1.override(
-                                                                                                      fontFamily: 'Noto Kufi Arabic',
-                                                                                                      fontSize: 14,
-                                                                                                      fontWeight: FontWeight.w600,
-                                                                                                    ),
-                                                                                              ),
-                                                                                            ),
-                                                                                            Padding(
-                                                                                              padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 8),
-                                                                                              child: Icon(
-                                                                                                Icons.star_outline_rounded,
-                                                                                                color: FlutterFlowTheme.of(context).tertiaryColor,
-                                                                                                size: 24,
-                                                                                              ),
-                                                                                            ),
-                                                                                          ],
+                                                                                        Padding(
+                                                                                          padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 8),
+                                                                                          child: Icon(
+                                                                                            Icons.star_outline_rounded,
+                                                                                            color: FlutterFlowTheme.of(context).tertiaryColor,
+                                                                                            size: 24,
+                                                                                          ),
                                                                                         ),
                                                                                       ],
                                                                                     ),
+                                                                                  ],
+                                                                                ),
+                                                                                Padding(
+                                                                                  padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                                                  child: Row(
+                                                                                    mainAxisSize: MainAxisSize.max,
+                                                                                    children: [
+                                                                                      Text(
+                                                                                        columnPostsRecord.postType!,
+                                                                                        style: FlutterFlowTheme.of(context).bodyText2.override(
+                                                                                              fontFamily: 'Noto Kufi Arabic',
+                                                                                              color: FlutterFlowTheme.of(context).alternate,
+                                                                                              fontSize: 14,
+                                                                                              fontWeight: FontWeight.normal,
+                                                                                            ),
+                                                                                      ),
+                                                                                      Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
+                                                                                        child: Text(
+                                                                                          '•',
+                                                                                          style: FlutterFlowTheme.of(context).bodyText2.override(
+                                                                                                fontFamily: 'Noto Kufi Arabic',
+                                                                                                color: FlutterFlowTheme.of(context).tertiaryColor,
+                                                                                                fontSize: 14,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                      Padding(
+                                                                                        padding: EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
+                                                                                        child: Text(
+                                                                                          dateTimeFormat(
+                                                                                            'relative',
+                                                                                            columnPostsRecord.timePosted!,
+                                                                                            locale: FFLocalizations.of(context).languageCode,
+                                                                                          ),
+                                                                                          style: FlutterFlowTheme.of(context).bodyText2.override(
+                                                                                                fontFamily: 'Noto Kufi Arabic',
+                                                                                                color: FlutterFlowTheme.of(context).alternate,
+                                                                                                fontSize: 14,
+                                                                                                fontWeight: FontWeight.normal,
+                                                                                              ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        8,
+                                                                        0,
+                                                                        8,
+                                                                        8),
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0,
+                                                                          4,
+                                                                          4,
+                                                                          10),
+                                                                  child: Text(
+                                                                    columnPostsRecord
+                                                                        .postTitle!,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyText1
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Noto Kufi Arabic',
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).primaryText,
+                                                                          fontSize:
+                                                                              14,
+                                                                          fontWeight:
+                                                                              FontWeight.w600,
+                                                                        ),
+                                                                  ),
+                                                                ),
+                                                                Divider(),
+                                                                InkWell(
+                                                                  onTap:
+                                                                      () async {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  child: Row(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .max,
+                                                                    children: [
+                                                                      Expanded(
+                                                                        child:
+                                                                            Padding(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                                                              0,
+                                                                              0,
+                                                                              0,
+                                                                              10),
+                                                                          child:
+                                                                              Text(
+                                                                            columnPostsRecord.postDescription!,
+                                                                            style: FlutterFlowTheme.of(context).bodyText1.override(
+                                                                                  fontFamily: 'Noto Kufi Arabic',
+                                                                                  fontWeight: FontWeight.w500,
+                                                                                ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Row(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .max,
+                                                                  children: [
+                                                                    Expanded(
+                                                                      child:
+                                                                          Container(
+                                                                        width:
+                                                                            100,
+                                                                        height:
+                                                                            200,
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color:
+                                                                              FlutterFlowTheme.of(context).secondaryBackground,
+                                                                          shape:
+                                                                              BoxShape.rectangle,
+                                                                        ),
+                                                                        alignment: AlignmentDirectional(
+                                                                            0,
+                                                                            0),
+                                                                        child:
+                                                                            Align(
+                                                                          alignment: AlignmentDirectional(
+                                                                              0,
+                                                                              0),
+                                                                          child:
+                                                                              InkWell(
+                                                                            onTap:
+                                                                                () async {
+                                                                              await Navigator.push(
+                                                                                context,
+                                                                                PageTransition(
+                                                                                  type: PageTransitionType.fade,
+                                                                                  child: FlutterFlowExpandedImageView(
+                                                                                    image: Image.network(
+                                                                                      'https://cdn.dribbble.com/users/385565/screenshots/17900863/media/17980a73c523ba7d858f24d4e3b882d7.png?compress=1&resize=1200x900&vertical=top',
+                                                                                      fit: BoxFit.contain,
+                                                                                    ),
+                                                                                    allowRotation: true,
+                                                                                    tag: 'imageTag1',
+                                                                                    useHeroAnimation: true,
+                                                                                  ),
+                                                                                ),
+                                                                              );
+                                                                            },
+                                                                            child:
+                                                                                Hero(
+                                                                              tag: 'imageTag1',
+                                                                              transitionOnUserGestures: true,
+                                                                              child: ClipRRect(
+                                                                                borderRadius: BorderRadius.circular(12),
+                                                                                child: Image.network(
+                                                                                  'https://cdn.dribbble.com/users/385565/screenshots/17900863/media/17980a73c523ba7d858f24d4e3b882d7.png?compress=1&resize=1200x900&vertical=top',
+                                                                                  width: double.infinity,
+                                                                                  height: double.infinity,
+                                                                                  fit: BoxFit.cover,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                Padding(
+                                                                  padding: EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0,
+                                                                          8,
+                                                                          0,
+                                                                          0),
+                                                                  child:
+                                                                      Container(
+                                                                    width: double
+                                                                        .infinity,
+                                                                    height: 100,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              10),
+                                                                    ),
+                                                                    alignment:
+                                                                        AlignmentDirectional(
+                                                                            0,
+                                                                            0),
+                                                                    child:
+                                                                        Column(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .center,
+                                                                      children: [
+                                                                        Padding(
+                                                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                                                              4,
+                                                                              8,
+                                                                              4,
+                                                                              0),
+                                                                          child:
+                                                                              Column(
+                                                                            mainAxisSize:
+                                                                                MainAxisSize.max,
+                                                                            children: [
+                                                                              Padding(
+                                                                                padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
+                                                                                child: Row(
+                                                                                  mainAxisSize: MainAxisSize.max,
+                                                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                                                  children: [
+                                                                                    Icon(
+                                                                                      Icons.attach_money_rounded,
+                                                                                      color: FlutterFlowTheme.of(context).tertiaryColor,
+                                                                                      size: 24,
+                                                                                    ),
+                                                                                    Text(
+                                                                                      columnPostsRecord.price!.toString(),
+                                                                                      style: FlutterFlowTheme.of(context).bodyText1.override(
+                                                                                            fontFamily: 'Noto Kufi Arabic',
+                                                                                            color: FlutterFlowTheme.of(context).primaryColor,
+                                                                                            fontWeight: FontWeight.normal,
+                                                                                          ),
+                                                                                    ),
                                                                                     Padding(
-                                                                                      padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                                                      padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
+                                                                                      child: Text(
+                                                                                        '/',
+                                                                                        style: FlutterFlowTheme.of(context).bodyText1,
+                                                                                      ),
+                                                                                    ),
+                                                                                    Text(
+                                                                                      columnPostsRecord.priceType!,
+                                                                                      style: FlutterFlowTheme.of(context).bodyText1.override(
+                                                                                            fontFamily: 'Noto Kufi Arabic',
+                                                                                            fontWeight: FontWeight.w500,
+                                                                                          ),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                              Padding(
+                                                                                padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+                                                                                child: Row(
+                                                                                  mainAxisSize: MainAxisSize.max,
+                                                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                                                  children: [
+                                                                                    Padding(
+                                                                                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
                                                                                       child: Row(
                                                                                         mainAxisSize: MainAxisSize.max,
+                                                                                        mainAxisAlignment: MainAxisAlignment.center,
                                                                                         children: [
-                                                                                          Text(
-                                                                                            socialPostPostsRecord.postType!,
-                                                                                            style: FlutterFlowTheme.of(context).bodyText2.override(
-                                                                                                  fontFamily: 'Noto Kufi Arabic',
-                                                                                                  color: FlutterFlowTheme.of(context).alternate,
-                                                                                                  fontSize: 14,
-                                                                                                  fontWeight: FontWeight.normal,
-                                                                                                ),
-                                                                                          ),
                                                                                           Padding(
-                                                                                            padding: EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
-                                                                                            child: Text(
-                                                                                              '•',
-                                                                                              style: FlutterFlowTheme.of(context).bodyText2.override(
-                                                                                                    fontFamily: 'Noto Kufi Arabic',
-                                                                                                    color: FlutterFlowTheme.of(context).tertiaryColor,
-                                                                                                    fontSize: 14,
-                                                                                                    fontWeight: FontWeight.normal,
-                                                                                                  ),
+                                                                                            padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 8),
+                                                                                            child: Icon(
+                                                                                              Icons.mode_comment_outlined,
+                                                                                              color: FlutterFlowTheme.of(context).tertiaryColor,
+                                                                                              size: 24,
                                                                                             ),
                                                                                           ),
                                                                                           Padding(
-                                                                                            padding: EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
+                                                                                            padding: EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
                                                                                             child: Text(
-                                                                                              socialPostPostsRecord.timePosted!.toString(),
+                                                                                              columnPostsRecord.numComments!.toString(),
                                                                                               style: FlutterFlowTheme.of(context).bodyText2.override(
-                                                                                                    fontFamily: 'Noto Kufi Arabic',
-                                                                                                    color: FlutterFlowTheme.of(context).alternate,
+                                                                                                    fontFamily: 'Outfit',
+                                                                                                    color: FlutterFlowTheme.of(context).primaryColor,
                                                                                                     fontSize: 14,
                                                                                                     fontWeight: FontWeight.normal,
                                                                                                   ),
@@ -1052,316 +1385,69 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                                                         ],
                                                                                       ),
                                                                                     ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            8,
-                                                                            0,
-                                                                            8,
-                                                                            8),
-                                                                child: Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Padding(
-                                                                      padding: EdgeInsetsDirectional
-                                                                          .fromSTEB(
-                                                                              0,
-                                                                              4,
-                                                                              4,
-                                                                              10),
-                                                                      child:
-                                                                          Text(
-                                                                        socialPostPostsRecord
-                                                                            .postTitle!,
-                                                                        style: FlutterFlowTheme.of(context)
-                                                                            .bodyText1
-                                                                            .override(
-                                                                              fontFamily: 'Noto Kufi Arabic',
-                                                                              color: FlutterFlowTheme.of(context).primaryText,
-                                                                              fontSize: 14,
-                                                                              fontWeight: FontWeight.w600,
-                                                                            ),
-                                                                      ),
-                                                                    ),
-                                                                    Divider(),
-                                                                    InkWell(
-                                                                      onTap:
-                                                                          () async {
-                                                                        Navigator.pop(
-                                                                            context);
-                                                                      },
-                                                                      child:
-                                                                          Row(
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.max,
-                                                                        children: [
-                                                                          Expanded(
-                                                                            child:
-                                                                                Padding(
-                                                                              padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                                                                              child: Text(
-                                                                                socialPostPostsRecord.postDescription!,
-                                                                                style: FlutterFlowTheme.of(context).bodyText1.override(
-                                                                                      fontFamily: 'Noto Kufi Arabic',
-                                                                                      fontWeight: FontWeight.w500,
-                                                                                    ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                    Row(
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .max,
-                                                                      children: [
-                                                                        Expanded(
-                                                                          child:
-                                                                              Container(
-                                                                            width:
-                                                                                100,
-                                                                            height:
-                                                                                200,
-                                                                            decoration:
-                                                                                BoxDecoration(
-                                                                              color: FlutterFlowTheme.of(context).secondaryBackground,
-                                                                              shape: BoxShape.rectangle,
-                                                                            ),
-                                                                            alignment:
-                                                                                AlignmentDirectional(0, 0),
-                                                                            child:
-                                                                                Align(
-                                                                              alignment: AlignmentDirectional(0, 0),
-                                                                              child: InkWell(
-                                                                                onTap: () async {
-                                                                                  await Navigator.push(
-                                                                                    context,
-                                                                                    PageTransition(
-                                                                                      type: PageTransitionType.fade,
-                                                                                      child: FlutterFlowExpandedImageView(
-                                                                                        image: Image.network(
-                                                                                          'https://cdn.dribbble.com/users/385565/screenshots/17900863/media/17980a73c523ba7d858f24d4e3b882d7.png?compress=1&resize=1200x900&vertical=top',
-                                                                                          fit: BoxFit.contain,
-                                                                                        ),
-                                                                                        allowRotation: true,
-                                                                                        tag: 'imageTag1',
-                                                                                        useHeroAnimation: true,
-                                                                                      ),
-                                                                                    ),
-                                                                                  );
-                                                                                },
-                                                                                child: Hero(
-                                                                                  tag: 'imageTag1',
-                                                                                  transitionOnUserGestures: true,
-                                                                                  child: ClipRRect(
-                                                                                    borderRadius: BorderRadius.circular(12),
-                                                                                    child: Image.network(
-                                                                                      'https://cdn.dribbble.com/users/385565/screenshots/17900863/media/17980a73c523ba7d858f24d4e3b882d7.png?compress=1&resize=1200x900&vertical=top',
-                                                                                      width: double.infinity,
-                                                                                      height: double.infinity,
-                                                                                      fit: BoxFit.cover,
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                    Padding(
-                                                                      padding: EdgeInsetsDirectional
-                                                                          .fromSTEB(
-                                                                              0,
-                                                                              8,
-                                                                              0,
-                                                                              0),
-                                                                      child:
-                                                                          Container(
-                                                                        width: double
-                                                                            .infinity,
-                                                                        height:
-                                                                            100,
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(10),
-                                                                        ),
-                                                                        alignment: AlignmentDirectional(
-                                                                            0,
-                                                                            0),
-                                                                        child:
-                                                                            Column(
-                                                                          mainAxisSize:
-                                                                              MainAxisSize.max,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.center,
-                                                                          children: [
-                                                                            Padding(
-                                                                              padding: EdgeInsetsDirectional.fromSTEB(4, 8, 4, 0),
-                                                                              child: Column(
-                                                                                mainAxisSize: MainAxisSize.max,
-                                                                                children: [
-                                                                                  Padding(
-                                                                                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
-                                                                                    child: Row(
-                                                                                      mainAxisSize: MainAxisSize.max,
-                                                                                      mainAxisAlignment: MainAxisAlignment.start,
-                                                                                      children: [
-                                                                                        Icon(
-                                                                                          Icons.attach_money_rounded,
-                                                                                          color: FlutterFlowTheme.of(context).tertiaryColor,
-                                                                                          size: 24,
-                                                                                        ),
-                                                                                        Text(
-                                                                                          socialPostPostsRecord.price!.toString(),
-                                                                                          style: FlutterFlowTheme.of(context).bodyText1.override(
-                                                                                                fontFamily: 'Noto Kufi Arabic',
-                                                                                                color: FlutterFlowTheme.of(context).primaryColor,
-                                                                                                fontWeight: FontWeight.normal,
-                                                                                              ),
-                                                                                        ),
-                                                                                        Padding(
-                                                                                          padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
-                                                                                          child: Text(
-                                                                                            '/',
-                                                                                            style: FlutterFlowTheme.of(context).bodyText1,
-                                                                                          ),
-                                                                                        ),
-                                                                                        Text(
-                                                                                          socialPostPostsRecord.priceType!,
-                                                                                          style: FlutterFlowTheme.of(context).bodyText1.override(
-                                                                                                fontFamily: 'Noto Kufi Arabic',
-                                                                                                fontWeight: FontWeight.w500,
-                                                                                              ),
-                                                                                        ),
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                  Padding(
-                                                                                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                                                                                    child: Row(
-                                                                                      mainAxisSize: MainAxisSize.max,
-                                                                                      mainAxisAlignment: MainAxisAlignment.start,
-                                                                                      children: [
-                                                                                        Padding(
-                                                                                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                                                                                          child: Row(
+                                                                                    Padding(
+                                                                                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+                                                                                      child: Row(
+                                                                                        mainAxisSize: MainAxisSize.max,
+                                                                                        children: [
+                                                                                          Row(
                                                                                             mainAxisSize: MainAxisSize.max,
-                                                                                            mainAxisAlignment: MainAxisAlignment.center,
                                                                                             children: [
                                                                                               Padding(
                                                                                                 padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 8),
                                                                                                 child: Icon(
-                                                                                                  Icons.mode_comment_outlined,
+                                                                                                  Icons.favorite_border_rounded,
                                                                                                   color: FlutterFlowTheme.of(context).tertiaryColor,
                                                                                                   size: 24,
                                                                                                 ),
                                                                                               ),
-                                                                                              Padding(
-                                                                                                padding: EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
-                                                                                                child: Text(
-                                                                                                  valueOrDefault<String>(
-                                                                                                    formatNumber(
-                                                                                                      socialPostPostsRecord.numComments,
-                                                                                                      formatType: FormatType.compact,
-                                                                                                    ),
-                                                                                                    '0',
-                                                                                                  ),
-                                                                                                  style: FlutterFlowTheme.of(context).bodyText2.override(
-                                                                                                        fontFamily: 'Outfit',
-                                                                                                        color: FlutterFlowTheme.of(context).primaryColor,
-                                                                                                        fontSize: 14,
-                                                                                                        fontWeight: FontWeight.normal,
-                                                                                                      ),
-                                                                                                ),
-                                                                                              ),
                                                                                             ],
                                                                                           ),
-                                                                                        ),
-                                                                                        Padding(
-                                                                                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                                                                                          child: Row(
-                                                                                            mainAxisSize: MainAxisSize.max,
-                                                                                            children: [
-                                                                                              Row(
-                                                                                                mainAxisSize: MainAxisSize.max,
-                                                                                                children: [
-                                                                                                  Padding(
-                                                                                                    padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 8),
-                                                                                                    child: Icon(
-                                                                                                      Icons.favorite_border_rounded,
-                                                                                                      color: FlutterFlowTheme.of(context).tertiaryColor,
-                                                                                                      size: 24,
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                ],
+                                                                                          Text(
+                                                                                            valueOrDefault<String>(
+                                                                                              formatNumber(
+                                                                                                columnPostsRecord.likedBy!.toList().length,
+                                                                                                formatType: FormatType.compact,
                                                                                               ),
-                                                                                              Text(
-                                                                                                valueOrDefault<String>(
-                                                                                                  formatNumber(
-                                                                                                    socialPostPostsRecord.numLikes,
-                                                                                                    formatType: FormatType.compact,
-                                                                                                  ),
-                                                                                                  '0',
+                                                                                              '0',
+                                                                                            ),
+                                                                                            style: FlutterFlowTheme.of(context).bodyText1.override(
+                                                                                                  fontFamily: 'Noto Kufi Arabic',
+                                                                                                  fontWeight: FontWeight.w500,
                                                                                                 ),
-                                                                                                style: FlutterFlowTheme.of(context).bodyText1.override(
-                                                                                                      fontFamily: 'Noto Kufi Arabic',
-                                                                                                      fontWeight: FontWeight.w500,
-                                                                                                    ),
-                                                                                              ),
-                                                                                            ],
                                                                                           ),
-                                                                                        ),
-                                                                                      ],
+                                                                                        ],
+                                                                                      ),
                                                                                     ),
-                                                                                  ),
-                                                                                  Divider(
-                                                                                    thickness: 2,
-                                                                                    indent: 10,
-                                                                                    endIndent: 10,
-                                                                                    color: FlutterFlowTheme.of(context).alternate,
-                                                                                  ),
-                                                                                ],
+                                                                                  ],
+                                                                                ),
                                                                               ),
-                                                                            ),
-                                                                          ],
+                                                                              Divider(
+                                                                                thickness: 2,
+                                                                                indent: 10,
+                                                                                endIndent: 10,
+                                                                                color: FlutterFlowTheme.of(context).alternate,
+                                                                              ),
+                                                                            ],
+                                                                          ),
                                                                         ),
-                                                                      ),
+                                                                      ],
                                                                     ),
-                                                                  ],
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                            ],
+                                                              ],
+                                                            ),
                                                           ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                );
-                                              }),
-                                            ),
-                                          );
-                                        },
-                                      ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          }),
+                                        );
+                                      },
                                     ),
                                   ),
                                   KeepAliveWidgetWrapper(
@@ -1393,6 +1479,7 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                             columnPostsRecordList =
                                             snapshot.data!;
                                         return SingleChildScrollView(
+                                          controller: columnController1,
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
                                             children: List.generate(
@@ -1556,7 +1643,7 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                                                         children: [
                                                                                           Expanded(
                                                                                             child: AutoSizeText(
-                                                                                              rowUsersRecord.displayName!.maybeHandleOverflow(
+                                                                                              socialPostUsersRecord!.displayName!.maybeHandleOverflow(
                                                                                                 maxChars: 20,
                                                                                                 replacement: '…',
                                                                                               ),
@@ -1575,13 +1662,7 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                                                               Padding(
                                                                                                 padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                                                                                                 child: Text(
-                                                                                                  valueOrDefault<String>(
-                                                                                                    formatNumber(
-                                                                                                      rowUsersRecord.userRate!.toList().length,
-                                                                                                      formatType: FormatType.compact,
-                                                                                                    ),
-                                                                                                    '0',
-                                                                                                  ),
+                                                                                                  socialPostUsersRecord!.userRate!.toList().length.toString(),
                                                                                                   style: FlutterFlowTheme.of(context).bodyText1.override(
                                                                                                         fontFamily: 'Noto Kufi Arabic',
                                                                                                         fontSize: 14,
@@ -1632,7 +1713,11 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                                                         Padding(
                                                                                           padding: EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
                                                                                           child: Text(
-                                                                                            columnPostsRecord.timePosted!.toString(),
+                                                                                            dateTimeFormat(
+                                                                                              'relative',
+                                                                                              columnPostsRecord.timePosted!,
+                                                                                              locale: FFLocalizations.of(context).languageCode,
+                                                                                            ),
                                                                                             style: FlutterFlowTheme.of(context).bodyText2.override(
                                                                                                   fontFamily: 'Noto Kufi Arabic',
                                                                                                   color: FlutterFlowTheme.of(context).alternate,
@@ -1953,7 +2038,13 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                                                             Padding(
                                                                                               padding: EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
                                                                                               child: Text(
-                                                                                                columnPostsRecord.numLikes!.toString(),
+                                                                                                valueOrDefault<String>(
+                                                                                                  formatNumber(
+                                                                                                    columnPostsRecord.likedBy!.toList().length,
+                                                                                                    formatType: FormatType.compact,
+                                                                                                  ),
+                                                                                                  '0',
+                                                                                                ),
                                                                                                 style: FlutterFlowTheme.of(context).bodyText1.override(
                                                                                                       fontFamily: 'Noto Kufi Arabic',
                                                                                                       fontWeight: FontWeight.w500,
@@ -2027,6 +2118,7 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                             columnReveiwsRecordList =
                                             snapshot.data!;
                                         return SingleChildScrollView(
+                                          controller: columnController2,
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
                                             children: List.generate(
@@ -2087,6 +2179,8 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                                     4, 4, 4, 4),
                                                         child:
                                                             SingleChildScrollView(
+                                                          controller:
+                                                              columnController3,
                                                           child: Column(
                                                             mainAxisSize:
                                                                 MainAxisSize
@@ -2278,6 +2372,7 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                     ),
                   ),
                 ],
+                controller: listViewk,
               ),
             ),
           ),

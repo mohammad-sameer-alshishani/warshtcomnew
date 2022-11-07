@@ -4,6 +4,8 @@ import 'package:from_css_color/from_css_color.dart';
 import 'users_record.dart';
 import 'posts_record.dart';
 import 'reveiws_record.dart';
+import 'request_post_record.dart';
+import 'jobs_types_record.dart';
 
 import 'index.dart';
 
@@ -17,6 +19,9 @@ const kDocumentReferenceField = 'Document__Reference__Field';
   UsersRecord,
   PostsRecord,
   ReveiwsRecord,
+  RequestPostRecord,
+  JobsTypesRecord,
+  JopsTypesStruct,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..add(DocumentReferenceSerializer())

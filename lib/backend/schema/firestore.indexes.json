@@ -33,7 +33,7 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "rating",
+          "fieldPath": "reviewed_person",
           "order": "ASCENDING"
         },
         {
@@ -52,7 +52,7 @@
         },
         {
           "fieldPath": "created_at",
-          "order": "DESCENDING"
+          "order": "ASCENDING"
         }
       ]
     }
