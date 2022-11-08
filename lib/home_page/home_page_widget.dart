@@ -317,6 +317,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           queryBuilder: (postsRecord) =>
                                               postsRecord.orderBy('time_posted',
                                                   descending: true),
+                                          limit: 10,
                                         ),
                                         builder: (context, snapshot) {
                                           // Customize what your widget looks like when it's loading.

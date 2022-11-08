@@ -1366,73 +1366,76 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                                     ],
                                                                   ),
                                                                 ),
-                                                                Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  children: [
-                                                                    Expanded(
-                                                                      child:
-                                                                          Container(
-                                                                        width:
-                                                                            100,
-                                                                        height:
-                                                                            200,
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).secondaryBackground,
-                                                                          shape:
-                                                                              BoxShape.rectangle,
-                                                                        ),
-                                                                        alignment: AlignmentDirectional(
-                                                                            0,
-                                                                            0),
+                                                                if (columnPostsRecord
+                                                                            .postPhoto !=
+                                                                        null &&
+                                                                    columnPostsRecord
+                                                                            .postPhoto !=
+                                                                        '')
+                                                                  Row(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .max,
+                                                                    children: [
+                                                                      Expanded(
                                                                         child:
-                                                                            Align(
+                                                                            Container(
+                                                                          width:
+                                                                              100,
+                                                                          height:
+                                                                              200,
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).secondaryBackground,
+                                                                            shape:
+                                                                                BoxShape.rectangle,
+                                                                          ),
                                                                           alignment: AlignmentDirectional(
                                                                               0,
                                                                               0),
                                                                           child:
-                                                                              InkWell(
-                                                                            onTap:
-                                                                                () async {
-                                                                              await Navigator.push(
-                                                                                context,
-                                                                                PageTransition(
-                                                                                  type: PageTransitionType.fade,
-                                                                                  child: FlutterFlowExpandedImageView(
-                                                                                    image: Image.network(
-                                                                                      'https://cdn.dribbble.com/users/385565/screenshots/17900863/media/17980a73c523ba7d858f24d4e3b882d7.png?compress=1&resize=1200x900&vertical=top',
-                                                                                      fit: BoxFit.contain,
-                                                                                    ),
-                                                                                    allowRotation: true,
-                                                                                    tag: 'imageTag1',
-                                                                                    useHeroAnimation: true,
-                                                                                  ),
-                                                                                ),
-                                                                              );
-                                                                            },
+                                                                              Align(
+                                                                            alignment:
+                                                                                AlignmentDirectional(0, 0),
                                                                             child:
-                                                                                Hero(
-                                                                              tag: 'imageTag1',
-                                                                              transitionOnUserGestures: true,
-                                                                              child: ClipRRect(
-                                                                                borderRadius: BorderRadius.circular(12),
-                                                                                child: Image.network(
-                                                                                  'https://cdn.dribbble.com/users/385565/screenshots/17900863/media/17980a73c523ba7d858f24d4e3b882d7.png?compress=1&resize=1200x900&vertical=top',
-                                                                                  width: double.infinity,
-                                                                                  height: double.infinity,
-                                                                                  fit: BoxFit.cover,
+                                                                                InkWell(
+                                                                              onTap: () async {
+                                                                                await Navigator.push(
+                                                                                  context,
+                                                                                  PageTransition(
+                                                                                    type: PageTransitionType.fade,
+                                                                                    child: FlutterFlowExpandedImageView(
+                                                                                      image: Image.network(
+                                                                                        'https://cdn.dribbble.com/users/385565/screenshots/17900863/media/17980a73c523ba7d858f24d4e3b882d7.png?compress=1&resize=1200x900&vertical=top',
+                                                                                        fit: BoxFit.contain,
+                                                                                      ),
+                                                                                      allowRotation: true,
+                                                                                      tag: 'imageTag1',
+                                                                                      useHeroAnimation: true,
+                                                                                    ),
+                                                                                  ),
+                                                                                );
+                                                                              },
+                                                                              child: Hero(
+                                                                                tag: 'imageTag1',
+                                                                                transitionOnUserGestures: true,
+                                                                                child: ClipRRect(
+                                                                                  borderRadius: BorderRadius.circular(12),
+                                                                                  child: Image.network(
+                                                                                    'https://cdn.dribbble.com/users/385565/screenshots/17900863/media/17980a73c523ba7d858f24d4e3b882d7.png?compress=1&resize=1200x900&vertical=top',
+                                                                                    width: double.infinity,
+                                                                                    height: double.infinity,
+                                                                                    fit: BoxFit.cover,
+                                                                                  ),
                                                                                 ),
                                                                               ),
                                                                             ),
                                                                           ),
                                                                         ),
                                                                       ),
-                                                                    ),
-                                                                  ],
-                                                                ),
+                                                                    ],
+                                                                  ),
                                                                 Padding(
                                                                   padding: EdgeInsetsDirectional
                                                                       .fromSTEB(
@@ -1983,73 +1986,76 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                                     ],
                                                                   ),
                                                                 ),
-                                                                Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  children: [
-                                                                    Expanded(
-                                                                      child:
-                                                                          Container(
-                                                                        width:
-                                                                            100,
-                                                                        height:
-                                                                            200,
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          color:
-                                                                              FlutterFlowTheme.of(context).secondaryBackground,
-                                                                          shape:
-                                                                              BoxShape.rectangle,
-                                                                        ),
-                                                                        alignment: AlignmentDirectional(
-                                                                            0,
-                                                                            0),
+                                                                if (columnPostsRecord
+                                                                            .postPhoto !=
+                                                                        null &&
+                                                                    columnPostsRecord
+                                                                            .postPhoto !=
+                                                                        '')
+                                                                  Row(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .max,
+                                                                    children: [
+                                                                      Expanded(
                                                                         child:
-                                                                            Align(
+                                                                            Container(
+                                                                          width:
+                                                                              100,
+                                                                          height:
+                                                                              200,
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).secondaryBackground,
+                                                                            shape:
+                                                                                BoxShape.rectangle,
+                                                                          ),
                                                                           alignment: AlignmentDirectional(
                                                                               0,
                                                                               0),
                                                                           child:
-                                                                              InkWell(
-                                                                            onTap:
-                                                                                () async {
-                                                                              await Navigator.push(
-                                                                                context,
-                                                                                PageTransition(
-                                                                                  type: PageTransitionType.fade,
-                                                                                  child: FlutterFlowExpandedImageView(
-                                                                                    image: Image.network(
-                                                                                      'https://cdn.dribbble.com/users/385565/screenshots/17900863/media/17980a73c523ba7d858f24d4e3b882d7.png?compress=1&resize=1200x900&vertical=top',
-                                                                                      fit: BoxFit.contain,
-                                                                                    ),
-                                                                                    allowRotation: true,
-                                                                                    tag: 'imageTag2',
-                                                                                    useHeroAnimation: true,
-                                                                                  ),
-                                                                                ),
-                                                                              );
-                                                                            },
+                                                                              Align(
+                                                                            alignment:
+                                                                                AlignmentDirectional(0, 0),
                                                                             child:
-                                                                                Hero(
-                                                                              tag: 'imageTag2',
-                                                                              transitionOnUserGestures: true,
-                                                                              child: ClipRRect(
-                                                                                borderRadius: BorderRadius.circular(12),
-                                                                                child: Image.network(
-                                                                                  'https://cdn.dribbble.com/users/385565/screenshots/17900863/media/17980a73c523ba7d858f24d4e3b882d7.png?compress=1&resize=1200x900&vertical=top',
-                                                                                  width: double.infinity,
-                                                                                  height: double.infinity,
-                                                                                  fit: BoxFit.cover,
+                                                                                InkWell(
+                                                                              onTap: () async {
+                                                                                await Navigator.push(
+                                                                                  context,
+                                                                                  PageTransition(
+                                                                                    type: PageTransitionType.fade,
+                                                                                    child: FlutterFlowExpandedImageView(
+                                                                                      image: Image.network(
+                                                                                        'https://cdn.dribbble.com/users/385565/screenshots/17900863/media/17980a73c523ba7d858f24d4e3b882d7.png?compress=1&resize=1200x900&vertical=top',
+                                                                                        fit: BoxFit.contain,
+                                                                                      ),
+                                                                                      allowRotation: true,
+                                                                                      tag: 'imageTag2',
+                                                                                      useHeroAnimation: true,
+                                                                                    ),
+                                                                                  ),
+                                                                                );
+                                                                              },
+                                                                              child: Hero(
+                                                                                tag: 'imageTag2',
+                                                                                transitionOnUserGestures: true,
+                                                                                child: ClipRRect(
+                                                                                  borderRadius: BorderRadius.circular(12),
+                                                                                  child: Image.network(
+                                                                                    'https://cdn.dribbble.com/users/385565/screenshots/17900863/media/17980a73c523ba7d858f24d4e3b882d7.png?compress=1&resize=1200x900&vertical=top',
+                                                                                    width: double.infinity,
+                                                                                    height: double.infinity,
+                                                                                    fit: BoxFit.cover,
+                                                                                  ),
                                                                                 ),
                                                                               ),
                                                                             ),
                                                                           ),
                                                                         ),
                                                                       ),
-                                                                    ),
-                                                                  ],
-                                                                ),
+                                                                    ],
+                                                                  ),
                                                                 Padding(
                                                                   padding: EdgeInsetsDirectional
                                                                       .fromSTEB(

@@ -171,127 +171,173 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                             },
                                           ),
                                           Expanded(
-                                            child: TextFormField(
-                                              controller: textController1,
-                                              onChanged: (_) =>
-                                                  EasyDebounce.debounce(
-                                                'textController1',
-                                                Duration(milliseconds: 2000),
-                                                () async {
-                                                  setState(() => FFAppState()
-                                                      .searchActive2 = true);
-                                                  await queryUsersRecordOnce()
-                                                      .then(
-                                                        (records) =>
-                                                            simpleSearchResults1 =
+                                            child: StreamBuilder<
+                                                List<UsersRecord>>(
+                                              stream: queryUsersRecord(
+                                                queryBuilder: (usersRecord) =>
+                                                    usersRecord.orderBy(
+                                                        'created_time',
+                                                        descending: true),
+                                              ),
+                                              builder: (context, snapshot) {
+                                                // Customize what your widget looks like when it's loading.
+                                                if (!snapshot.hasData) {
+                                                  return Center(
+                                                    child: SizedBox(
+                                                      width: 50,
+                                                      height: 50,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
+                                                List<UsersRecord>
+                                                    textFieldUsersRecordList =
+                                                    snapshot.data!
+                                                        .where((u) =>
+                                                            u.uid !=
+                                                            currentUserUid)
+                                                        .toList();
+                                                return TextFormField(
+                                                  controller: textController1,
+                                                  onChanged: (_) =>
+                                                      EasyDebounce.debounce(
+                                                    'textController1',
+                                                    Duration(
+                                                        milliseconds: 2000),
+                                                    () async {
+                                                      setState(() => FFAppState()
+                                                              .searchActive2 =
+                                                          true);
+                                                      await queryUsersRecordOnce()
+                                                          .then(
+                                                            (records) => simpleSearchResults1 =
                                                                 TextSearch(
-                                                          records
-                                                              .map(
-                                                                (record) =>
-                                                                    TextSearchItem(
-                                                                        record,
-                                                                        [
-                                                                      record
-                                                                          .email!,
-                                                                      record
-                                                                          .displayName!,
-                                                                      record
-                                                                          .uid!,
-                                                                      record
-                                                                          .phoneNumber!,
-                                                                      record
-                                                                          .userWork!,
-                                                                      record
-                                                                          .userLocation!
-                                                                    ]),
-                                                              )
-                                                              .toList(),
-                                                        )
+                                                              records
+                                                                  .map(
+                                                                    (record) =>
+                                                                        TextSearchItem(
+                                                                            record,
+                                                                            [
+                                                                          record
+                                                                              .email!,
+                                                                          record
+                                                                              .displayName!,
+                                                                          record
+                                                                              .uid!,
+                                                                          record
+                                                                              .phoneNumber!,
+                                                                          record
+                                                                              .userWork!,
+                                                                          record
+                                                                              .userLocation!
+                                                                        ]),
+                                                                  )
+                                                                  .toList(),
+                                                            )
                                                                     .search(
                                                                         textController1!
                                                                             .text)
                                                                     .map((r) =>
                                                                         r.object)
                                                                     .toList(),
-                                                      )
-                                                      .onError((_, __) =>
-                                                          simpleSearchResults1 =
-                                                              [])
-                                                      .whenComplete(() =>
-                                                          setState(() {}));
-                                                },
-                                              ),
-                                              onFieldSubmitted: (_) async {
-                                                final usersUpdateData = {
-                                                  'search_history':
-                                                      FieldValue.arrayUnion([
-                                                    textController1!.text
-                                                  ]),
-                                                };
-                                                await listViewPersonUsersRecord!
-                                                    .reference
-                                                    .update(usersUpdateData);
-                                              },
-                                              autofocus: true,
-                                              obscureText: false,
-                                              decoration: InputDecoration(
-                                                labelText: 'ابحث عن شخص...',
-                                                labelStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyText1
-                                                        .override(
-                                                          fontFamily:
-                                                              'Noto Kufi Arabic',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .secondaryText,
-                                                        ),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .primaryColor,
-                                                    width: 1,
+                                                          )
+                                                          .onError((_, __) =>
+                                                              simpleSearchResults1 =
+                                                                  [])
+                                                          .whenComplete(() =>
+                                                              setState(() {}));
+                                                    },
                                                   ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                ),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .primaryColor,
-                                                    width: 1,
+                                                  onFieldSubmitted: (_) async {
+                                                    final usersUpdateData = {
+                                                      'search_history':
+                                                          FieldValue
+                                                              .arrayUnion([
+                                                        textController1!.text
+                                                      ]),
+                                                    };
+                                                    await listViewPersonUsersRecord!
+                                                        .reference
+                                                        .update(
+                                                            usersUpdateData);
+                                                  },
+                                                  autofocus: true,
+                                                  obscureText: false,
+                                                  decoration: InputDecoration(
+                                                    labelText: 'ابحث عن شخص...',
+                                                    labelStyle:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyText1
+                                                            .override(
+                                                              fontFamily:
+                                                                  'Noto Kufi Arabic',
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .secondaryText,
+                                                            ),
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                        width: 1,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                    ),
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                        width: 1,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                    ),
+                                                    errorBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            Color(0x00000000),
+                                                        width: 1,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                    ),
+                                                    focusedErrorBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            Color(0x00000000),
+                                                        width: 1,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                    ),
+                                                    filled: true,
+                                                    fillColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .secondaryColor,
                                                   ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                ),
-                                                errorBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: Color(0x00000000),
-                                                    width: 1,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                ),
-                                                focusedErrorBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: Color(0x00000000),
-                                                    width: 1,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                ),
-                                                filled: true,
-                                                fillColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryColor,
-                                              ),
-                                              style:
-                                                  FlutterFlowTheme.of(context)
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
                                                       .bodyText1
                                                       .override(
                                                         fontFamily:
@@ -301,6 +347,8 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                                                     context)
                                                                 .secondaryText,
                                                       ),
+                                                );
+                                              },
                                             ),
                                           ),
                                         ],
