@@ -130,7 +130,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   scrollDirection: Axis.horizontal,
                   children: [
                     Container(
-                      width: 200,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(),
                       child: FlutterFlowChoiceChips(
                         options: FFAppState()
                             .jobsTypes
