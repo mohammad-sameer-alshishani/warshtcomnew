@@ -308,7 +308,8 @@ class _AddPostWidgetState extends State<AddPostWidget> {
                                               false)) {
                                             context.pushNamed('ServiceProvide');
                                           } else {
-                                            context.pushNamed('LoginPage');
+                                            context
+                                                .pushNamed('ChangeToProvider');
 
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(

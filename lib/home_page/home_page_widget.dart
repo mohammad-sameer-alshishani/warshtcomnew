@@ -118,70 +118,48 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             ),
             Container(
               width: MediaQuery.of(context).size.width,
-              height: 50,
-              decoration: BoxDecoration(
-                color: FlutterFlowTheme.of(context).secondaryBackground,
-              ),
-              child: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(15, 0, 15, 0),
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(),
-                      child: FlutterFlowChoiceChips(
-                        options: FFAppState()
-                            .jobsTypes
-                            .map((label) => ChipData(label))
-                            .toList(),
-                        onChanged: (val) async {
-                          setState(() => choiceChipsValues = val);
-                          setState(() {
-                            simpleSearchResults = TextSearch(choiceChipsValues
-                                    .map((str) => TextSearchItem(str, [str]))
-                                    .toList())
-                                .search(choiceChipsValues!.length.toString())
-                                .map((r) => r.object)
-                                .take(5)
-                                .toList();
-                          });
-                        },
-                        selectedChipStyle: ChipStyle(
-                          backgroundColor:
-                              FlutterFlowTheme.of(context).primaryColor,
-                          textStyle:
-                              FlutterFlowTheme.of(context).bodyText1.override(
-                                    fontFamily: 'Noto Kufi Arabic',
-                                    color: Colors.white,
-                                  ),
-                          iconColor:
-                              FlutterFlowTheme.of(context).secondaryColor,
-                          iconSize: 18,
-                          elevation: 4,
-                        ),
-                        unselectedChipStyle: ChipStyle(
-                          backgroundColor:
-                              FlutterFlowTheme.of(context).secondaryColor,
-                          textStyle:
-                              FlutterFlowTheme.of(context).bodyText2.override(
-                                    fontFamily: 'Noto Kufi Arabic',
-                                    color: Color(0xFF323B45),
-                                  ),
-                          iconColor: FlutterFlowTheme.of(context).primaryText,
-                          iconSize: 18,
-                          elevation: 4,
-                        ),
-                        chipSpacing: 20,
-                        multiselect: true,
-                        initialized: choiceChipsValues != null,
-                        alignment: WrapAlignment.start,
+              decoration: BoxDecoration(),
+              child: FlutterFlowChoiceChips(
+                options: FFAppState()
+                    .jobsTypes
+                    .map((label) => ChipData(label))
+                    .toList(),
+                onChanged: (val) async {
+                  setState(() => choiceChipsValues = val);
+                  setState(() {
+                    simpleSearchResults = TextSearch(choiceChipsValues
+                            .map((str) => TextSearchItem(str, [str]))
+                            .toList())
+                        .search(choiceChipsValues!.length.toString())
+                        .map((r) => r.object)
+                        .take(5)
+                        .toList();
+                  });
+                },
+                selectedChipStyle: ChipStyle(
+                  backgroundColor: FlutterFlowTheme.of(context).tertiaryColor,
+                  textStyle: FlutterFlowTheme.of(context).bodyText1.override(
+                        fontFamily: 'Noto Kufi Arabic',
+                        color: FlutterFlowTheme.of(context).primaryText,
                       ),
-                    ),
-                  ],
+                  iconColor: Color(0x00000000),
+                  iconSize: 18,
+                  elevation: 0,
                 ),
+                unselectedChipStyle: ChipStyle(
+                  backgroundColor: FlutterFlowTheme.of(context).secondaryColor,
+                  textStyle: FlutterFlowTheme.of(context).bodyText2.override(
+                        fontFamily: 'Noto Kufi Arabic',
+                        color: FlutterFlowTheme.of(context).primaryText,
+                      ),
+                  iconColor: FlutterFlowTheme.of(context).alternate,
+                  iconSize: 18,
+                  elevation: 0,
+                ),
+                chipSpacing: 20,
+                multiselect: true,
+                initialized: choiceChipsValues != null,
+                alignment: WrapAlignment.start,
               ),
             ),
             Expanded(
