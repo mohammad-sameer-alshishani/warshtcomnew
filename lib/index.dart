@@ -13,3 +13,5 @@ export 'user_profile_page/user_profile_page_widget.dart'
     show UserProfilePageWidget;
 export 'add_reveiw/add_reveiw_widget.dart' show AddReveiwWidget;
 export 'all_review_page/all_review_page_widget.dart' show AllReviewPageWidget;
+export 'change_to_provider/change_to_provider_widget.dart'
+    show ChangeToProviderWidget;

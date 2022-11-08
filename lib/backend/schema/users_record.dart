@@ -58,6 +58,8 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
   @BuiltValueField(wireName: 'all_reviews_by_me')
   BuiltList<DocumentReference>? get allReviewsByMe;
 
+  bool? get provider;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -77,7 +79,8 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
     ..allPosts = ListBuilder()
     ..searchHistory = ListBuilder()
     ..allReviewsAboutMe = ListBuilder()
-    ..allReviewsByMe = ListBuilder();
+    ..allReviewsByMe = ListBuilder()
+    ..provider = false;
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('users');
@@ -112,6 +115,7 @@ Map<String, dynamic> createUsersRecordData({
   String? userWork,
   String? userBio,
   DateTime? updatedTime,
+  bool? provider,
 }) {
   final firestoreData = serializers.toFirestore(
     UsersRecord.serializer,
@@ -133,7 +137,8 @@ Map<String, dynamic> createUsersRecordData({
         ..allPosts = null
         ..searchHistory = null
         ..allReviewsAboutMe = null
-        ..allReviewsByMe = null,
+        ..allReviewsByMe = null
+        ..provider = provider,
     ),
   );
 

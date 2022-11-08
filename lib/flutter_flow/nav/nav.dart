@@ -182,6 +182,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 userInformation: params.getParam('userInformation',
                     ParamType.DocumentReference, false, 'users'),
               ),
+            ),
+            FFRoute(
+              name: 'ChangeToProvider',
+              path: 'changeToProvider',
+              builder: (context, params) => ChangeToProviderWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),

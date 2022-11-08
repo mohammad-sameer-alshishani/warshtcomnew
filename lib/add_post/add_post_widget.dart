@@ -1,4 +1,5 @@
 import '../auth/auth_util.dart';
+import '../auth/firebase_user_provider.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
@@ -6,6 +7,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart'
     as smooth_page_indicator;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddPostWidget extends StatefulWidget {
@@ -23,6 +25,19 @@ class AddPostWidget extends StatefulWidget {
 class _AddPostWidgetState extends State<AddPostWidget> {
   PageController? pageViewController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      if (loggedIn) {
+        return;
+      }
+
+      context.pushNamed('LoginPage');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -288,7 +303,30 @@ class _AddPostWidgetState extends State<AddPostWidget> {
                                           0, 16, 0, 0),
                                       child: FFButtonWidget(
                                         onPressed: () async {
-                                          context.pushNamed('ServiceProvide');
+                                          if (valueOrDefault<bool>(
+                                              currentUserDocument?.provider,
+                                              false)) {
+                                            context.pushNamed('ServiceProvide');
+                                          } else {
+                                            context.pushNamed('LoginPage');
+
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'يجب أن تسجل حساب كـمزود خدمة',
+                                                  style: TextStyle(
+                                                    color: Color(0xFF9A1414),
+                                                  ),
+                                                ),
+                                                duration: Duration(
+                                                    milliseconds: 4000),
+                                                backgroundColor:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryColor,
+                                              ),
+                                            );
+                                          }
                                         },
                                         text: 'اكمل',
                                         options: FFButtonOptions(

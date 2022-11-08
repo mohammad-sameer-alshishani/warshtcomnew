@@ -1,4 +1,5 @@
 import '../auth/auth_util.dart';
+import '../auth/firebase_user_provider.dart';
 import '../backend/backend.dart';
 import '../backend/firebase_storage/storage.dart';
 import '../flutter_flow/flutter_flow_expanded_image_view.dart';
@@ -11,6 +12,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -46,6 +48,15 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
   @override
   void initState() {
     super.initState();
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      if (loggedIn) {
+        return;
+      }
+
+      context.pushNamed('LoginPage');
+    });
+
     columnController1 = ScrollController();
     columnController2 = ScrollController();
     columnController3 = ScrollController();
@@ -542,19 +553,36 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                             0, 10, 0, 10),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
                                           children: [
                                             Column(
                                               mainAxisSize: MainAxisSize.max,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(20, 0, 0, 0),
-                                                  child: AuthUserStreamWidget(
-                                                    child: AutoSizeText(
-                                                      currentUserDisplayName,
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
+                                                Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  5, 0, 0, 0),
+                                                      child:
+                                                          AuthUserStreamWidget(
+                                                        child: AutoSizeText(
+                                                          valueOrDefault<
+                                                              String>(
+                                                            currentUserDisplayName,
+                                                            'اسم المستخدم',
+                                                          ).maybeHandleOverflow(
+                                                            maxChars: 15,
+                                                            replacement: '…',
+                                                          ),
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
                                                               .bodyText1
                                                               .override(
                                                                 fontFamily:
@@ -564,8 +592,76 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                                     .secondaryText,
                                                                 fontSize: 20,
                                                               ),
+                                                        ),
+                                                      ),
                                                     ),
-                                                  ),
+                                                    if (valueOrDefault<bool>(
+                                                            currentUserDocument
+                                                                ?.provider,
+                                                            false) ==
+                                                        true)
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    5, 0, 0, 0),
+                                                        child:
+                                                            AuthUserStreamWidget(
+                                                          child: Container(
+                                                            width: 100,
+                                                            height: 35,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              gradient:
+                                                                  LinearGradient(
+                                                                colors: [
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .tertiaryColor,
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondaryText
+                                                                ],
+                                                                stops: [0, 1],
+                                                                begin:
+                                                                    AlignmentDirectional(
+                                                                        0.07,
+                                                                        -1),
+                                                                end:
+                                                                    AlignmentDirectional(
+                                                                        -0.07,
+                                                                        1),
+                                                              ),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                            ),
+                                                            alignment: AlignmentDirectional(
+                                                                0.050000000000000044,
+                                                                0.050000000000000044),
+                                                            child:
+                                                                SelectionArea(
+                                                                    child: Text(
+                                                              'مزود خدمة',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyText1
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Noto Kufi Arabic',
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondaryColor,
+                                                                  ),
+                                                            )),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                  ],
                                                 ),
                                                 Padding(
                                                   padding: EdgeInsetsDirectional
@@ -582,7 +678,11 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                         },
                                                         child: SelectionArea(
                                                             child: Text(
-                                                          currentUserUid,
+                                                          valueOrDefault<
+                                                              String>(
+                                                            currentUserUid,
+                                                            'الرقم المعرف',
+                                                          ),
                                                           style: FlutterFlowTheme
                                                                   .of(context)
                                                               .bodyText1
@@ -638,7 +738,10 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   10, 0, 0, 0),
                                           child: Text(
-                                            currentUserEmail,
+                                            valueOrDefault<String>(
+                                              currentUserEmail,
+                                              'البريد الالكتروني',
+                                            ),
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyText1
                                                 .override(
@@ -679,7 +782,10 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                               },
                                               child: SelectionArea(
                                                   child: Text(
-                                                currentPhoneNumber,
+                                                valueOrDefault<String>(
+                                                  currentPhoneNumber,
+                                                  'لا يوجد',
+                                                ),
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .bodyText1
@@ -716,9 +822,13 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                           child: AuthUserStreamWidget(
                                             child: SelectionArea(
                                                 child: AutoSizeText(
-                                              valueOrDefault(
-                                                  currentUserDocument?.userWork,
-                                                  ''),
+                                              valueOrDefault<String>(
+                                                valueOrDefault(
+                                                    currentUserDocument
+                                                        ?.userWork,
+                                                    ''),
+                                                'لا يوجد',
+                                              ),
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .bodyText1
@@ -758,11 +868,13 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                               child: AuthUserStreamWidget(
                                                 child: SelectionArea(
                                                     child: AutoSizeText(
-                                                  valueOrDefault(
-                                                          currentUserDocument
-                                                              ?.userBio,
-                                                          '')
-                                                      .maybeHandleOverflow(
+                                                  valueOrDefault<String>(
+                                                    valueOrDefault(
+                                                        currentUserDocument
+                                                            ?.userBio,
+                                                        ''),
+                                                    'لا يوجد',
+                                                  ).maybeHandleOverflow(
                                                     maxChars: 200,
                                                     replacement: '…',
                                                   ),
@@ -787,44 +899,99 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                     ),
                                   ),
                                   Expanded(
-                                    child: Align(
-                                      alignment: AlignmentDirectional(0, 0),
-                                      child: FFButtonWidget(
-                                        onPressed: () async {
-                                          context.pushNamed(
-                                            'EditProfile',
-                                            queryParams: {
-                                              'userRecordRef': serializeParam(
-                                                currentUserReference,
-                                                ParamType.DocumentReference,
-                                              ),
-                                            }.withoutNulls,
-                                          );
-                                        },
-                                        text: 'تعديل البيانات',
-                                        options: FFButtonOptions(
-                                          width: double.infinity,
-                                          height: 40,
-                                          color: FlutterFlowTheme.of(context)
-                                              .tertiaryColor,
-                                          textStyle: FlutterFlowTheme.of(
-                                                  context)
-                                              .bodyText1
-                                              .override(
-                                                fontFamily: 'Noto Kufi Arabic',
-                                                color:
-                                                    FlutterFlowTheme.of(context)
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Align(
+                                          alignment: AlignmentDirectional(0, 0),
+                                          child: FFButtonWidget(
+                                            onPressed: () async {
+                                              context.pushNamed(
+                                                'EditProfile',
+                                                queryParams: {
+                                                  'userRecordRef':
+                                                      serializeParam(
+                                                    currentUserReference,
+                                                    ParamType.DocumentReference,
+                                                  ),
+                                                }.withoutNulls,
+                                              );
+                                            },
+                                            text: 'تعديل البيانات',
+                                            options: FFButtonOptions(
+                                              width: 150,
+                                              height: 40,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .tertiaryColor,
+                                              textStyle: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodyText1
+                                                  .override(
+                                                    fontFamily:
+                                                        'Noto Kufi Arabic',
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
                                                         .primaryColor,
-                                                fontWeight: FontWeight.w500,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                              borderSide: BorderSide(
+                                                color: Color(0x00212121),
+                                                width: 2,
                                               ),
-                                          borderSide: BorderSide(
-                                            color: Color(0x00212121),
-                                            width: 2,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
                                           ),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
                                         ),
-                                      ),
+                                        if (valueOrDefault<bool>(
+                                                currentUserDocument?.provider,
+                                                false) ==
+                                            false)
+                                          Align(
+                                            alignment:
+                                                AlignmentDirectional(0, 0),
+                                            child: AuthUserStreamWidget(
+                                              child: FFButtonWidget(
+                                                onPressed: () async {
+                                                  context.pushNamed(
+                                                      'ChangeToProvider');
+                                                },
+                                                text: 'تحويل لمزود خدمة',
+                                                options: FFButtonOptions(
+                                                  width: 150,
+                                                  height: 40,
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .secondaryColor,
+                                                  textStyle: FlutterFlowTheme
+                                                          .of(context)
+                                                      .bodyText1
+                                                      .override(
+                                                        fontFamily:
+                                                            'Noto Kufi Arabic',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                  borderSide: BorderSide(
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .tertiaryColor,
+                                                    width: 2,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                      ],
                                     ),
                                   ),
                                 ],
@@ -1031,7 +1198,7 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                                                     Expanded(
                                                                                       child: AutoSizeText(
                                                                                         myProfilePageUsersRecord.displayName!.maybeHandleOverflow(
-                                                                                          maxChars: 20,
+                                                                                          maxChars: 15,
                                                                                           replacement: '…',
                                                                                         ),
                                                                                         maxLines: 1,
