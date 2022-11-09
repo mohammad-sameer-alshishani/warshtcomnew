@@ -206,48 +206,57 @@ class _PostPageWidgetState extends State<PostPageWidget> {
                                           .bodyText2,
                                     ),
                                   ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: 100,
-                                    decoration: BoxDecoration(
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
-                                    ),
-                                    child: Builder(
-                                      builder: (context) {
-                                        final postPhotos = stackPostsRecord!
-                                            .postPhoto!
-                                            .toList()
-                                            .map((e) => e)
-                                            .toList();
-                                        return GridView.builder(
-                                          padding: EdgeInsets.zero,
-                                          gridDelegate:
-                                              SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 2,
-                                            crossAxisSpacing: 10,
-                                            mainAxisSpacing: 10,
-                                            childAspectRatio: 1,
-                                          ),
-                                          scrollDirection: Axis.vertical,
-                                          itemCount: postPhotos.length,
-                                          itemBuilder:
-                                              (context, postPhotosIndex) {
-                                            final postPhotosItem =
-                                                postPhotos[postPhotosIndex];
-                                            return ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              child: CachedNetworkImage(
-                                                imageUrl: postPhotosItem,
-                                                width: 100,
-                                                height: 100,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
+                                  Align(
+                                    alignment: AlignmentDirectional(0, 0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 350,
+                                      constraints: BoxConstraints(
+                                        maxHeight:
+                                            MediaQuery.of(context).size.height *
+                                                1,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryBackground,
+                                      ),
+                                      child: Builder(
+                                        builder: (context) {
+                                          final postPhotos = stackPostsRecord!
+                                              .postPhoto!
+                                              .toList()
+                                              .map((e) => e)
+                                              .toList();
+                                          return GridView.builder(
+                                            padding: EdgeInsets.zero,
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 2,
+                                              crossAxisSpacing: 10,
+                                              mainAxisSpacing: 10,
+                                              childAspectRatio: 1,
+                                            ),
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.vertical,
+                                            itemCount: postPhotos.length,
+                                            itemBuilder:
+                                                (context, postPhotosIndex) {
+                                              final postPhotosItem =
+                                                  postPhotos[postPhotosIndex];
+                                              return ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                child: CachedNetworkImage(
+                                                  imageUrl: postPhotosItem,
+                                                  width: 100,
+                                                  height: 100,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
                                   Padding(
@@ -631,6 +640,8 @@ class _PostPageWidgetState extends State<PostPageWidget> {
                                                       stackPostsRecord!.postID,
                                                   reviewedPerson:
                                                       columnUsersRecord.uid,
+                                                  createdAt:
+                                                      getCurrentTimestamp,
                                                 );
                                                 await ReveiwsRecord.collection
                                                     .doc()
