@@ -123,6 +123,7 @@ class _NavBarPageState extends State<NavBarPage> {
       'AddPost': AddPostWidget(),
       'MyProfilePage': MyProfilePageWidget(),
       'SearchPage': SearchPageWidget(),
+      'messagePage': MessagePageWidget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
     return Scaffold(
@@ -166,6 +167,13 @@ class _NavBarPageState extends State<NavBarPage> {
           ),
           GButton(
             icon: Icons.search_rounded,
+            text: '',
+            iconSize: 24,
+          ),
+          GButton(
+            icon: currentIndex == 4
+                ? Icons.chat_bubble_rounded
+                : Icons.chat_bubble_outline,
             text: '',
             iconSize: 24,
           )

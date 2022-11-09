@@ -199,6 +199,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 chatRef: params.getParam(
                     'chatRef', ParamType.DocumentReference, false, 'chats'),
               ),
+            ),
+            FFRoute(
+              name: 'messagePage',
+              path: 'messagePage',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'messagePage')
+                  : MessagePageWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),

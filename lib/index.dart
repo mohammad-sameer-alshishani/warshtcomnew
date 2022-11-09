@@ -16,3 +16,4 @@ export 'all_review_page/all_review_page_widget.dart' show AllReviewPageWidget;
 export 'change_to_provider/change_to_provider_widget.dart'
     show ChangeToProviderWidget;
 export 'chatpage/chatpage_widget.dart' show ChatpageWidget;
+export 'message_page/message_page_widget.dart' show MessagePageWidget;

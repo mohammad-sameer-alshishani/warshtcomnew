@@ -327,8 +327,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       child: StreamBuilder<List<PostsRecord>>(
                                         stream: queryPostsRecord(
                                           queryBuilder: (postsRecord) =>
-                                              postsRecord.orderBy('time_posted',
-                                                  descending: true),
+                                              postsRecord
+                                                  .whereIn(
+                                                      'post_type',
+                                                      choiceChipsValues != ''
+                                                          ? choiceChipsValues
+                                                          : null)
+                                                  .orderBy('time_posted',
+                                                      descending: true),
                                           limit: 10,
                                         ),
                                         builder: (context, snapshot) {
