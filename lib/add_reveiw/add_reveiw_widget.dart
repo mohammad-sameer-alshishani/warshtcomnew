@@ -119,12 +119,7 @@ class _AddReveiwWidgetState extends State<AddReveiwWidget> {
                       Text(
                         'التقييم',
                         textAlign: TextAlign.center,
-                        style: FlutterFlowTheme.of(context).title1.override(
-                              fontFamily: 'Outfit',
-                              color: FlutterFlowTheme.of(context).primaryText,
-                              fontSize: 32,
-                              fontWeight: FontWeight.w500,
-                            ),
+                        style: FlutterFlowTheme.of(context).title3,
                       ),
                     ],
                   ),
@@ -207,14 +202,7 @@ class _AddReveiwWidgetState extends State<AddReveiwWidget> {
                             Text(
                               'رأيك يهمنا',
                               textAlign: TextAlign.center,
-                              style:
-                                  FlutterFlowTheme.of(context).title1.override(
-                                        fontFamily: 'Outfit',
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryText,
-                                        fontSize: 32,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                              style: FlutterFlowTheme.of(context).title3,
                             ),
                           ],
                         ),
@@ -252,16 +240,14 @@ class _AddReveiwWidgetState extends State<AddReveiwWidget> {
                                         FlutterFlowTheme.of(context).bodyText2,
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: FlutterFlowTheme.of(context)
-                                            .secondaryText,
+                                        color: Color(0x00000000),
                                         width: 1,
                                       ),
                                       borderRadius: BorderRadius.circular(13),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: FlutterFlowTheme.of(context)
-                                            .secondaryText,
+                                        color: Color(0x00000000),
                                         width: 1,
                                       ),
                                       borderRadius: BorderRadius.circular(13),
@@ -283,7 +269,7 @@ class _AddReveiwWidgetState extends State<AddReveiwWidget> {
                                       borderRadius: BorderRadius.circular(13),
                                     ),
                                     filled: true,
-                                    fillColor: Color(0xCFDBE2E7),
+                                    fillColor: Color(0x3C212121),
                                     contentPadding:
                                         EdgeInsetsDirectional.fromSTEB(
                                             10, 10, 10, 10),
@@ -323,14 +309,7 @@ class _AddReveiwWidgetState extends State<AddReveiwWidget> {
                             width: 300,
                             height: 50,
                             color: FlutterFlowTheme.of(context).tertiaryColor,
-                            textStyle:
-                                FlutterFlowTheme.of(context).subtitle2.override(
-                                      fontFamily: 'Outfit',
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryBackground,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.normal,
-                                    ),
+                            textStyle: FlutterFlowTheme.of(context).subtitle2,
                             elevation: 3,
                             borderSide: BorderSide(
                               color: Colors.transparent,

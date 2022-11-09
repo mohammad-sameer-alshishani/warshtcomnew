@@ -65,7 +65,7 @@ class _ChangeToProviderWidgetState extends State<ChangeToProviderWidget> {
               children: [
                 SelectionArea(
                     child: GradientText(
-                  'تجسيل الحساب كمزود خدمة ',
+                  'تسجيل الحساب كمزود خدمة ',
                   textAlign: TextAlign.center,
                   style: FlutterFlowTheme.of(context).bodyText1.override(
                         fontFamily: 'Noto Kufi Arabic',

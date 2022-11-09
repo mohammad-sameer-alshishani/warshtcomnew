@@ -32,10 +32,45 @@ class _AddPostWidgetState extends State<AddPostWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (loggedIn) {
+        if (valueOrDefault<bool>(currentUserDocument?.provider, false) !=
+            null) {
+          return;
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'يرجى تسجيل الدخول للقيام بالنشر',
+              style: TextStyle(
+                color: FlutterFlowTheme.of(context).primaryText,
+              ),
+            ),
+            duration: Duration(milliseconds: 4000),
+            backgroundColor: Color(0x00000000),
+          ),
+        );
+
+        context.pushNamed('LoginPage');
+
+        return;
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'يرجى تسجيل الدخول للقيام بالنشر',
+              style: TextStyle(
+                color: FlutterFlowTheme.of(context).primaryText,
+              ),
+            ),
+            duration: Duration(milliseconds: 4000),
+            backgroundColor: Color(0x00000000),
+          ),
+        );
+
+        context.pushNamed('LoginPage');
+
         return;
       }
-
-      context.pushNamed('LoginPage');
     });
   }
 

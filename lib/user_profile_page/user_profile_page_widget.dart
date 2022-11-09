@@ -216,9 +216,9 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                                                             padding:
                                                                 EdgeInsetsDirectional
                                                                     .fromSTEB(
-                                                                        2,
+                                                                        5,
                                                                         0,
-                                                                        2,
+                                                                        5,
                                                                         0),
                                                             child: Text(
                                                               columnUsersRecord
@@ -236,7 +236,7 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                                                                             context)
                                                                         .primaryBackground,
                                                                     fontSize:
-                                                                        15,
+                                                                        14,
                                                                   ),
                                                             ),
                                                           ),

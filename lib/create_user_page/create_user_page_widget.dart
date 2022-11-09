@@ -1,10 +1,12 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
+import '../backend/firebase_storage/storage.dart';
 import '../flutter_flow/flutter_flow_choice_chips.dart';
 import '../flutter_flow/flutter_flow_drop_down.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../flutter_flow/upload_media.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -24,12 +26,15 @@ class CreateUserPageWidget extends StatefulWidget {
 }
 
 class _CreateUserPageWidgetState extends State<CreateUserPageWidget> {
-  String? choseLocationProviderValue;
+  bool isMediaUploading = false;
+  String uploadedFileUrl = '';
+
   String? providerGenderValue;
   TextEditingController? providerNameController;
   TextEditingController? providerWorkController;
   TextEditingController? providerBioController;
   TextEditingController? providerNumberController;
+  String? choseLocationProviderValue;
   String? choseLocationUserValue;
   String? userGenderValue;
   TextEditingController? userNameController;
@@ -160,17 +165,74 @@ class _CreateUserPageWidgetState extends State<CreateUserPageWidget> {
                                           ),
                                           alignment: AlignmentDirectional(0, 0),
                                           child: AuthUserStreamWidget(
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(45),
-                                              child: Image.network(
-                                                valueOrDefault<String>(
-                                                  currentUserPhoto,
-                                                  'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/warshtcomnew-apn0sl/assets/u445vifv2ogw/Photo_1667408356874.png',
+                                            child: InkWell(
+                                              onTap: () async {
+                                                final selectedMedia =
+                                                    await selectMedia(
+                                                  imageQuality: 100,
+                                                  mediaSource:
+                                                      MediaSource.photoGallery,
+                                                  multiImage: false,
+                                                );
+                                                if (selectedMedia != null &&
+                                                    selectedMedia.every((m) =>
+                                                        validateFileFormat(
+                                                            m.storagePath,
+                                                            context))) {
+                                                  setState(() =>
+                                                      isMediaUploading = true);
+                                                  var downloadUrls = <String>[];
+                                                  try {
+                                                    showUploadMessage(
+                                                      context,
+                                                      'Uploading file...',
+                                                      showLoading: true,
+                                                    );
+                                                    downloadUrls = (await Future
+                                                            .wait(
+                                                      selectedMedia.map(
+                                                        (m) async =>
+                                                            await uploadData(
+                                                                m.storagePath,
+                                                                m.bytes),
+                                                      ),
+                                                    ))
+                                                        .where((u) => u != null)
+                                                        .map((u) => u!)
+                                                        .toList();
+                                                  } finally {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .hideCurrentSnackBar();
+                                                    isMediaUploading = false;
+                                                  }
+                                                  if (downloadUrls.length ==
+                                                      selectedMedia.length) {
+                                                    setState(() =>
+                                                        uploadedFileUrl =
+                                                            downloadUrls.first);
+                                                    showUploadMessage(
+                                                        context, 'Success!');
+                                                  } else {
+                                                    setState(() {});
+                                                    showUploadMessage(context,
+                                                        'Failed to upload media');
+                                                    return;
+                                                  }
+                                                }
+                                              },
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(45),
+                                                child: Image.network(
+                                                  valueOrDefault<String>(
+                                                    currentUserPhoto,
+                                                    'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/warshtcomnew-apn0sl/assets/u445vifv2ogw/Photo_1667408356874.png',
+                                                  ),
+                                                  width: 100,
+                                                  height: 100,
+                                                  fit: BoxFit.fill,
                                                 ),
-                                                width: 100,
-                                                height: 100,
-                                                fit: BoxFit.fill,
                                               ),
                                             ),
                                           ),

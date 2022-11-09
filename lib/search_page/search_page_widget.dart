@@ -208,8 +208,7 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                                   onChanged: (_) =>
                                                       EasyDebounce.debounce(
                                                     'textController1',
-                                                    Duration(
-                                                        milliseconds: 2000),
+                                                    Duration(milliseconds: 450),
                                                     () async {
                                                       setState(() => FFAppState()
                                                               .searchActive2 =
@@ -406,28 +405,34 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                       child: Column(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
-                                          if (!FFAppState().searchActive)
-                                            Builder(
-                                              builder: (context) {
-                                                final noSearchPerson =
-                                                    containerUsersRecordList
-                                                        .toList();
-                                                return InkWell(
-                                                  onTap: () async {
-                                                    setState(() => FFAppState()
-                                                        .searchActive = false);
-                                                  },
-                                                  child: SingleChildScrollView(
-                                                    child: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.max,
-                                                      children: List.generate(
-                                                          noSearchPerson.length,
-                                                          (noSearchPersonIndex) {
-                                                        final noSearchPersonItem =
-                                                            noSearchPerson[
-                                                                noSearchPersonIndex];
-                                                        return StreamBuilder<
+                                          Builder(
+                                            builder: (context) {
+                                              final noSearchPerson =
+                                                  containerUsersRecordList
+                                                      .toList();
+                                              return InkWell(
+                                                onTap: () async {
+                                                  setState(() => FFAppState()
+                                                      .searchActive = false);
+                                                },
+                                                child: SingleChildScrollView(
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    children: List.generate(
+                                                        noSearchPerson.length,
+                                                        (noSearchPersonIndex) {
+                                                      final noSearchPersonItem =
+                                                          noSearchPerson[
+                                                              noSearchPersonIndex];
+                                                      return Visibility(
+                                                        visible: listViewPersonUsersRecord!
+                                                                    .displayName !=
+                                                                null &&
+                                                            listViewPersonUsersRecord!
+                                                                    .displayName !=
+                                                                '',
+                                                        child: StreamBuilder<
                                                             UsersRecord>(
                                                           stream: UsersRecord
                                                               .getDocument(
@@ -662,13 +667,14 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                                               ),
                                                             );
                                                           },
-                                                        );
-                                                      }),
-                                                    ),
+                                                        ),
+                                                      );
+                                                    }),
                                                   ),
-                                                );
-                                              },
-                                            ),
+                                                ),
+                                              );
+                                            },
+                                          ),
                                           if (FFAppState().searchActive)
                                             Builder(
                                               builder: (context) {
@@ -1061,8 +1067,7 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                                   onChanged: (_) =>
                                                       EasyDebounce.debounce(
                                                     'searchPostController',
-                                                    Duration(
-                                                        milliseconds: 2000),
+                                                    Duration(milliseconds: 450),
                                                     () async {
                                                       setState(() => FFAppState()
                                                           .searchActive = true);

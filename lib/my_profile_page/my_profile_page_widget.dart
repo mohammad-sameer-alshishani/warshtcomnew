@@ -51,10 +51,43 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (loggedIn) {
-        return;
-      }
+        if (valueOrDefault<bool>(currentUserDocument?.provider, false) !=
+            null) {
+          return;
+        }
 
-      context.pushNamed('LoginPage');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'يرجى تسجيل الدخول للقيام بالنشر',
+              style: TextStyle(
+                color: FlutterFlowTheme.of(context).primaryText,
+              ),
+            ),
+            duration: Duration(milliseconds: 4000),
+            backgroundColor: Color(0x00000000),
+          ),
+        );
+
+        context.pushNamed('LoginPage');
+
+        return;
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'يرجى تسجيل الدخول للقيام بالنشر',
+              style: TextStyle(
+                color: FlutterFlowTheme.of(context).primaryText,
+              ),
+            ),
+            duration: Duration(milliseconds: 4000),
+            backgroundColor: Color(0x00000000),
+          ),
+        );
+
+        context.pushNamed('LoginPage');
+      }
     });
 
     columnController1 = ScrollController();
@@ -94,7 +127,7 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
               );
             },
             backgroundColor: Color(0x47FFFFFF),
-            elevation: 8,
+            elevation: 6,
             child: Icon(
               Icons.upgrade_rounded,
               color: FlutterFlowTheme.of(context).primaryColor,
@@ -777,7 +810,8 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                               onLongPress: () async {
                                                 await launchUrl(Uri(
                                                   scheme: 'tel',
-                                                  path: '',
+                                                  path: myProfilePageUsersRecord
+                                                      .phoneNumber!,
                                                 ));
                                               },
                                               child: SelectionArea(

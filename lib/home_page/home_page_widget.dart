@@ -10,6 +10,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -56,35 +57,57 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(10, 15, 10, 0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    GradientText(
-                      'مرحباً',
-                      style: FlutterFlowTheme.of(context).bodyText1.override(
-                            fontFamily: 'Noto Kufi Arabic',
-                            fontSize: 20,
+              if (responsiveVisibility(
+                context: context,
+                tabletLandscape: false,
+              ))
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(10, 15, 10, 0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      GradientText(
+                        'مرحباً',
+                        style: FlutterFlowTheme.of(context).bodyText1.override(
+                              fontFamily: 'Noto Kufi Arabic',
+                              fontSize: 20,
+                            ),
+                        colors: [
+                          FlutterFlowTheme.of(context).tertiaryColor,
+                          FlutterFlowTheme.of(context).secondaryText
+                        ],
+                        gradientDirection: GradientDirection.ltr,
+                        gradientType: GradientType.linear,
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                        child: AuthUserStreamWidget(
+                          child: GradientText(
+                            valueOrDefault<String>(
+                              currentUserDisplayName,
+                              'بكم',
+                            ).maybeHandleOverflow(
+                              maxChars: 15,
+                              replacement: '…',
+                            ),
+                            style:
+                                FlutterFlowTheme.of(context).bodyText1.override(
+                                      fontFamily: 'Noto Kufi Arabic',
+                                      fontSize: 20,
+                                    ),
+                            colors: [
+                              FlutterFlowTheme.of(context).tertiaryColor,
+                              FlutterFlowTheme.of(context).secondaryText
+                            ],
+                            gradientDirection: GradientDirection.ltr,
+                            gradientType: GradientType.linear,
                           ),
-                      colors: [
-                        FlutterFlowTheme.of(context).tertiaryColor,
-                        FlutterFlowTheme.of(context).secondaryText
-                      ],
-                      gradientDirection: GradientDirection.ltr,
-                      gradientType: GradientType.linear,
-                    ),
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                      child: AuthUserStreamWidget(
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                         child: GradientText(
-                          valueOrDefault<String>(
-                            currentUserDisplayName,
-                            'بكم',
-                          ).maybeHandleOverflow(
-                            maxChars: 15,
-                            replacement: '…',
-                          ),
+                          'في ورشتكم',
                           style:
                               FlutterFlowTheme.of(context).bodyText1.override(
                                     fontFamily: 'Noto Kufi Arabic',
@@ -98,71 +121,60 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           gradientType: GradientType.linear,
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                      child: GradientText(
-                        'في ورشتكم',
-                        style: FlutterFlowTheme.of(context).bodyText1.override(
-                              fontFamily: 'Noto Kufi Arabic',
-                              fontSize: 20,
-                            ),
-                        colors: [
-                          FlutterFlowTheme.of(context).tertiaryColor,
-                          FlutterFlowTheme.of(context).secondaryText
-                        ],
-                        gradientDirection: GradientDirection.ltr,
-                        gradientType: GradientType.linear,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
               Container(
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(),
-                child: FlutterFlowChoiceChips(
-                  options: FFAppState()
-                      .jobsTypes
-                      .map((label) => ChipData(label))
-                      .toList(),
-                  onChanged: (val) async {
-                    setState(() => choiceChipsValues = val);
-                    setState(() {
-                      simpleSearchResults = TextSearch(choiceChipsValues
-                              .map((str) => TextSearchItem(str, [str]))
-                              .toList())
-                          .search(choiceChipsValues!.length.toString())
-                          .map((r) => r.object)
-                          .take(5)
-                          .toList();
-                    });
-                  },
-                  selectedChipStyle: ChipStyle(
-                    backgroundColor: FlutterFlowTheme.of(context).tertiaryColor,
-                    textStyle: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Noto Kufi Arabic',
-                          color: FlutterFlowTheme.of(context).primaryText,
-                        ),
-                    iconColor: Color(0x00000000),
-                    iconSize: 18,
-                    elevation: 0,
+                child: Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
+                  child: FlutterFlowChoiceChips(
+                    options: FFAppState()
+                        .jobsTypes
+                        .map((label) => ChipData(label))
+                        .toList(),
+                    onChanged: (val) async {
+                      setState(() => choiceChipsValues = val);
+                      setState(() {
+                        simpleSearchResults = TextSearch(choiceChipsValues
+                                .map((str) => TextSearchItem(str, [str]))
+                                .toList())
+                            .search(choiceChipsValues!.length.toString())
+                            .map((r) => r.object)
+                            .take(5)
+                            .toList();
+                      });
+                    },
+                    selectedChipStyle: ChipStyle(
+                      backgroundColor:
+                          FlutterFlowTheme.of(context).tertiaryColor,
+                      textStyle:
+                          FlutterFlowTheme.of(context).bodyText1.override(
+                                fontFamily: 'Noto Kufi Arabic',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                      iconColor: Color(0x00000000),
+                      iconSize: 18,
+                      elevation: 0,
+                    ),
+                    unselectedChipStyle: ChipStyle(
+                      backgroundColor:
+                          FlutterFlowTheme.of(context).secondaryColor,
+                      textStyle:
+                          FlutterFlowTheme.of(context).bodyText2.override(
+                                fontFamily: 'Noto Kufi Arabic',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                              ),
+                      iconColor: FlutterFlowTheme.of(context).alternate,
+                      iconSize: 18,
+                      elevation: 0,
+                    ),
+                    chipSpacing: 10,
+                    multiselect: true,
+                    initialized: choiceChipsValues != null,
+                    alignment: WrapAlignment.start,
                   ),
-                  unselectedChipStyle: ChipStyle(
-                    backgroundColor:
-                        FlutterFlowTheme.of(context).secondaryColor,
-                    textStyle: FlutterFlowTheme.of(context).bodyText2.override(
-                          fontFamily: 'Noto Kufi Arabic',
-                          color: FlutterFlowTheme.of(context).primaryText,
-                        ),
-                    iconColor: FlutterFlowTheme.of(context).alternate,
-                    iconSize: 18,
-                    elevation: 0,
-                  ),
-                  chipSpacing: 20,
-                  multiselect: true,
-                  initialized: choiceChipsValues != null,
-                  alignment: WrapAlignment.start,
                 ),
               ),
               Expanded(
@@ -324,13 +336,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           if (!snapshot.hasData) {
                                             return Center(
                                               child: SizedBox(
-                                                width: 50,
-                                                height: 50,
-                                                child:
-                                                    CircularProgressIndicator(
+                                                width: 40,
+                                                height: 40,
+                                                child: SpinKitPulse(
                                                   color: FlutterFlowTheme.of(
                                                           context)
-                                                      .primaryColor,
+                                                      .secondaryColor,
+                                                  size: 40,
                                                 ),
                                               ),
                                             );

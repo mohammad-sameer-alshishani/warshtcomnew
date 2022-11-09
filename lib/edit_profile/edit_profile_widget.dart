@@ -1,5 +1,6 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
+import '../flutter_flow/flutter_flow_drop_down.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -23,11 +24,11 @@ class EditProfileWidget extends StatefulWidget {
 }
 
 class _EditProfileWidgetState extends State<EditProfileWidget> {
-  TextEditingController? bioModifyController;
+  String? postTypeValue;
   TextEditingController? emailController;
   TextEditingController? nameController;
   TextEditingController? phoneNumberModifyController;
-  TextEditingController? serviceTypeModifyController;
+  TextEditingController? bioModifyController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -36,7 +37,6 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
     emailController?.dispose();
     nameController?.dispose();
     phoneNumberModifyController?.dispose();
-    serviceTypeModifyController?.dispose();
     super.dispose();
   }
 
@@ -443,74 +443,45 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                               ),
                             ),
                             Expanded(
-                              child: TextFormField(
-                                controller: serviceTypeModifyController ??=
-                                    TextEditingController(
-                                  text: editProfileUsersRecord.userWork,
-                                ),
-                                onChanged: (_) => EasyDebounce.debounce(
-                                  'serviceTypeModifyController',
-                                  Duration(milliseconds: 2000),
-                                  () => setState(() {}),
-                                ),
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                  hintText: 'نوع المهنة',
-                                  hintStyle:
-                                      FlutterFlowTheme.of(context).bodyText2,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x0095A1AC),
-                                      width: 1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x0095A1AC),
-                                      width: 1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0x00000000),
-                                      width: 1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  filled: true,
-                                  fillColor: FlutterFlowTheme.of(context)
-                                      .secondaryColor,
-                                  suffixIcon: serviceTypeModifyController!
-                                          .text.isNotEmpty
-                                      ? InkWell(
-                                          onTap: () async {
-                                            serviceTypeModifyController
-                                                ?.clear();
-                                            setState(() {});
-                                          },
-                                          child: Icon(
-                                            Icons.clear,
-                                            color: Color(0xFF757575),
-                                            size: 22,
-                                          ),
-                                        )
-                                      : null,
-                                ),
-                                style: FlutterFlowTheme.of(context)
+                              child: FlutterFlowDropDown(
+                                initialOption: postTypeValue ??=
+                                    editProfileUsersRecord.userWork,
+                                options: [
+                                  'سائق',
+                                  'حداد',
+                                  'دهين',
+                                  'بليط',
+                                  'نجار',
+                                  'مواسرجي',
+                                  'مصلح',
+                                  'منسق',
+                                  'ديكور',
+                                  'مقاول',
+                                  'تنظيف',
+                                  'صيانة'
+                                ],
+                                onChanged: (val) =>
+                                    setState(() => postTypeValue = val),
+                                width: 180,
+                                height: 60,
+                                textStyle: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(
                                       fontFamily: 'Noto Kufi Arabic',
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
                                       fontWeight: FontWeight.w500,
                                     ),
+                                hintText: 'الفئة',
+                                fillColor:
+                                    FlutterFlowTheme.of(context).secondaryColor,
+                                elevation: 2,
+                                borderColor: Color(0x0095A1AC),
+                                borderWidth: 0,
+                                borderRadius: 10,
+                                margin:
+                                    EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                hidesUnderline: true,
                               ),
                             ),
                           ],
@@ -597,8 +568,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                 displayName: nameController?.text ?? '',
                                 phoneNumber:
                                     phoneNumberModifyController?.text ?? '',
-                                userWork:
-                                    serviceTypeModifyController?.text ?? '',
+                                userWork: postTypeValue,
                                 userBio: bioModifyController?.text ?? '',
                                 updatedTime: getCurrentTimestamp,
                               );
