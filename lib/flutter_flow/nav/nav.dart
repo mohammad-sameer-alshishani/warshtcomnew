@@ -206,6 +206,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'messagePage')
                   : MessagePageWidget(),
+            ),
+            FFRoute(
+              name: 'postPage',
+              path: 'postPage',
+              builder: (context, params) => PostPageWidget(
+                userName: params.getParam('userName', ParamType.String),
+                postDate: params.getParam('postDate', ParamType.String),
+              ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),

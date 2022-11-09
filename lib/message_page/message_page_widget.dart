@@ -20,16 +20,17 @@ class _MessagePageWidgetState extends State<MessagePageWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: FlutterFlowTheme.of(context).secondaryColor,
         automaticallyImplyLeading: false,
         title: Text(
-          'All Chats',
+          'جميع الرسائل',
           style: FlutterFlowTheme.of(context).bodyText1.override(
                 fontFamily: 'Noto Kufi Arabic',
-                color: Colors.black,
+                color: FlutterFlowTheme.of(context).primaryText,
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
               ),
         ),
         actions: [],
@@ -99,23 +100,23 @@ class _MessagePageWidgetState extends State<MessagePageWidget> {
                             .contains(currentUserReference),
                         title: chatInfo.chatPreviewTitle(),
                         userProfilePic: chatInfo.chatPreviewPic(),
-                        color: Color(0xFFEEF0F5),
+                        color: FlutterFlowTheme.of(context).secondaryColor,
                         unreadColor: Colors.blue,
                         titleTextStyle: GoogleFonts.getFont(
                           'DM Sans',
-                          color: Colors.black,
+                          color: FlutterFlowTheme.of(context).primaryText,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
                         dateTextStyle: GoogleFonts.getFont(
                           'DM Sans',
-                          color: Color(0x73000000),
+                          color: FlutterFlowTheme.of(context).alternate,
                           fontWeight: FontWeight.normal,
                           fontSize: 14,
                         ),
                         previewTextStyle: GoogleFonts.getFont(
                           'DM Sans',
-                          color: Color(0x73000000),
+                          color: FlutterFlowTheme.of(context).alternate,
                           fontWeight: FontWeight.normal,
                           fontSize: 14,
                         ),
