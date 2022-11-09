@@ -244,42 +244,106 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                                                       ),
                                                     ),
                                                   ),
-                                                  Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(0, 0,
-                                                                    20, 0),
-                                                        child: Icon(
-                                                          Icons
-                                                              .chat_bubble_outline_rounded,
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryText,
-                                                          size: 24,
-                                                        ),
-                                                      ),
-                                                      InkWell(
-                                                        onTap: () async {
-                                                          await Share.share(
-                                                              columnUsersRecord
-                                                                  .phoneNumber!);
-                                                        },
-                                                        child: Icon(
-                                                          Icons.phone_rounded,
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryText,
-                                                          size: 24,
-                                                        ),
-                                                      ),
-                                                    ],
+                                                  StreamBuilder<
+                                                      List<UsersRecord>>(
+                                                    stream: queryUsersRecord(
+                                                      singleRecord: true,
+                                                    ),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      // Customize what your widget looks like when it's loading.
+                                                      if (!snapshot.hasData) {
+                                                        return Center(
+                                                          child: SizedBox(
+                                                            width: 50,
+                                                            height: 50,
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .primaryColor,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      }
+                                                      List<UsersRecord>
+                                                          rowUsersRecordList =
+                                                          snapshot.data!;
+                                                      // Return an empty Container when the document does not exist.
+                                                      if (snapshot
+                                                          .data!.isEmpty) {
+                                                        return Container();
+                                                      }
+                                                      final rowUsersRecord =
+                                                          rowUsersRecordList
+                                                                  .isNotEmpty
+                                                              ? rowUsersRecordList
+                                                                  .first
+                                                              : null;
+                                                      return Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        0,
+                                                                        0,
+                                                                        20,
+                                                                        0),
+                                                            child: InkWell(
+                                                              onTap: () async {
+                                                                context
+                                                                    .pushNamed(
+                                                                  'chatpage',
+                                                                  queryParams: {
+                                                                    'chatUser':
+                                                                        serializeParam(
+                                                                      rowUsersRecord,
+                                                                      ParamType
+                                                                          .Document,
+                                                                    ),
+                                                                  }.withoutNulls,
+                                                                  extra: <
+                                                                      String,
+                                                                      dynamic>{
+                                                                    'chatUser':
+                                                                        rowUsersRecord,
+                                                                  },
+                                                                );
+                                                              },
+                                                              child: Icon(
+                                                                Icons
+                                                                    .chat_bubble_outline_rounded,
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .primaryText,
+                                                                size: 24,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          InkWell(
+                                                            onTap: () async {
+                                                              await Share.share(
+                                                                  columnUsersRecord
+                                                                      .phoneNumber!);
+                                                            },
+                                                            child: Icon(
+                                                              Icons
+                                                                  .phone_rounded,
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .primaryText,
+                                                              size: 24,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
                                                   ),
                                                 ],
                                               ),

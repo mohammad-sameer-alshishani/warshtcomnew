@@ -32,8 +32,8 @@ class _AddPostWidgetState extends State<AddPostWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (loggedIn) {
-        if (valueOrDefault<bool>(currentUserDocument?.provider, false) !=
-            null) {
+        if (valueOrDefault<bool>(currentUserDocument?.isGuest, false) ==
+            false) {
           return;
         }
 

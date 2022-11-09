@@ -3,7 +3,6 @@ import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../flutter_flow/random_data_util.dart' as random_data;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -490,6 +489,13 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                               return;
                                             }
 
+                                            final usersUpdateData =
+                                                createUsersRecordData(
+                                              isGuest: true,
+                                            );
+                                            await widget.userRecordRef!
+                                                .update(usersUpdateData);
+
                                             context.goNamedAuth(
                                                 'HomePage', mounted);
                                           },
@@ -762,22 +768,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                         if (user == null) {
                                           return;
                                         }
-
-                                        final usersCreateData =
-                                            createUsersRecordData(
-                                          email: emailSignUpController!.text,
-                                          uid: random_data.randomString(
-                                            6,
-                                            6,
-                                            false,
-                                            false,
-                                            false,
-                                          ),
-                                          createdTime: getCurrentTimestamp,
-                                        );
-                                        await UsersRecord.collection
-                                            .doc(user.uid)
-                                            .update(usersCreateData);
                                       },
                                       text: 'تسجيل',
                                       options: FFButtonOptions(
@@ -842,8 +832,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                               return;
                                             }
 
-                                            context.goNamedAuth(
-                                                'HomePage', mounted);
+                                            context.pushNamedAuth(
+                                                'CreateUserPage', mounted);
                                           },
                                           child: Container(
                                             width: 50,
@@ -881,8 +871,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                               return;
                                             }
 
-                                            context.goNamedAuth(
-                                                'HomePage', mounted);
+                                            context.pushNamedAuth(
+                                                'CreateUserPage', mounted);
                                           },
                                           child: Container(
                                             width: 50,
@@ -921,8 +911,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                               return;
                                             }
 
-                                            context.goNamedAuth(
-                                                'HomePage', mounted);
+                                            context.pushNamedAuth(
+                                                'CreateUserPage', mounted);
                                           },
                                           child: Container(
                                             width: 50,
@@ -951,17 +941,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                             10, 10, 10, 10),
                                         child: InkWell(
                                           onTap: () async {
-                                            context.pushNamedAuth(
-                                              'CreateUserPage',
-                                              mounted,
-                                              queryParams: {
-                                                'createUserRef': serializeParam(
-                                                  currentUserReference,
-                                                  ParamType.DocumentReference,
-                                                ),
-                                              }.withoutNulls,
-                                            );
-
                                             GoRouter.of(context)
                                                 .prepareAuthEvent();
                                             final user =
@@ -970,6 +949,16 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                             if (user == null) {
                                               return;
                                             }
+
+                                            final usersUpdateData =
+                                                createUsersRecordData(
+                                              isGuest: true,
+                                            );
+                                            await widget.userRecordRef!
+                                                .update(usersUpdateData);
+
+                                            context.goNamedAuth(
+                                                'HomePage', mounted);
                                           },
                                           child: Container(
                                             width: 50,

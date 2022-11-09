@@ -51,8 +51,8 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (loggedIn) {
-        if (valueOrDefault<bool>(currentUserDocument?.provider, false) !=
-            null) {
+        if (valueOrDefault<bool>(currentUserDocument?.isGuest, false) ==
+            false) {
           return;
         }
 
@@ -478,6 +478,7 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                         borderRadius: BorderRadius.circular(10),
                         child: Container(
                           width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 0.4,
                           constraints: BoxConstraints(
                             maxWidth: double.infinity,
                             maxHeight: MediaQuery.of(context).size.height * 0.5,
@@ -490,13 +491,16 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                               color: Color(0x00101213),
                             ),
                           ),
+                          alignment:
+                              AlignmentDirectional(0.050000000000000044, 0),
                           child: Align(
                             alignment: AlignmentDirectional(0, 0),
                             child: Padding(
                               padding:
-                                  EdgeInsetsDirectional.fromSTEB(10, 10, 10, 0),
+                                  EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                               child: Column(
-                                mainAxisSize: MainAxisSize.max,
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
@@ -880,153 +884,145 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                       ],
                                     ),
                                   ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 5, 0, 0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Icon(
-                                            Icons.info_rounded,
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryColor,
-                                            size: 24,
-                                          ),
-                                          Expanded(
-                                            child: Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(10, 0, 0, 0),
-                                              child: AuthUserStreamWidget(
-                                                child: SelectionArea(
-                                                    child: AutoSizeText(
-                                                  valueOrDefault<String>(
-                                                    valueOrDefault(
-                                                        currentUserDocument
-                                                            ?.userBio,
-                                                        ''),
-                                                    'لا يوجد',
-                                                  ).maybeHandleOverflow(
-                                                    maxChars: 200,
-                                                    replacement: '…',
-                                                  ),
-                                                  maxLines: 3,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyText1
-                                                      .override(
-                                                        fontFamily:
-                                                            'Noto Kufi Arabic',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryText,
-                                                      ),
-                                                )),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 5, 0, 10),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Align(
-                                          alignment: AlignmentDirectional(0, 0),
-                                          child: FFButtonWidget(
-                                            onPressed: () async {
-                                              context.pushNamed(
-                                                'EditProfile',
-                                                queryParams: {
-                                                  'userRecordRef':
-                                                      serializeParam(
-                                                    currentUserReference,
-                                                    ParamType.DocumentReference,
-                                                  ),
-                                                }.withoutNulls,
-                                              );
-                                            },
-                                            text: 'تعديل البيانات',
-                                            options: FFButtonOptions(
-                                              width: 150,
-                                              height: 40,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .tertiaryColor,
-                                              textStyle: FlutterFlowTheme.of(
-                                                      context)
-                                                  .bodyText1
-                                                  .override(
-                                                    fontFamily:
-                                                        'Noto Kufi Arabic',
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .primaryColor,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                              borderSide: BorderSide(
-                                                color: Color(0x00212121),
-                                                width: 2,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
+                                        Icon(
+                                          Icons.info_rounded,
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryColor,
+                                          size: 24,
+                                        ),
+                                        Expanded(
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    10, 0, 0, 0),
+                                            child: AuthUserStreamWidget(
+                                              child: SelectionArea(
+                                                  child: AutoSizeText(
+                                                valueOrDefault<String>(
+                                                  valueOrDefault(
+                                                      currentUserDocument
+                                                          ?.userBio,
+                                                      ''),
+                                                  'لا يوجد',
+                                                ).maybeHandleOverflow(
+                                                  maxChars: 30,
+                                                  replacement: '…',
+                                                ),
+                                                maxLines: 3,
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyText1
+                                                        .override(
+                                                          fontFamily:
+                                                              'Noto Kufi Arabic',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryText,
+                                                        ),
+                                              )),
                                             ),
                                           ),
                                         ),
-                                        if (valueOrDefault<bool>(
-                                                currentUserDocument?.provider,
-                                                false) ==
-                                            false)
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0, 0),
-                                            child: AuthUserStreamWidget(
-                                              child: FFButtonWidget(
-                                                onPressed: () async {
-                                                  context.pushNamed(
-                                                      'ChangeToProvider');
-                                                },
-                                                text: 'تحويل لمزود خدمة',
-                                                options: FFButtonOptions(
-                                                  width: 150,
-                                                  height: 40,
+                                      ],
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Align(
+                                        alignment: AlignmentDirectional(0, 0),
+                                        child: FFButtonWidget(
+                                          onPressed: () async {
+                                            context.pushNamed(
+                                              'EditProfile',
+                                              queryParams: {
+                                                'userRecordRef': serializeParam(
+                                                  currentUserReference,
+                                                  ParamType.DocumentReference,
+                                                ),
+                                              }.withoutNulls,
+                                            );
+                                          },
+                                          text: 'تعديل البيانات',
+                                          options: FFButtonOptions(
+                                            width: 150,
+                                            height: 40,
+                                            color: FlutterFlowTheme.of(context)
+                                                .tertiaryColor,
+                                            textStyle: FlutterFlowTheme.of(
+                                                    context)
+                                                .bodyText1
+                                                .override(
+                                                  fontFamily:
+                                                      'Noto Kufi Arabic',
                                                   color: FlutterFlowTheme.of(
                                                           context)
-                                                      .secondaryColor,
-                                                  textStyle: FlutterFlowTheme
-                                                          .of(context)
-                                                      .bodyText1
-                                                      .override(
-                                                        fontFamily:
-                                                            'Noto Kufi Arabic',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryColor,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                  borderSide: BorderSide(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .tertiaryColor,
-                                                    width: 2,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
+                                                      .primaryColor,
+                                                  fontWeight: FontWeight.w500,
                                                 ),
+                                            borderSide: BorderSide(
+                                              color: Color(0x00212121),
+                                              width: 2,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                      ),
+                                      if (valueOrDefault<bool>(
+                                              currentUserDocument?.provider,
+                                              false) ==
+                                          false)
+                                        Align(
+                                          alignment: AlignmentDirectional(0, 0),
+                                          child: AuthUserStreamWidget(
+                                            child: FFButtonWidget(
+                                              onPressed: () async {
+                                                context.pushNamed(
+                                                    'ChangeToProvider');
+                                              },
+                                              text: 'تحويل لمزود خدمة',
+                                              options: FFButtonOptions(
+                                                width: 150,
+                                                height: 40,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .secondaryColor,
+                                                textStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyText1
+                                                        .override(
+                                                          fontFamily:
+                                                              'Noto Kufi Arabic',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryColor,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                borderSide: BorderSide(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .tertiaryColor,
+                                                  width: 2,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
                                               ),
                                             ),
                                           ),
-                                      ],
-                                    ),
+                                        ),
+                                    ],
                                   ),
                                 ],
                               ),

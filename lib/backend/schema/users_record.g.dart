@@ -159,6 +159,20 @@ class _$UsersRecordSerializer implements StructuredSerializer<UsersRecord> {
         ..add(
             serializers.serialize(value, specifiedType: const FullType(bool)));
     }
+    value = object.isGuest;
+    if (value != null) {
+      result
+        ..add('isGuest')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.ownsCar;
+    if (value != null) {
+      result
+        ..add('ownsCar')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.ffRef;
     if (value != null) {
       result
@@ -269,6 +283,14 @@ class _$UsersRecordSerializer implements StructuredSerializer<UsersRecord> {
           result.provider = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool?;
           break;
+        case 'isGuest':
+          result.isGuest = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'ownsCar':
+          result.ownsCar = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -320,6 +342,10 @@ class _$UsersRecord extends UsersRecord {
   @override
   final bool? provider;
   @override
+  final bool? isGuest;
+  @override
+  final bool? ownsCar;
+  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$UsersRecord([void Function(UsersRecordBuilder)? updates]) =>
@@ -344,6 +370,8 @@ class _$UsersRecord extends UsersRecord {
       this.allReviewsAboutMe,
       this.allReviewsByMe,
       this.provider,
+      this.isGuest,
+      this.ownsCar,
       this.ffRef})
       : super._();
 
@@ -376,6 +404,8 @@ class _$UsersRecord extends UsersRecord {
         allReviewsAboutMe == other.allReviewsAboutMe &&
         allReviewsByMe == other.allReviewsByMe &&
         provider == other.provider &&
+        isGuest == other.isGuest &&
+        ownsCar == other.ownsCar &&
         ffRef == other.ffRef;
   }
 
@@ -399,32 +429,25 @@ class _$UsersRecord extends UsersRecord {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc(
-                                                                                0,
-                                                                                email
-                                                                                    .hashCode),
-                                                                            displayName
-                                                                                .hashCode),
-                                                                        photoUrl
-                                                                            .hashCode),
-                                                                    uid
-                                                                        .hashCode),
-                                                                createdTime
-                                                                    .hashCode),
-                                                            phoneNumber
-                                                                .hashCode),
-                                                        userGender.hashCode),
-                                                    userLocation.hashCode),
-                                                userWork.hashCode),
-                                            userBio.hashCode),
-                                        updatedTime.hashCode),
-                                    likedPosts.hashCode),
-                                userRate.hashCode),
-                            allPosts.hashCode),
-                        searchHistory.hashCode),
-                    allReviewsAboutMe.hashCode),
-                allReviewsByMe.hashCode),
-            provider.hashCode),
+                                                                            $jc($jc($jc(0, email.hashCode), displayName.hashCode),
+                                                                                photoUrl.hashCode),
+                                                                            uid.hashCode),
+                                                                        createdTime.hashCode),
+                                                                    phoneNumber.hashCode),
+                                                                userGender.hashCode),
+                                                            userLocation.hashCode),
+                                                        userWork.hashCode),
+                                                    userBio.hashCode),
+                                                updatedTime.hashCode),
+                                            likedPosts.hashCode),
+                                        userRate.hashCode),
+                                    allPosts.hashCode),
+                                searchHistory.hashCode),
+                            allReviewsAboutMe.hashCode),
+                        allReviewsByMe.hashCode),
+                    provider.hashCode),
+                isGuest.hashCode),
+            ownsCar.hashCode),
         ffRef.hashCode));
   }
 
@@ -449,6 +472,8 @@ class _$UsersRecord extends UsersRecord {
           ..add('allReviewsAboutMe', allReviewsAboutMe)
           ..add('allReviewsByMe', allReviewsByMe)
           ..add('provider', provider)
+          ..add('isGuest', isGuest)
+          ..add('ownsCar', ownsCar)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -542,6 +567,14 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
   bool? get provider => _$this._provider;
   set provider(bool? provider) => _$this._provider = provider;
 
+  bool? _isGuest;
+  bool? get isGuest => _$this._isGuest;
+  set isGuest(bool? isGuest) => _$this._isGuest = isGuest;
+
+  bool? _ownsCar;
+  bool? get ownsCar => _$this._ownsCar;
+  set ownsCar(bool? ownsCar) => _$this._ownsCar = ownsCar;
+
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -571,6 +604,8 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
       _allReviewsAboutMe = $v.allReviewsAboutMe?.toBuilder();
       _allReviewsByMe = $v.allReviewsByMe?.toBuilder();
       _provider = $v.provider;
+      _isGuest = $v.isGuest;
+      _ownsCar = $v.ownsCar;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -614,6 +649,8 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
               allReviewsAboutMe: _allReviewsAboutMe?.build(),
               allReviewsByMe: _allReviewsByMe?.build(),
               provider: provider,
+              isGuest: isGuest,
+              ownsCar: ownsCar,
               ffRef: ffRef);
     } catch (_) {
       late String _$failedField;

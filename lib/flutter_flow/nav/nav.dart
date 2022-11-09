@@ -187,6 +187,18 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'ChangeToProvider',
               path: 'changeToProvider',
               builder: (context, params) => ChangeToProviderWidget(),
+            ),
+            FFRoute(
+              name: 'chatpage',
+              path: 'chatpage',
+              asyncParams: {
+                'chatUser': getDoc('users', UsersRecord.serializer),
+              },
+              builder: (context, params) => ChatpageWidget(
+                chatUser: params.getParam('chatUser', ParamType.Document),
+                chatRef: params.getParam(
+                    'chatRef', ParamType.DocumentReference, false, 'chats'),
+              ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),

@@ -3,6 +3,7 @@ import '../backend/backend.dart';
 import '../backend/firebase_storage/storage.dart';
 import '../flutter_flow/flutter_flow_choice_chips.dart';
 import '../flutter_flow/flutter_flow_drop_down.dart';
+import '../flutter_flow/flutter_flow_google_map.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
@@ -34,15 +35,23 @@ class _CreateUserPageWidgetState extends State<CreateUserPageWidget> {
   TextEditingController? providerWorkController;
   TextEditingController? providerBioController;
   TextEditingController? providerNumberController;
+  LatLng? googleMapProvidersCenter;
+  final googleMapProvidersController = Completer<GoogleMapController>();
   String? choseLocationProviderValue;
-  String? choseLocationUserValue;
+  bool? checkboxValue;
+  LatLng? googleMapUsersCenter;
+  final googleMapUsersController = Completer<GoogleMapController>();
   String? userGenderValue;
   TextEditingController? userNameController;
+  String? choseLocationUserValue;
+  LatLng? currentUserLocationValue;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
+    getCurrentUserLocation(defaultLocation: LatLng(0.0, 0.0), cached: true)
+        .then((loc) => setState(() => currentUserLocationValue = loc));
     providerBioController = TextEditingController();
     providerNameController = TextEditingController();
     providerWorkController = TextEditingController();
@@ -62,8 +71,20 @@ class _CreateUserPageWidgetState extends State<CreateUserPageWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (currentUserLocationValue == null) {
+      return Center(
+        child: SizedBox(
+          width: 50,
+          height: 50,
+          child: CircularProgressIndicator(
+            color: FlutterFlowTheme.of(context).primaryColor,
+          ),
+        ),
+      );
+    }
     return Scaffold(
       key: scaffoldKey,
+      resizeToAvoidBottomInset: false,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       body: SafeArea(
         child: GestureDetector(
@@ -110,7 +131,6 @@ class _CreateUserPageWidgetState extends State<CreateUserPageWidget> {
                   child: Column(
                     children: [
                       TabBar(
-                        isScrollable: true,
                         labelColor: FlutterFlowTheme.of(context).primaryText,
                         labelStyle:
                             FlutterFlowTheme.of(context).bodyText1.override(
@@ -645,8 +665,44 @@ class _CreateUserPageWidgetState extends State<CreateUserPageWidget> {
                                     ),
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
+                                          40, 10, 40, 10),
+                                      child: Container(
+                                        height: 200,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: FlutterFlowGoogleMap(
+                                          controller:
+                                              googleMapProvidersController,
+                                          onCameraIdle: (latLng) =>
+                                              googleMapProvidersCenter = latLng,
+                                          initialLocation:
+                                              googleMapProvidersCenter ??=
+                                                  currentUserLocationValue!,
+                                          markerColor: GoogleMarkerColor.violet,
+                                          mapType: MapType.terrain,
+                                          style: GoogleMapStyle.standard,
+                                          initialZoom: 14,
+                                          allowInteraction: true,
+                                          allowZoom: true,
+                                          showZoomControls: true,
+                                          showLocation: true,
+                                          showCompass: false,
+                                          showMapToolbar: false,
+                                          showTraffic: false,
+                                          centerMapOnMarkerTap: true,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
                                           40, 5, 40, 5),
                                       child: FlutterFlowDropDown(
+                                        initialOption:
+                                            choseLocationProviderValue ??=
+                                                googleMapProvidersCenter
+                                                    ?.toString(),
                                         options: [
                                           'عمان',
                                           'الزرقاء',
@@ -697,75 +753,127 @@ class _CreateUserPageWidgetState extends State<CreateUserPageWidget> {
                                     ),
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
-                                          100, 10, 100, 10),
-                                      child: FFButtonWidget(
-                                        onPressed: () async {
-                                          if ((providerNameController!.text != null && providerNameController!.text != '') &&
-                                              (providerWorkController!.text !=
-                                                      null &&
-                                                  providerWorkController!
-                                                          .text !=
-                                                      '') &&
-                                              (providerBioController!.text !=
-                                                      null &&
-                                                  providerBioController!.text !=
-                                                      '') &&
-                                              (providerBioController!.text !=
-                                                      null &&
-                                                  providerBioController!.text !=
-                                                      '') &&
-                                              (choseLocationProviderValue !=
-                                                      null &&
-                                                  choseLocationProviderValue !=
-                                                      '')) {
-                                            final usersUpdateData =
-                                                createUsersRecordData(
-                                              provider: true,
-                                            );
-                                            await currentUserReference!
-                                                .update(usersUpdateData);
-
-                                            context.pushNamed('HomePage');
-                                          } else {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  'يرجى اكمال جميع المطلوبات',
-                                                  style: TextStyle(
-                                                    color: Color(0xFF9A1414),
-                                                  ),
+                                          40, 10, 40, 10),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Theme(
+                                            data: ThemeData(
+                                              checkboxTheme: CheckboxThemeData(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(0),
                                                 ),
-                                                duration: Duration(
-                                                    milliseconds: 4000),
-                                                backgroundColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryColor,
                                               ),
-                                            );
-                                          }
-                                        },
-                                        text: 'انشاء حسابي',
-                                        options: FFButtonOptions(
-                                          width: 10,
-                                          height: 50,
-                                          color: Color(0x00EEEEEE),
-                                          textStyle: FlutterFlowTheme.of(
-                                                  context)
-                                              .subtitle2
-                                              .override(
-                                                fontFamily: 'Noto Kufi Arabic',
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryColor,
-                                              ),
-                                          borderSide: BorderSide(
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryColor,
-                                            width: 2,
+                                              unselectedWidgetColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryColor,
+                                            ),
+                                            child: Checkbox(
+                                              value: checkboxValue ??= true,
+                                              onChanged: (newValue) async {
+                                                setState(() =>
+                                                    checkboxValue = newValue!);
+                                              },
+                                              activeColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryColor,
+                                              checkColor:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryColor,
+                                            ),
                                           ),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          SelectionArea(
+                                              child: Text(
+                                            'تمتلك سيارة ؟',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyText1,
+                                          )),
+                                        ],
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: AlignmentDirectional(0.05, 0),
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0, 0, 0, 20),
+                                        child: FFButtonWidget(
+                                          onPressed: () async {
+                                            if ((providerNameController!.text != null && providerNameController!.text != '') &&
+                                                (providerWorkController!.text !=
+                                                        null &&
+                                                    providerWorkController!
+                                                            .text !=
+                                                        '') &&
+                                                (providerBioController!.text !=
+                                                        null &&
+                                                    providerBioController!
+                                                            .text !=
+                                                        '') &&
+                                                (providerBioController!.text !=
+                                                        null &&
+                                                    providerBioController!
+                                                            .text !=
+                                                        '') &&
+                                                (choseLocationProviderValue !=
+                                                        null &&
+                                                    choseLocationProviderValue !=
+                                                        '')) {
+                                              final usersUpdateData =
+                                                  createUsersRecordData(
+                                                provider: true,
+                                                isGuest: false,
+                                                ownsCar: checkboxValue,
+                                              );
+                                              await currentUserReference!
+                                                  .update(usersUpdateData);
+
+                                              context.pushNamed('HomePage');
+                                            } else {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    'يرجى اكمال جميع المطلوبات',
+                                                    style: TextStyle(
+                                                      color: Color(0xFF9A1414),
+                                                    ),
+                                                  ),
+                                                  duration: Duration(
+                                                      milliseconds: 4000),
+                                                  backgroundColor:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .primaryColor,
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          text: 'انشاء حسابي',
+                                          options: FFButtonOptions(
+                                            width: 150,
+                                            height: 50,
+                                            color: Color(0x00EEEEEE),
+                                            textStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .subtitle2
+                                                    .override(
+                                                      fontFamily:
+                                                          'Noto Kufi Arabic',
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primaryColor,
+                                                    ),
+                                            borderSide: BorderSide(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryColor,
+                                              width: 2,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -998,8 +1106,38 @@ class _CreateUserPageWidgetState extends State<CreateUserPageWidget> {
                                   ),
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
+                                        40, 10, 40, 10),
+                                    child: Container(
+                                      height: 200,
+                                      decoration: BoxDecoration(),
+                                      child: FlutterFlowGoogleMap(
+                                        controller: googleMapUsersController,
+                                        onCameraIdle: (latLng) =>
+                                            googleMapUsersCenter = latLng,
+                                        initialLocation:
+                                            googleMapUsersCenter ??=
+                                                currentUserLocationValue!,
+                                        markerColor: GoogleMarkerColor.violet,
+                                        mapType: MapType.terrain,
+                                        style: GoogleMapStyle.standard,
+                                        initialZoom: 14,
+                                        allowInteraction: true,
+                                        allowZoom: true,
+                                        showZoomControls: true,
+                                        showLocation: true,
+                                        showCompass: false,
+                                        showMapToolbar: false,
+                                        showTraffic: false,
+                                        centerMapOnMarkerTap: true,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
                                         40, 5, 40, 5),
                                     child: FlutterFlowDropDown(
+                                      initialOption: choseLocationUserValue ??=
+                                          googleMapUsersCenter?.toString(),
                                       options: [
                                         'عمان',
                                         'الزرقاء',
@@ -1046,62 +1184,70 @@ class _CreateUserPageWidgetState extends State<CreateUserPageWidget> {
                                       hidesUnderline: true,
                                     ),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        100, 10, 100, 10),
-                                    child: FFButtonWidget(
-                                      onPressed: () async {
-                                        if ((userNameController!.text != null &&
-                                                userNameController!.text !=
-                                                    '') &&
-                                            (choseLocationUserValue != null &&
-                                                choseLocationUserValue != '')) {
-                                          final usersUpdateData =
-                                              createUsersRecordData(
-                                            provider: false,
-                                          );
-                                          await currentUserReference!
-                                              .update(usersUpdateData);
+                                  Align(
+                                    alignment: AlignmentDirectional(0, 0),
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 10, 0, 20),
+                                      child: FFButtonWidget(
+                                        onPressed: () async {
+                                          if ((userNameController!.text !=
+                                                      null &&
+                                                  userNameController!.text !=
+                                                      '') &&
+                                              (choseLocationUserValue != null &&
+                                                  choseLocationUserValue !=
+                                                      '')) {
+                                            final usersUpdateData =
+                                                createUsersRecordData(
+                                              provider: false,
+                                              isGuest: false,
+                                            );
+                                            await currentUserReference!
+                                                .update(usersUpdateData);
 
-                                          context.pushNamed('HomePage');
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                'يرجى اكمال جميع المطلوبات',
-                                                style: TextStyle(
-                                                  color: Color(0xFF9A1414),
+                                            context.pushNamed('HomePage');
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'يرجى اكمال جميع المطلوبات',
+                                                  style: TextStyle(
+                                                    color: Color(0xFF9A1414),
+                                                  ),
                                                 ),
+                                                duration: Duration(
+                                                    milliseconds: 4000),
+                                                backgroundColor:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryColor,
                                               ),
-                                              duration:
-                                                  Duration(milliseconds: 4000),
-                                              backgroundColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryColor,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                      text: 'انشاء حسابي',
-                                      options: FFButtonOptions(
-                                        width: 10,
-                                        height: 50,
-                                        color: Color(0x00EEEEEE),
-                                        textStyle: FlutterFlowTheme.of(context)
-                                            .subtitle2
-                                            .override(
-                                              fontFamily: 'Noto Kufi Arabic',
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryColor,
-                                            ),
-                                        borderSide: BorderSide(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryColor,
-                                          width: 2,
+                                            );
+                                          }
+                                        },
+                                        text: 'انشاء حسابي',
+                                        options: FFButtonOptions(
+                                          width: 150,
+                                          height: 50,
+                                          color: Color(0x00EEEEEE),
+                                          textStyle: FlutterFlowTheme.of(
+                                                  context)
+                                              .subtitle2
+                                              .override(
+                                                fontFamily: 'Noto Kufi Arabic',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryColor,
+                                              ),
+                                          borderSide: BorderSide(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryColor,
+                                            width: 2,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                         ),
-                                        borderRadius: BorderRadius.circular(10),
                                       ),
                                     ),
                                   ),
