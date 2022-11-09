@@ -159,7 +159,9 @@ class _ServiceProvideWidgetState extends State<ServiceProvideWidget> {
                               await PostsRecord.collection
                                   .doc()
                                   .set(postsCreateData);
-
+                              if (Navigator.of(context).canPop()) {
+                                context.pop();
+                              }
                               context.pushNamed('HomePage');
                             },
                             text: 'تم',

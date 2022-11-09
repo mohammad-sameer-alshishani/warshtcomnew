@@ -129,7 +129,10 @@ class _PostPageWidgetState extends State<PostPageWidget> {
                                       ClipRRect(
                                         borderRadius: BorderRadius.circular(40),
                                         child: Image.network(
-                                          columnUsersRecord.photoUrl!,
+                                          valueOrDefault<String>(
+                                            columnUsersRecord.photoUrl,
+                                            'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/warshtcomnew-apn0sl/assets/u445vifv2ogw/Photo_1667408356874.png',
+                                          ),
                                           width: 40,
                                           height: 40,
                                           fit: BoxFit.cover,
@@ -472,14 +475,9 @@ class _PostPageWidgetState extends State<PostPageWidget> {
                                                                         0,
                                                                         0),
                                                             child: Text(
-                                                              dateTimeFormat(
-                                                                'relative',
-                                                                listViewReveiwsRecord
-                                                                    .createdAt!,
-                                                                locale: FFLocalizations.of(
-                                                                        context)
-                                                                    .languageCode,
-                                                              ),
+                                                              listViewReveiwsRecord
+                                                                  .createdAt!
+                                                                  .toString(),
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .bodyText2,
