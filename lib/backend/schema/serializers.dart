@@ -6,8 +6,6 @@ import 'posts_record.dart';
 import 'reveiws_record.dart';
 import 'request_post_record.dart';
 import 'jobs_types_record.dart';
-import 'chats_record.dart';
-import 'chat_messages_record.dart';
 
 import 'index.dart';
 
@@ -23,8 +21,6 @@ const kDocumentReferenceField = 'Document__Reference__Field';
   ReveiwsRecord,
   RequestPostRecord,
   JobsTypesRecord,
-  ChatsRecord,
-  ChatMessagesRecord,
   JopsTypesStruct,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
