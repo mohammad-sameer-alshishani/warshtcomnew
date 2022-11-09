@@ -727,7 +727,10 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                                                 reveiwsRecord.where(
                                                     'reviewed_person',
                                                     isEqualTo: columnUsersRecord
-                                                        .reference),
+                                                                .uid !=
+                                                            ''
+                                                        ? columnUsersRecord.uid
+                                                        : null),
                                             limit: 3,
                                           ),
                                           builder: (context, snapshot) {
@@ -815,11 +818,19 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                                                                   .fromSTEB(2,
                                                                       2, 2, 2),
                                                           child: StreamBuilder<
-                                                              UsersRecord>(
-                                                            stream: UsersRecord
-                                                                .getDocument(
-                                                                    listViewReveiwsRecord
-                                                                        .reviewedBy!),
+                                                              List<
+                                                                  UsersRecord>>(
+                                                            stream:
+                                                                queryUsersRecord(
+                                                              queryBuilder: (usersRecord) =>
+                                                                  usersRecord.where(
+                                                                      'uid',
+                                                                      isEqualTo:
+                                                                          listViewReveiwsRecord
+                                                                              .reviewedBy),
+                                                              singleRecord:
+                                                                  true,
+                                                            ),
                                                             builder: (context,
                                                                 snapshot) {
                                                               // Customize what your widget looks like when it's loading.
@@ -839,9 +850,21 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                                                                   ),
                                                                 );
                                                               }
-                                                              final columnUsersRecord =
+                                                              List<UsersRecord>
+                                                                  columnUsersRecordList =
                                                                   snapshot
                                                                       .data!;
+                                                              // Return an empty Container when the document does not exist.
+                                                              if (snapshot.data!
+                                                                  .isEmpty) {
+                                                                return Container();
+                                                              }
+                                                              final columnUsersRecord =
+                                                                  columnUsersRecordList
+                                                                          .isNotEmpty
+                                                                      ? columnUsersRecordList
+                                                                          .first
+                                                                      : null;
                                                               return SingleChildScrollView(
                                                                 child: Column(
                                                                   mainAxisSize:
@@ -868,32 +891,14 @@ class _UserProfilePageWidgetState extends State<UserProfilePageWidget>
                                                                               mainAxisSize: MainAxisSize.max,
                                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                                               children: [
-                                                                                StreamBuilder<UsersRecord>(
-                                                                                  stream: UsersRecord.getDocument(listViewReveiwsRecord.reviewedBy!),
-                                                                                  builder: (context, snapshot) {
-                                                                                    // Customize what your widget looks like when it's loading.
-                                                                                    if (!snapshot.hasData) {
-                                                                                      return Center(
-                                                                                        child: SizedBox(
-                                                                                          width: 50,
-                                                                                          height: 50,
-                                                                                          child: CircularProgressIndicator(
-                                                                                            color: FlutterFlowTheme.of(context).primaryColor,
-                                                                                          ),
-                                                                                        ),
-                                                                                      );
-                                                                                    }
-                                                                                    final textUsersRecord = snapshot.data!;
-                                                                                    return Text(
-                                                                                      columnUsersRecord.displayName!,
-                                                                                      style: FlutterFlowTheme.of(context).subtitle1.override(
-                                                                                            fontFamily: 'Outfit',
-                                                                                            color: FlutterFlowTheme.of(context).primaryText,
-                                                                                            fontSize: 18,
-                                                                                            fontWeight: FontWeight.w500,
-                                                                                          ),
-                                                                                    );
-                                                                                  },
+                                                                                Text(
+                                                                                  columnUsersRecord!.displayName!,
+                                                                                  style: FlutterFlowTheme.of(context).subtitle1.override(
+                                                                                        fontFamily: 'Outfit',
+                                                                                        color: FlutterFlowTheme.of(context).primaryText,
+                                                                                        fontSize: 18,
+                                                                                        fontWeight: FontWeight.w500,
+                                                                                      ),
                                                                                 ),
                                                                                 Row(
                                                                                   mainAxisSize: MainAxisSize.max,

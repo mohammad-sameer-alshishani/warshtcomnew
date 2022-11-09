@@ -113,22 +113,24 @@ class _AddServiceProvideWidgetState extends State<AddServiceProvideWidget> {
                     List<PostsRecord> buttonPostsRecordList = snapshot.data!;
                     return FFButtonWidget(
                       onPressed: () async {
-                        final postsCreateData = createPostsRecordData(
-                          postPhoto: uploadedFileUrl,
-                          postDescription: postDescriptionController!.text,
-                          postUser: currentUserReference,
-                          timePosted: getCurrentTimestamp,
-                          price: double.parse(postPriceController!.text),
-                          priceType: priceTypeValue,
-                          postType: postTypeValue,
-                          postID: random_data.randomString(
-                            10,
-                            10,
-                            true,
-                            true,
-                            true,
+                        final postsCreateData = {
+                          ...createPostsRecordData(
+                            postUser: currentUserReference,
+                            timePosted: getCurrentTimestamp,
+                            price: double.parse(postPriceController!.text),
+                            priceType: priceTypeValue,
+                            postType: postTypeValue,
+                            postID: random_data.randomString(
+                              10,
+                              10,
+                              true,
+                              true,
+                              true,
+                            ),
+                            postUserName: '',
                           ),
-                        );
+                          'post_photo': [uploadedFileUrl],
+                        };
                         await PostsRecord.collection.doc().set(postsCreateData);
                         context.pop();
                       },

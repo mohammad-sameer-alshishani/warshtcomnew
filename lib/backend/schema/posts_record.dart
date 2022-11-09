@@ -9,9 +9,6 @@ part 'posts_record.g.dart';
 abstract class PostsRecord implements Built<PostsRecord, PostsRecordBuilder> {
   static Serializer<PostsRecord> get serializer => _$postsRecordSerializer;
 
-  @BuiltValueField(wireName: 'post_photo')
-  String? get postPhoto;
-
   @BuiltValueField(wireName: 'post_title')
   String? get postTitle;
 
@@ -56,12 +53,14 @@ abstract class PostsRecord implements Built<PostsRecord, PostsRecordBuilder> {
   @BuiltValueField(wireName: 'post_user_name')
   String? get postUserName;
 
+  @BuiltValueField(wireName: 'post_photo')
+  BuiltList<String>? get postPhoto;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
 
   static void _initializeBuilder(PostsRecordBuilder builder) => builder
-    ..postPhoto = ''
     ..postTitle = ''
     ..postDescription = ''
     ..numComments = 0
@@ -74,7 +73,8 @@ abstract class PostsRecord implements Built<PostsRecord, PostsRecordBuilder> {
     ..postUserLocation = ''
     ..postUserPhoto = ''
     ..postID = ''
-    ..postUserName = '';
+    ..postUserName = ''
+    ..postPhoto = ListBuilder();
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('posts');
@@ -98,7 +98,6 @@ abstract class PostsRecord implements Built<PostsRecord, PostsRecordBuilder> {
 }
 
 Map<String, dynamic> createPostsRecordData({
-  String? postPhoto,
   String? postTitle,
   String? postDescription,
   DocumentReference? postUser,
@@ -118,7 +117,6 @@ Map<String, dynamic> createPostsRecordData({
     PostsRecord.serializer,
     PostsRecord(
       (p) => p
-        ..postPhoto = postPhoto
         ..postTitle = postTitle
         ..postDescription = postDescription
         ..postUser = postUser
@@ -133,7 +131,8 @@ Map<String, dynamic> createPostsRecordData({
         ..postUserLocation = postUserLocation
         ..postUserPhoto = postUserPhoto
         ..postID = postID
-        ..postUserName = postUserName,
+        ..postUserName = postUserName
+        ..postPhoto = null,
     ),
   );
 

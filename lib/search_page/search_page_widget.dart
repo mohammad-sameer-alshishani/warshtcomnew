@@ -529,8 +529,9 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                                                               Radius.circular(0),
                                                                         ),
                                                                         child: Image
-                                                                            .asset(
-                                                                          'assets/images/Photo_1667408356874.png',
+                                                                            .network(
+                                                                          containerUsersRecord
+                                                                              .photoUrl!,
                                                                           width:
                                                                               60,
                                                                           height:
@@ -1309,8 +1310,9 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                                                         0),
                                                               ),
                                                               child:
-                                                                  Image.asset(
-                                                                'assets/images/pngwing.com_(1).png',
+                                                                  Image.network(
+                                                                listViewPostUsersRecord!
+                                                                    .photoUrl!,
                                                                 width: 90,
                                                                 height: 90,
                                                                 fit: BoxFit
@@ -1498,8 +1500,9 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                                                         0),
                                                               ),
                                                               child:
-                                                                  Image.asset(
-                                                                'assets/images/pngwing.com_(1).png',
+                                                                  Image.network(
+                                                                resultSearchItem
+                                                                    .postUserPhoto!,
                                                                 width: 90,
                                                                 height: 90,
                                                                 fit: BoxFit

@@ -92,6 +92,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     ),
             ),
             FFRoute(
+              name: 'postPage',
+              path: 'postPage',
+              builder: (context, params) => PostPageWidget(
+                postId: params.getParam('postId', ParamType.String),
+              ),
+            ),
+            FFRoute(
               name: 'AddPost',
               path: 'addPost',
               builder: (context, params) => params.isEmpty
@@ -161,16 +168,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ),
             ),
             FFRoute(
-              name: 'AddReveiw',
-              path: 'addReveiw',
-              builder: (context, params) => AddReveiwWidget(
-                userToReviewRef: params.getParam('userToReviewRef',
-                    ParamType.DocumentReference, false, 'users'),
-                reviewPar: params.getParam<DocumentReference>(
-                    'reviewPar', ParamType.DocumentReference, true, 'reveiws'),
-              ),
-            ),
-            FFRoute(
               name: 'allReviewPage',
               path: 'allReviewPage',
               builder: (context, params) => AllReviewPageWidget(
@@ -181,6 +178,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     'reveiws'),
                 userInformation: params.getParam('userInformation',
                     ParamType.DocumentReference, false, 'users'),
+              ),
+            ),
+            FFRoute(
+              name: 'AddReveiw',
+              path: 'addReveiw',
+              builder: (context, params) => AddReveiwWidget(
+                userToReviewRef: params.getParam('userToReviewRef',
+                    ParamType.DocumentReference, false, 'users'),
+                reviewPar: params.getParam<DocumentReference>(
+                    'reviewPar', ParamType.DocumentReference, true, 'reveiws'),
               ),
             ),
             FFRoute(
@@ -206,14 +213,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => params.isEmpty
                   ? NavBarPage(initialPage: 'messagePage')
                   : MessagePageWidget(),
-            ),
-            FFRoute(
-              name: 'postPage',
-              path: 'postPage',
-              builder: (context, params) => PostPageWidget(
-                userName: params.getParam('userName', ParamType.String),
-                postDate: params.getParam('postDate', ParamType.String),
-              ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),

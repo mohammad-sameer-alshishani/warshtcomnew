@@ -1,4 +1,3 @@
-import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -291,18 +290,8 @@ class _AddReveiwWidgetState extends State<AddReveiwWidget> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         FFButtonWidget(
-                          onPressed: () async {
-                            final reveiwsCreateData = createReveiwsRecordData(
-                              createdAt: getCurrentTimestamp,
-                              reviewText: '',
-                              reviewedBy: currentUserReference,
-                              reviewedPerson: widget.userToReviewRef,
-                              rating: sliderValue,
-                            );
-                            await ReveiwsRecord.collection
-                                .doc()
-                                .set(reveiwsCreateData);
-                            context.pop();
+                          onPressed: () {
+                            print('Button pressed ...');
                           },
                           text: 'تم',
                           options: FFButtonOptions(

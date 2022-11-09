@@ -19,13 +19,6 @@ class _$PostsRecordSerializer implements StructuredSerializer<PostsRecord> {
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[];
     Object? value;
-    value = object.postPhoto;
-    if (value != null) {
-      result
-        ..add('post_photo')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
     value = object.postTitle;
     if (value != null) {
       result
@@ -132,6 +125,14 @@ class _$PostsRecordSerializer implements StructuredSerializer<PostsRecord> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.postPhoto;
+    if (value != null) {
+      result
+        ..add('post_photo')
+        ..add(serializers.serialize(value,
+            specifiedType:
+                const FullType(BuiltList, const [const FullType(String)])));
+    }
     value = object.ffRef;
     if (value != null) {
       result
@@ -154,10 +155,6 @@ class _$PostsRecordSerializer implements StructuredSerializer<PostsRecord> {
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
-        case 'post_photo':
-          result.postPhoto = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
         case 'post_title':
           result.postTitle = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
@@ -223,6 +220,12 @@ class _$PostsRecordSerializer implements StructuredSerializer<PostsRecord> {
           result.postUserName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'post_photo':
+          result.postPhoto.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(String)]))!
+              as BuiltList<Object?>);
+          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -237,8 +240,6 @@ class _$PostsRecordSerializer implements StructuredSerializer<PostsRecord> {
 }
 
 class _$PostsRecord extends PostsRecord {
-  @override
-  final String? postPhoto;
   @override
   final String? postTitle;
   @override
@@ -270,14 +271,15 @@ class _$PostsRecord extends PostsRecord {
   @override
   final String? postUserName;
   @override
+  final BuiltList<String>? postPhoto;
+  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$PostsRecord([void Function(PostsRecordBuilder)? updates]) =>
       (new PostsRecordBuilder()..update(updates))._build();
 
   _$PostsRecord._(
-      {this.postPhoto,
-      this.postTitle,
+      {this.postTitle,
       this.postDescription,
       this.postUser,
       this.timePosted,
@@ -292,6 +294,7 @@ class _$PostsRecord extends PostsRecord {
       this.postUserPhoto,
       this.postID,
       this.postUserName,
+      this.postPhoto,
       this.ffRef})
       : super._();
 
@@ -306,7 +309,6 @@ class _$PostsRecord extends PostsRecord {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is PostsRecord &&
-        postPhoto == other.postPhoto &&
         postTitle == other.postTitle &&
         postDescription == other.postDescription &&
         postUser == other.postUser &&
@@ -322,6 +324,7 @@ class _$PostsRecord extends PostsRecord {
         postUserPhoto == other.postUserPhoto &&
         postID == other.postID &&
         postUserName == other.postUserName &&
+        postPhoto == other.postPhoto &&
         ffRef == other.ffRef;
   }
 
@@ -345,32 +348,32 @@ class _$PostsRecord extends PostsRecord {
                                                                 $jc(
                                                                     $jc(
                                                                         0,
-                                                                        postPhoto
+                                                                        postTitle
                                                                             .hashCode),
-                                                                    postTitle
+                                                                    postDescription
                                                                         .hashCode),
-                                                                postDescription
+                                                                postUser
                                                                     .hashCode),
-                                                            postUser.hashCode),
-                                                        timePosted.hashCode),
-                                                    numComments.hashCode),
-                                                numVotes.hashCode),
-                                            likedBy.hashCode),
-                                        numLikes.hashCode),
-                                    price.hashCode),
-                                postType.hashCode),
-                            priceType.hashCode),
-                        postUserLocation.hashCode),
-                    postUserPhoto.hashCode),
-                postID.hashCode),
-            postUserName.hashCode),
+                                                            timePosted
+                                                                .hashCode),
+                                                        numComments.hashCode),
+                                                    numVotes.hashCode),
+                                                likedBy.hashCode),
+                                            numLikes.hashCode),
+                                        price.hashCode),
+                                    postType.hashCode),
+                                priceType.hashCode),
+                            postUserLocation.hashCode),
+                        postUserPhoto.hashCode),
+                    postID.hashCode),
+                postUserName.hashCode),
+            postPhoto.hashCode),
         ffRef.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'PostsRecord')
-          ..add('postPhoto', postPhoto)
           ..add('postTitle', postTitle)
           ..add('postDescription', postDescription)
           ..add('postUser', postUser)
@@ -386,6 +389,7 @@ class _$PostsRecord extends PostsRecord {
           ..add('postUserPhoto', postUserPhoto)
           ..add('postID', postID)
           ..add('postUserName', postUserName)
+          ..add('postPhoto', postPhoto)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -393,10 +397,6 @@ class _$PostsRecord extends PostsRecord {
 
 class PostsRecordBuilder implements Builder<PostsRecord, PostsRecordBuilder> {
   _$PostsRecord? _$v;
-
-  String? _postPhoto;
-  String? get postPhoto => _$this._postPhoto;
-  set postPhoto(String? postPhoto) => _$this._postPhoto = postPhoto;
 
   String? _postTitle;
   String? get postTitle => _$this._postTitle;
@@ -464,6 +464,12 @@ class PostsRecordBuilder implements Builder<PostsRecord, PostsRecordBuilder> {
   String? get postUserName => _$this._postUserName;
   set postUserName(String? postUserName) => _$this._postUserName = postUserName;
 
+  ListBuilder<String>? _postPhoto;
+  ListBuilder<String> get postPhoto =>
+      _$this._postPhoto ??= new ListBuilder<String>();
+  set postPhoto(ListBuilder<String>? postPhoto) =>
+      _$this._postPhoto = postPhoto;
+
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -475,7 +481,6 @@ class PostsRecordBuilder implements Builder<PostsRecord, PostsRecordBuilder> {
   PostsRecordBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _postPhoto = $v.postPhoto;
       _postTitle = $v.postTitle;
       _postDescription = $v.postDescription;
       _postUser = $v.postUser;
@@ -491,6 +496,7 @@ class PostsRecordBuilder implements Builder<PostsRecord, PostsRecordBuilder> {
       _postUserPhoto = $v.postUserPhoto;
       _postID = $v.postID;
       _postUserName = $v.postUserName;
+      _postPhoto = $v.postPhoto?.toBuilder();
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -516,7 +522,6 @@ class PostsRecordBuilder implements Builder<PostsRecord, PostsRecordBuilder> {
     try {
       _$result = _$v ??
           new _$PostsRecord._(
-              postPhoto: postPhoto,
               postTitle: postTitle,
               postDescription: postDescription,
               postUser: postUser,
@@ -532,12 +537,16 @@ class PostsRecordBuilder implements Builder<PostsRecord, PostsRecordBuilder> {
               postUserPhoto: postUserPhoto,
               postID: postID,
               postUserName: postUserName,
+              postPhoto: _postPhoto?.build(),
               ffRef: ffRef);
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'likedBy';
         _likedBy?.build();
+
+        _$failedField = 'postPhoto';
+        _postPhoto?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'PostsRecord', _$failedField, e.toString());

@@ -21,7 +21,7 @@ class ServiceProvideWidget extends StatefulWidget {
 
 class _ServiceProvideWidgetState extends State<ServiceProvideWidget> {
   bool isMediaUploading = false;
-  String uploadedFileUrl = '';
+  List<String> uploadedFileUrls = [];
 
   String? postTypeValue;
   TextEditingController? postTitleController;
@@ -131,28 +131,31 @@ class _ServiceProvideWidgetState extends State<ServiceProvideWidget> {
                               snapshot.data!;
                           return FFButtonWidget(
                             onPressed: () async {
-                              final postsCreateData = createPostsRecordData(
-                                postPhoto: uploadedFileUrl,
-                                postTitle: postTitleController!.text,
-                                postDescription:
-                                    postDescriptionController!.text,
-                                postUser: currentUserReference,
-                                timePosted: getCurrentTimestamp,
-                                price: double.parse(postPriceController!.text),
-                                postType: postTypeValue,
-                                priceType: priceTypeValue,
-                                postUserLocation: valueOrDefault(
-                                    currentUserDocument?.userLocation, ''),
-                                postUserPhoto: currentUserPhoto,
-                                postID: random_data.randomString(
-                                  6,
-                                  6,
-                                  true,
-                                  true,
-                                  true,
+                              final postsCreateData = {
+                                ...createPostsRecordData(
+                                  postDescription:
+                                      postDescriptionController!.text,
+                                  postUser: currentUserReference,
+                                  timePosted: getCurrentTimestamp,
+                                  price:
+                                      double.parse(postPriceController!.text),
+                                  postType: postTypeValue,
+                                  priceType: priceTypeValue,
+                                  postUserLocation: valueOrDefault(
+                                      currentUserDocument?.userLocation, ''),
+                                  postUserPhoto: currentUserPhoto,
+                                  postID: random_data.randomString(
+                                    6,
+                                    6,
+                                    true,
+                                    true,
+                                    true,
+                                  ),
+                                  postUserName: currentUserDisplayName,
+                                  numLikes: 1,
                                 ),
-                                postUserName: currentUserDisplayName,
-                              );
+                                'post_photo': uploadedFileUrls,
+                              };
                               await PostsRecord.collection
                                   .doc()
                                   .set(postsCreateData);
@@ -539,17 +542,12 @@ class _ServiceProvideWidgetState extends State<ServiceProvideWidget> {
                                         child: InkWell(
                                           onTap: () async {
                                             final selectedMedia =
-                                                await selectMediaWithSourceBottomSheet(
-                                              context: context,
+                                                await selectMedia(
                                               maxWidth: 300.00,
                                               maxHeight: 200.00,
-                                              allowPhoto: true,
-                                              backgroundColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryColor,
-                                              textColor:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryColor,
+                                              mediaSource:
+                                                  MediaSource.photoGallery,
+                                              multiImage: true,
                                             );
                                             if (selectedMedia != null &&
                                                 selectedMedia.every((m) =>
@@ -584,8 +582,9 @@ class _ServiceProvideWidgetState extends State<ServiceProvideWidget> {
                                               }
                                               if (downloadUrls.length ==
                                                   selectedMedia.length) {
-                                                setState(() => uploadedFileUrl =
-                                                    downloadUrls.first);
+                                                setState(() =>
+                                                    uploadedFileUrls =
+                                                        downloadUrls);
                                                 showUploadMessage(
                                                     context, 'Success!');
                                               } else {

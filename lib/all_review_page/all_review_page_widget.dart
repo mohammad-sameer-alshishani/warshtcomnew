@@ -315,247 +315,174 @@ class _AllReviewPageWidgetState extends State<AllReviewPageWidget> {
                             color: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
                           ),
-                          child: StreamBuilder<List<ReveiwsRecord>>(
-                            stream: queryReveiwsRecord(
-                              queryBuilder: (reveiwsRecord) => reveiwsRecord
-                                  .where('reviewed_person',
-                                      isEqualTo: widget.userInformation)
-                                  .orderBy('created_at'),
-                            ),
-                            builder: (context, snapshot) {
-                              // Customize what your widget looks like when it's loading.
-                              if (!snapshot.hasData) {
-                                return Center(
-                                  child: SizedBox(
-                                    width: 50,
-                                    height: 50,
-                                    child: CircularProgressIndicator(
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryColor,
-                                    ),
+                          child: ListView(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            children: [
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    16, 12, 16, 0),
+                                child: FutureBuilder<List<ReveiwsRecord>>(
+                                  future: queryReveiwsRecordOnce(
+                                    singleRecord: true,
                                   ),
-                                );
-                              }
-                              List<ReveiwsRecord> listViewReveiwsRecordList =
-                                  snapshot.data!;
-                              return ListView.builder(
-                                padding: EdgeInsets.zero,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                itemCount: listViewReveiwsRecordList.length,
-                                itemBuilder: (context, listViewIndex) {
-                                  final listViewReveiwsRecord =
-                                      listViewReveiwsRecordList[listViewIndex];
-                                  return Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        16, 12, 16, 0),
-                                    child: FutureBuilder<List<ReveiwsRecord>>(
-                                      future: queryReveiwsRecordOnce(
-                                        singleRecord: true,
-                                      ),
-                                      builder: (context, snapshot) {
-                                        // Customize what your widget looks like when it's loading.
-                                        if (!snapshot.hasData) {
-                                          return Center(
-                                            child: SizedBox(
-                                              width: 50,
-                                              height: 50,
-                                              child: CircularProgressIndicator(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryColor,
-                                              ),
-                                            ),
-                                          );
-                                        }
-                                        List<ReveiwsRecord>
-                                            containerReveiwsRecordList =
-                                            snapshot.data!;
-                                        // Return an empty Container when the document does not exist.
-                                        if (snapshot.data!.isEmpty) {
-                                          return Container();
-                                        }
-                                        final containerReveiwsRecord =
-                                            containerReveiwsRecordList
-                                                    .isNotEmpty
-                                                ? containerReveiwsRecordList
-                                                    .first
-                                                : null;
-                                        return Container(
-                                          width: double.infinity,
-                                          decoration: BoxDecoration(
-                                            color: Color(0xC4329DC9),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                blurRadius: 4,
-                                                color: Color(0x33000000),
-                                                offset: Offset(0, 2),
-                                              )
-                                            ],
-                                            borderRadius:
-                                                BorderRadius.circular(16),
+                                  builder: (context, snapshot) {
+                                    // Customize what your widget looks like when it's loading.
+                                    if (!snapshot.hasData) {
+                                      return Center(
+                                        child: SizedBox(
+                                          width: 50,
+                                          height: 50,
+                                          child: CircularProgressIndicator(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryColor,
                                           ),
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    4, 4, 4, 4),
-                                            child: SingleChildScrollView(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                                16, 12, 16, 0),
-                                                    child: FutureBuilder<
-                                                        UsersRecord>(
-                                                      future: UsersRecord
-                                                          .getDocumentOnce(
-                                                              containerReveiwsRecord!
-                                                                  .reviewedBy!),
-                                                      builder:
-                                                          (context, snapshot) {
-                                                        // Customize what your widget looks like when it's loading.
-                                                        if (!snapshot.hasData) {
-                                                          return Center(
-                                                            child: SizedBox(
-                                                              width: 50,
-                                                              height: 50,
-                                                              child:
-                                                                  CircularProgressIndicator(
+                                        ),
+                                      );
+                                    }
+                                    List<ReveiwsRecord>
+                                        containerReveiwsRecordList =
+                                        snapshot.data!;
+                                    // Return an empty Container when the document does not exist.
+                                    if (snapshot.data!.isEmpty) {
+                                      return Container();
+                                    }
+                                    final containerReveiwsRecord =
+                                        containerReveiwsRecordList.isNotEmpty
+                                            ? containerReveiwsRecordList.first
+                                            : null;
+                                    return Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: Color(0xC4329DC9),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            blurRadius: 4,
+                                            color: Color(0x33000000),
+                                            offset: Offset(0, 2),
+                                          )
+                                        ],
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            4, 4, 4, 4),
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(16, 12, 16, 0),
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          'Vacation Home',
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .subtitle1
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Lexend Deca',
                                                                 color: FlutterFlowTheme.of(
                                                                         context)
                                                                     .primaryColor,
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
                                                               ),
-                                                            ),
-                                                          );
-                                                        }
-                                                        final propertyTitleUsersRecord =
-                                                            snapshot.data!;
-                                                        return Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Text(
-                                                                  propertyTitleUsersRecord
-                                                                      .displayName!,
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .subtitle1
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Lexend Deca',
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .primaryColor,
-                                                                        fontSize:
-                                                                            18,
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                      ),
-                                                                ),
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0,
-                                                                          4,
-                                                                          0,
-                                                                          4),
-                                                                  child:
-                                                                      RatingBarIndicator(
-                                                                    itemBuilder:
-                                                                        (context,
-                                                                                index) =>
-                                                                            Icon(
-                                                                      Icons
-                                                                          .star_rounded,
-                                                                      color: Color(
-                                                                          0xFFFFA130),
-                                                                    ),
-                                                                    direction: Axis
-                                                                        .horizontal,
-                                                                    rating: containerReveiwsRecord!
-                                                                        .rating!,
-                                                                    unratedColor:
-                                                                        Color(
-                                                                            0xFF95A1AC),
-                                                                    itemCount:
-                                                                        5,
-                                                                    itemSize:
-                                                                        24,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Card(
-                                                              clipBehavior: Clip
-                                                                  .antiAliasWithSaveLayer,
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(0,
+                                                                      4, 0, 4),
+                                                          child:
+                                                              RatingBarIndicator(
+                                                            itemBuilder:
+                                                                (context,
+                                                                        index) =>
+                                                                    Icon(
+                                                              Icons
+                                                                  .star_rounded,
                                                               color: Color(
-                                                                  0xFFF1F4F8),
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            40),
-                                                              ),
-                                                              child: Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            2,
-                                                                            2,
-                                                                            2,
-                                                                            2),
-                                                                child:
-                                                                    Container(
-                                                                  width: 50,
-                                                                  height: 50,
-                                                                  clipBehavior:
-                                                                      Clip.antiAlias,
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    shape: BoxShape
-                                                                        .circle,
-                                                                  ),
-                                                                  child: Image
-                                                                      .asset(
-                                                                    'assets/images/Photo_1667408356874.png',
-                                                                  ),
-                                                                ),
-                                                              ),
+                                                                  0xFFFFA130),
                                                             ),
-                                                          ],
-                                                        );
-                                                      },
+                                                            direction:
+                                                                Axis.horizontal,
+                                                            rating:
+                                                                containerReveiwsRecord!
+                                                                    .rating!,
+                                                            unratedColor: Color(
+                                                                0xFF95A1AC),
+                                                            itemCount: 5,
+                                                            itemSize: 24,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                                16, 4, 16, 12),
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.max,
-                                                      children: [
-                                                        Expanded(
-                                                          child: Text(
-                                                            containerReveiwsRecord!
-                                                                .reviewText!,
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
+                                                    Card(
+                                                      clipBehavior: Clip
+                                                          .antiAliasWithSaveLayer,
+                                                      color: Color(0xFFF1F4F8),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(40),
+                                                      ),
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    2, 2, 2, 2),
+                                                        child: Container(
+                                                          width: 50,
+                                                          height: 50,
+                                                          clipBehavior:
+                                                              Clip.antiAlias,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            shape:
+                                                                BoxShape.circle,
+                                                          ),
+                                                          child: Image.asset(
+                                                            'assets/images/Photo_1667408356874.png',
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(16, 4, 16, 12),
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Text(
+                                                        containerReveiwsRecord!
+                                                            .reviewText!,
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
                                                                 .bodyText2
                                                                 .override(
                                                                   fontFamily:
@@ -568,22 +495,20 @@ class _AllReviewPageWidgetState extends State<AllReviewPageWidget> {
                                                                       FontWeight
                                                                           .normal,
                                                                 ),
-                                                          ),
-                                                        ),
-                                                      ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
-                                            ),
+                                            ],
                                           ),
-                                        );
-                                      },
-                                    ),
-                                  );
-                                },
-                              );
-                            },
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
                         );
                       },

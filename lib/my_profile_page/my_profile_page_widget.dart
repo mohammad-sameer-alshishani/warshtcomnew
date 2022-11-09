@@ -1397,11 +1397,10 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                                   ),
                                                                 ),
                                                                 if (columnPostsRecord
-                                                                            .postPhoto !=
-                                                                        null &&
-                                                                    columnPostsRecord
-                                                                            .postPhoto !=
-                                                                        '')
+                                                                        .postPhoto!
+                                                                        .toList()
+                                                                        .length !=
+                                                                    null)
                                                                   Row(
                                                                     mainAxisSize:
                                                                         MainAxisSize
@@ -2017,11 +2016,10 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                                   ),
                                                                 ),
                                                                 if (columnPostsRecord
-                                                                            .postPhoto !=
-                                                                        null &&
-                                                                    columnPostsRecord
-                                                                            .postPhoto !=
-                                                                        '')
+                                                                        .postPhoto!
+                                                                        .toList()
+                                                                        .length !=
+                                                                    null)
                                                                   Row(
                                                                     mainAxisSize:
                                                                         MainAxisSize
@@ -2301,15 +2299,17 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                   builder: (context) =>
                                       StreamBuilder<List<ReveiwsRecord>>(
                                     stream: queryReveiwsRecord(
-                                      queryBuilder: (reveiwsRecord) =>
-                                          reveiwsRecord
-                                              .where(
-                                                  'reviewed_person',
-                                                  isEqualTo:
-                                                      myProfilePageUsersRecord
-                                                          .reference)
-                                              .orderBy('created_at',
-                                                  descending: true),
+                                      queryBuilder: (reveiwsRecord) => reveiwsRecord
+                                          .where('reviewed_person',
+                                              isEqualTo:
+                                                  myProfilePageUsersRecord
+                                                              .uid !=
+                                                          ''
+                                                      ? myProfilePageUsersRecord
+                                                          .uid
+                                                      : null)
+                                          .orderBy('created_at',
+                                              descending: true),
                                     ),
                                     builder: (context, snapshot) {
                                       // Customize what your widget looks like when it's loading.
@@ -2420,9 +2420,16 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                                             .start,
                                                                     children: [
                                                                       StreamBuilder<
-                                                                          UsersRecord>(
+                                                                          List<
+                                                                              UsersRecord>>(
                                                                         stream:
-                                                                            UsersRecord.getDocument(containerReveiwsRecord.reviewedBy!),
+                                                                            queryUsersRecord(
+                                                                          queryBuilder: (usersRecord) => usersRecord.where(
+                                                                              'uid',
+                                                                              isEqualTo: containerReveiwsRecord.reviewedPerson),
+                                                                          singleRecord:
+                                                                              true,
+                                                                        ),
                                                                         builder:
                                                                             (context,
                                                                                 snapshot) {
@@ -2439,10 +2446,20 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                                                               ),
                                                                             );
                                                                           }
-                                                                          final textUsersRecord =
+                                                                          List<UsersRecord>
+                                                                              textUsersRecordList =
                                                                               snapshot.data!;
+                                                                          // Return an empty Container when the document does not exist.
+                                                                          if (snapshot
+                                                                              .data!
+                                                                              .isEmpty) {
+                                                                            return Container();
+                                                                          }
+                                                                          final textUsersRecord = textUsersRecordList.isNotEmpty
+                                                                              ? textUsersRecordList.first
+                                                                              : null;
                                                                           return Text(
-                                                                            textUsersRecord.displayName!,
+                                                                            textUsersRecord!.displayName!,
                                                                             style: FlutterFlowTheme.of(context).subtitle1.override(
                                                                                   fontFamily: 'Lexend Deca',
                                                                                   color: Color(0xFF090F13),
