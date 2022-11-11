@@ -344,72 +344,65 @@ class _ProfileInfoPageWidgetState extends State<ProfileInfoPageWidget> {
                                                     ),
                                                   ),
                                                 ),
-                                                if (valueOrDefault<bool>(
-                                                        currentUserDocument
-                                                            ?.provider,
-                                                        false) ==
-                                                    true)
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                                5, 0, 0, 0),
-                                                    child: AuthUserStreamWidget(
-                                                      child: Container(
-                                                        width: 100,
-                                                        height: 35,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          gradient:
-                                                              LinearGradient(
-                                                            colors: [
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .alternate,
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .alternate
-                                                            ],
-                                                            stops: [0, 1],
-                                                            begin:
-                                                                AlignmentDirectional(
-                                                                    0.07, -1),
-                                                            end:
-                                                                AlignmentDirectional(
-                                                                    -0.07, 1),
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                        ),
-                                                        alignment: AlignmentDirectional(
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(5, 0, 0, 0),
+                                                  child: Container(
+                                                    width: 100,
+                                                    height: 35,
+                                                    decoration: BoxDecoration(
+                                                      gradient: LinearGradient(
+                                                        colors: [
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .alternate,
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .alternate
+                                                        ],
+                                                        stops: [0, 1],
+                                                        begin:
+                                                            AlignmentDirectional(
+                                                                0.07, -1),
+                                                        end:
+                                                            AlignmentDirectional(
+                                                                -0.07, 1),
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                    alignment:
+                                                        AlignmentDirectional(
                                                             0.050000000000000044,
                                                             0.050000000000000044),
-                                                        child: SelectionArea(
-                                                            child: Text(
-                                                          valueOrDefault<bool>(
-                                                                      currentUserDocument
-                                                                          ?.provider,
-                                                                      false) ==
-                                                                  false
-                                                              ? 'باحث عن خدمة'
-                                                              : 'مزود خدمة',
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodyText1
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Noto Kufi Arabic',
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .secondaryColor,
-                                                              ),
-                                                        )),
-                                                      ),
+                                                    child: AuthUserStreamWidget(
+                                                      child: SelectionArea(
+                                                          child: Text(
+                                                        valueOrDefault<bool>(
+                                                                    currentUserDocument
+                                                                        ?.provider,
+                                                                    false) ==
+                                                                false
+                                                            ? 'باحث عن خدمة'
+                                                            : 'مزود خدمة',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyText1
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Noto Kufi Arabic',
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondaryColor,
+                                                                ),
+                                                      )),
                                                     ),
                                                   ),
+                                                ),
                                               ],
                                             ),
                                             Padding(
@@ -732,6 +725,12 @@ class _ProfileInfoPageWidgetState extends State<ProfileInfoPageWidget> {
                                                 );
                                                 await currentUserReference!
                                                     .update(usersUpdateData);
+                                                if (Navigator.of(context)
+                                                    .canPop()) {
+                                                  context.pop();
+                                                }
+                                                context.pushNamed(
+                                                    'profileInfoPage');
                                               } else {
                                                 context.pushNamed(
                                                     'ChangeToProvider');
@@ -782,6 +781,12 @@ class _ProfileInfoPageWidgetState extends State<ProfileInfoPageWidget> {
                                               );
                                               await currentUserReference!
                                                   .update(usersUpdateData);
+                                              if (Navigator.of(context)
+                                                  .canPop()) {
+                                                context.pop();
+                                              }
+                                              context
+                                                  .pushNamed('profileInfoPage');
                                             },
                                             text: 'تحويل لباحث ',
                                             options: FFButtonOptions(
@@ -827,7 +832,6 @@ class _ProfileInfoPageWidgetState extends State<ProfileInfoPageWidget> {
                                     hasTransition: true,
                                     transitionType:
                                         PageTransitionType.topToBottom,
-                                    duration: Duration(milliseconds: 300),
                                   ),
                                 },
                               );

@@ -870,8 +870,6 @@ class _MyProfilePageWidgetState extends State<MyProfilePageWidget> {
                                             hasTransition: true,
                                             transitionType:
                                                 PageTransitionType.bottomToTop,
-                                            duration:
-                                                Duration(milliseconds: 300),
                                           ),
                                         },
                                       );
