@@ -827,7 +827,10 @@ class _CreateUserPageWidgetState extends State<CreateUserPageWidget> {
                                               );
                                               await currentUserReference!
                                                   .update(usersUpdateData);
-
+                                              if (Navigator.of(context)
+                                                  .canPop()) {
+                                                context.pop();
+                                              }
                                               context.pushNamed('HomePage');
                                             } else {
                                               ScaffoldMessenger.of(context)

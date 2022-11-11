@@ -120,10 +120,10 @@ class _NavBarPageState extends State<NavBarPage> {
   Widget build(BuildContext context) {
     final tabs = {
       'HomePage': HomePageWidget(),
-      'AddPost': AddPostWidget(),
-      'MyProfilePage': MyProfilePageWidget(),
       'SearchPage': SearchPageWidget(),
+      'AddPost': AddPostWidget(),
       'messagePage': MessagePageWidget(),
+      'MyProfilePage': MyProfilePageWidget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
     return Scaffold(
@@ -152,28 +152,28 @@ class _NavBarPageState extends State<NavBarPage> {
             iconSize: 24,
           ),
           GButton(
-            icon: currentIndex == 1
+            icon: Icons.search_rounded,
+            text: '',
+            iconSize: 24,
+          ),
+          GButton(
+            icon: currentIndex == 2
                 ? Icons.add_circle
                 : Icons.add_circle_outline_rounded,
             text: '',
             iconSize: 24,
           ),
           GButton(
-            icon: currentIndex == 2
-                ? Icons.person_rounded
-                : Icons.person_outline_rounded,
-            text: '',
-            iconSize: 24,
-          ),
-          GButton(
-            icon: Icons.search_rounded,
+            icon: currentIndex == 3
+                ? Icons.chat_bubble_rounded
+                : Icons.chat_bubble_outline,
             text: '',
             iconSize: 24,
           ),
           GButton(
             icon: currentIndex == 4
-                ? Icons.chat_bubble_rounded
-                : Icons.chat_bubble_outline,
+                ? Icons.person_rounded
+                : Icons.person_outline_rounded,
             text: '',
             iconSize: 24,
           )

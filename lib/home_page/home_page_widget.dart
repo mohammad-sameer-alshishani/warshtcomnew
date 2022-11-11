@@ -335,7 +335,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                           : null)
                                                   .orderBy('time_posted',
                                                       descending: true),
-                                          limit: 10,
                                         ),
                                         builder: (context, snapshot) {
                                           // Customize what your widget looks like when it's loading.
@@ -737,12 +736,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                                           return GridView.builder(
                                                                                             padding: EdgeInsets.zero,
                                                                                             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                                                                              crossAxisCount: 3,
-                                                                                              crossAxisSpacing: 10,
+                                                                                              crossAxisCount: 1,
+                                                                                              crossAxisSpacing: 3,
                                                                                               mainAxisSpacing: 10,
                                                                                               childAspectRatio: 1,
                                                                                             ),
-                                                                                            scrollDirection: Axis.vertical,
+                                                                                            scrollDirection: Axis.horizontal,
                                                                                             itemCount: postPhotos.length,
                                                                                             itemBuilder: (context, postPhotosIndex) {
                                                                                               final postPhotosItem = postPhotos[postPhotosIndex];

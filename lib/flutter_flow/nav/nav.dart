@@ -92,11 +92,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     ),
             ),
             FFRoute(
-              name: 'postPage',
-              path: 'postPage',
-              builder: (context, params) => PostPageWidget(
-                postId: params.getParam('postId', ParamType.String),
-              ),
+              name: 'SearchPage',
+              path: 'searchPage',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'SearchPage')
+                  : SearchPageWidget(),
             ),
             FFRoute(
               name: 'AddPost',
@@ -109,14 +109,23 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     ),
             ),
             FFRoute(
-              name: 'ServiceRequest',
-              path: 'serviceRequest',
-              builder: (context, params) => ServiceRequestWidget(),
+              name: 'chatpage',
+              path: 'chatpage',
+              asyncParams: {
+                'chatUser': getDoc('users', UsersRecord.serializer),
+              },
+              builder: (context, params) => ChatpageWidget(
+                chatUser: params.getParam('chatUser', ParamType.Document),
+                chatRef: params.getParam(
+                    'chatRef', ParamType.DocumentReference, false, 'chats'),
+              ),
             ),
             FFRoute(
-              name: 'ServiceProvide',
-              path: 'serviceProvide',
-              builder: (context, params) => ServiceProvideWidget(),
+              name: 'messagePage',
+              path: 'messagePage',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'messagePage')
+                  : MessagePageWidget(),
             ),
             FFRoute(
               name: 'MyProfilePage',
@@ -129,11 +138,19 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     ),
             ),
             FFRoute(
-              name: 'SearchPage',
-              path: 'searchPage',
-              builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'SearchPage')
-                  : SearchPageWidget(),
+              name: 'profileInfoPage',
+              path: 'profileInfoPage',
+              builder: (context, params) => ProfileInfoPageWidget(),
+            ),
+            FFRoute(
+              name: 'ServiceRequest',
+              path: 'serviceRequest',
+              builder: (context, params) => ServiceRequestWidget(),
+            ),
+            FFRoute(
+              name: 'ServiceProvide',
+              path: 'serviceProvide',
+              builder: (context, params) => ServiceProvideWidget(),
             ),
             FFRoute(
               name: 'EditProfile',
@@ -168,6 +185,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ),
             ),
             FFRoute(
+              name: 'postPage',
+              path: 'postPage',
+              builder: (context, params) => PostPageWidget(
+                postId: params.getParam('postId', ParamType.String),
+              ),
+            ),
+            FFRoute(
               name: 'allReviewPage',
               path: 'allReviewPage',
               builder: (context, params) => AllReviewPageWidget(
@@ -194,25 +218,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'ChangeToProvider',
               path: 'changeToProvider',
               builder: (context, params) => ChangeToProviderWidget(),
-            ),
-            FFRoute(
-              name: 'chatpage',
-              path: 'chatpage',
-              asyncParams: {
-                'chatUser': getDoc('users', UsersRecord.serializer),
-              },
-              builder: (context, params) => ChatpageWidget(
-                chatUser: params.getParam('chatUser', ParamType.Document),
-                chatRef: params.getParam(
-                    'chatRef', ParamType.DocumentReference, false, 'chats'),
-              ),
-            ),
-            FFRoute(
-              name: 'messagePage',
-              path: 'messagePage',
-              builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'messagePage')
-                  : MessagePageWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),
