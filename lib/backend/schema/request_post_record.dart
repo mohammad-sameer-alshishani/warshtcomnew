@@ -11,9 +11,6 @@ abstract class RequestPostRecord
   static Serializer<RequestPostRecord> get serializer =>
       _$requestPostRecordSerializer;
 
-  @BuiltValueField(wireName: 'post_photo')
-  String? get postPhoto;
-
   @BuiltValueField(wireName: 'post_title')
   String? get postTitle;
 
@@ -32,9 +29,6 @@ abstract class RequestPostRecord
   @BuiltValueField(wireName: 'liked_by')
   BuiltList<DocumentReference>? get likedBy;
 
-  @BuiltValueField(wireName: 'num_likes')
-  int? get numLikes;
-
   @BuiltValueField(wireName: 'post_type')
   String? get postType;
 
@@ -50,22 +44,38 @@ abstract class RequestPostRecord
   @BuiltValueField(wireName: 'post_user_name')
   String? get postUserName;
 
+  @BuiltValueField(wireName: 'time_edited')
+  DateTime? get timeEdited;
+
+  double? get price;
+
+  @BuiltValueField(wireName: 'price_type')
+  String? get priceType;
+
+  @BuiltValueField(wireName: 'post_photo')
+  BuiltList<String>? get postPhoto;
+
+  @BuiltValueField(wireName: 'commented_by')
+  BuiltList<DocumentReference>? get commentedBy;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
 
   static void _initializeBuilder(RequestPostRecordBuilder builder) => builder
-    ..postPhoto = ''
     ..postTitle = ''
     ..postDescription = ''
     ..numComments = 0
     ..likedBy = ListBuilder()
-    ..numLikes = 0
     ..postType = ''
     ..postUserLocation = ''
     ..postUserPhoto = ''
     ..postID = ''
-    ..postUserName = '';
+    ..postUserName = ''
+    ..price = 0.0
+    ..priceType = ''
+    ..postPhoto = ListBuilder()
+    ..commentedBy = ListBuilder();
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('requestPost');
@@ -89,36 +99,40 @@ abstract class RequestPostRecord
 }
 
 Map<String, dynamic> createRequestPostRecordData({
-  String? postPhoto,
   String? postTitle,
   String? postDescription,
   DocumentReference? postUser,
   DateTime? timePosted,
   int? numComments,
-  int? numLikes,
   String? postType,
   String? postUserLocation,
   String? postUserPhoto,
   String? postID,
   String? postUserName,
+  DateTime? timeEdited,
+  double? price,
+  String? priceType,
 }) {
   final firestoreData = serializers.toFirestore(
     RequestPostRecord.serializer,
     RequestPostRecord(
       (r) => r
-        ..postPhoto = postPhoto
         ..postTitle = postTitle
         ..postDescription = postDescription
         ..postUser = postUser
         ..timePosted = timePosted
         ..numComments = numComments
         ..likedBy = null
-        ..numLikes = numLikes
         ..postType = postType
         ..postUserLocation = postUserLocation
         ..postUserPhoto = postUserPhoto
         ..postID = postID
-        ..postUserName = postUserName,
+        ..postUserName = postUserName
+        ..timeEdited = timeEdited
+        ..price = price
+        ..priceType = priceType
+        ..postPhoto = null
+        ..commentedBy = null,
     ),
   );
 

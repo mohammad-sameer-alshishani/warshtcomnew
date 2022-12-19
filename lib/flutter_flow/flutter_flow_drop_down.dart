@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-class FlutterFlowDropDown extends StatefulWidget {
+class FlutterFlowDropDown<T> extends StatefulWidget {
   const FlutterFlowDropDown({
     this.initialOption,
     this.hintText,
     required this.options,
+    this.optionLabels,
     required this.onChanged,
     this.icon,
     this.width,
@@ -18,12 +19,14 @@ class FlutterFlowDropDown extends StatefulWidget {
     required this.borderColor,
     required this.margin,
     this.hidesUnderline = false,
+    this.disabled = false,
   });
 
-  final String? initialOption;
+  final T? initialOption;
   final String? hintText;
-  final List<String> options;
-  final Function(String?) onChanged;
+  final List<T> options;
+  final List<String>? optionLabels;
+  final Function(T?) onChanged;
   final Widget? icon;
   final double? width;
   final double? height;
@@ -35,15 +38,14 @@ class FlutterFlowDropDown extends StatefulWidget {
   final Color borderColor;
   final EdgeInsetsGeometry margin;
   final bool hidesUnderline;
+  final bool disabled;
 
   @override
-  State<FlutterFlowDropDown> createState() => _FlutterFlowDropDownState();
+  State<FlutterFlowDropDown<T>> createState() => _FlutterFlowDropDownState<T>();
 }
 
-class _FlutterFlowDropDownState extends State<FlutterFlowDropDown> {
-  String? dropDownValue;
-  List<String> get effectiveOptions =>
-      widget.options.isEmpty ? ['[Option]'] : widget.options;
+class _FlutterFlowDropDownState<T> extends State<FlutterFlowDropDown<T>> {
+  T? dropDownValue;
 
   @override
   void initState() {
@@ -53,25 +55,34 @@ class _FlutterFlowDropDownState extends State<FlutterFlowDropDown> {
 
   @override
   Widget build(BuildContext context) {
-    final dropdownWidget = DropdownButton<String>(
-      value: effectiveOptions.contains(dropDownValue) ? dropDownValue : null,
+    final dropdownWidget = DropdownButton<T>(
+      value: widget.options.contains(dropDownValue) ? dropDownValue : null,
       hint: widget.hintText != null
           ? Text(widget.hintText!, style: widget.textStyle)
           : null,
-      items: effectiveOptions
-          .map((e) => DropdownMenuItem(
-                value: e,
-                child: Text(
-                  e,
-                  style: widget.textStyle,
-                ),
-              ))
+      items: widget.options
+          .asMap()
+          .entries
+          .map(
+            (option) => DropdownMenuItem<T>(
+              value: option.value,
+              child: Text(
+                widget.optionLabels == null ||
+                        widget.optionLabels!.length < option.key + 1
+                    ? option.value.toString()
+                    : widget.optionLabels![option.key],
+                style: widget.textStyle,
+              ),
+            ),
+          )
           .toList(),
       elevation: widget.elevation.toInt(),
-      onChanged: (value) {
-        dropDownValue = value;
-        widget.onChanged(value);
-      },
+      onChanged: !widget.disabled
+          ? (value) {
+              dropDownValue = value;
+              widget.onChanged(value);
+            }
+          : null,
       icon: widget.icon,
       isExpanded: true,
       dropdownColor: widget.fillColor,

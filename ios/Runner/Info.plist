@@ -60,7 +60,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
       <string>In order to search nearby, this app requires access to your current location.</string>
 	<key>NSCameraUsageDescription</key>
-      <string>In order to take a picture or video, this app requires permission to access the camera.</string>
+      <string>In order to scan for barcodes and QR codes, this app requires permission to access the camera.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
       <string>In order to upload media, this app requires permission to access the photo library.</string>
 	<key>NSContactsUsageDescription</key>

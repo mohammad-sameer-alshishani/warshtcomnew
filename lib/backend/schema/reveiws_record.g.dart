@@ -69,6 +69,14 @@ class _$ReveiwsRecordSerializer implements StructuredSerializer<ReveiwsRecord> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.reviewedByRef;
+    if (value != null) {
+      result
+        ..add('reviewed_by_ref')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(
+                DocumentReference, const [const FullType.nullable(Object)])));
+    }
     value = object.ffRef;
     if (value != null) {
       result
@@ -120,6 +128,12 @@ class _$ReveiwsRecordSerializer implements StructuredSerializer<ReveiwsRecord> {
           result.reviewedBy = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'reviewed_by_ref':
+          result.reviewedByRef = serializers.deserialize(value,
+              specifiedType: const FullType(DocumentReference, const [
+                const FullType.nullable(Object)
+              ])) as DocumentReference<Object?>?;
+          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -149,6 +163,8 @@ class _$ReveiwsRecord extends ReveiwsRecord {
   @override
   final String? reviewedBy;
   @override
+  final DocumentReference<Object?>? reviewedByRef;
+  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$ReveiwsRecord([void Function(ReveiwsRecordBuilder)? updates]) =>
@@ -162,6 +178,7 @@ class _$ReveiwsRecord extends ReveiwsRecord {
       this.reviewedPost,
       this.reviewedPerson,
       this.reviewedBy,
+      this.reviewedByRef,
       this.ffRef})
       : super._();
 
@@ -183,6 +200,7 @@ class _$ReveiwsRecord extends ReveiwsRecord {
         reviewedPost == other.reviewedPost &&
         reviewedPerson == other.reviewedPerson &&
         reviewedBy == other.reviewedBy &&
+        reviewedByRef == other.reviewedByRef &&
         ffRef == other.ffRef;
   }
 
@@ -194,13 +212,15 @@ class _$ReveiwsRecord extends ReveiwsRecord {
                 $jc(
                     $jc(
                         $jc(
-                            $jc($jc(0, createdAt.hashCode),
-                                reviewText.hashCode),
-                            reviewUserPhoto.hashCode),
-                        rating.hashCode),
-                    reviewedPost.hashCode),
-                reviewedPerson.hashCode),
-            reviewedBy.hashCode),
+                            $jc(
+                                $jc($jc(0, createdAt.hashCode),
+                                    reviewText.hashCode),
+                                reviewUserPhoto.hashCode),
+                            rating.hashCode),
+                        reviewedPost.hashCode),
+                    reviewedPerson.hashCode),
+                reviewedBy.hashCode),
+            reviewedByRef.hashCode),
         ffRef.hashCode));
   }
 
@@ -214,6 +234,7 @@ class _$ReveiwsRecord extends ReveiwsRecord {
           ..add('reviewedPost', reviewedPost)
           ..add('reviewedPerson', reviewedPerson)
           ..add('reviewedBy', reviewedBy)
+          ..add('reviewedByRef', reviewedByRef)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -253,6 +274,11 @@ class ReveiwsRecordBuilder
   String? get reviewedBy => _$this._reviewedBy;
   set reviewedBy(String? reviewedBy) => _$this._reviewedBy = reviewedBy;
 
+  DocumentReference<Object?>? _reviewedByRef;
+  DocumentReference<Object?>? get reviewedByRef => _$this._reviewedByRef;
+  set reviewedByRef(DocumentReference<Object?>? reviewedByRef) =>
+      _$this._reviewedByRef = reviewedByRef;
+
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -271,6 +297,7 @@ class ReveiwsRecordBuilder
       _reviewedPost = $v.reviewedPost;
       _reviewedPerson = $v.reviewedPerson;
       _reviewedBy = $v.reviewedBy;
+      _reviewedByRef = $v.reviewedByRef;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -301,6 +328,7 @@ class ReveiwsRecordBuilder
             reviewedPost: reviewedPost,
             reviewedPerson: reviewedPerson,
             reviewedBy: reviewedBy,
+            reviewedByRef: reviewedByRef,
             ffRef: ffRef);
     replace(_$result);
     return _$result;

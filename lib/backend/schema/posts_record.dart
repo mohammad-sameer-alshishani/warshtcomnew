@@ -21,17 +21,8 @@ abstract class PostsRecord implements Built<PostsRecord, PostsRecordBuilder> {
   @BuiltValueField(wireName: 'time_posted')
   DateTime? get timePosted;
 
-  @BuiltValueField(wireName: 'num_comments')
-  int? get numComments;
-
-  @BuiltValueField(wireName: 'num_votes')
-  int? get numVotes;
-
   @BuiltValueField(wireName: 'liked_by')
   BuiltList<DocumentReference>? get likedBy;
-
-  @BuiltValueField(wireName: 'num_likes')
-  int? get numLikes;
 
   double? get price;
 
@@ -56,6 +47,39 @@ abstract class PostsRecord implements Built<PostsRecord, PostsRecordBuilder> {
   @BuiltValueField(wireName: 'post_photo')
   BuiltList<String>? get postPhoto;
 
+  @BuiltValueField(wireName: 'time_edited')
+  DateTime? get timeEdited;
+
+  bool? get isRequest;
+
+  @BuiltValueField(wireName: 'num_likes')
+  int? get numLikes;
+
+  @BuiltValueField(wireName: 'num_comments')
+  int? get numComments;
+
+  @BuiltValueField(wireName: 'num_votes')
+  int? get numVotes;
+
+  @BuiltValueField(wireName: 'commented_by')
+  BuiltList<DocumentReference>? get commentedBy;
+
+  String? get email;
+
+  @BuiltValueField(wireName: 'display_name')
+  String? get displayName;
+
+  @BuiltValueField(wireName: 'photo_url')
+  String? get photoUrl;
+
+  String? get uid;
+
+  @BuiltValueField(wireName: 'created_time')
+  DateTime? get createdTime;
+
+  @BuiltValueField(wireName: 'phone_number')
+  String? get phoneNumber;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -63,10 +87,7 @@ abstract class PostsRecord implements Built<PostsRecord, PostsRecordBuilder> {
   static void _initializeBuilder(PostsRecordBuilder builder) => builder
     ..postTitle = ''
     ..postDescription = ''
-    ..numComments = 0
-    ..numVotes = 0
     ..likedBy = ListBuilder()
-    ..numLikes = 0
     ..price = 0.0
     ..postType = ''
     ..priceType = ''
@@ -74,7 +95,17 @@ abstract class PostsRecord implements Built<PostsRecord, PostsRecordBuilder> {
     ..postUserPhoto = ''
     ..postID = ''
     ..postUserName = ''
-    ..postPhoto = ListBuilder();
+    ..postPhoto = ListBuilder()
+    ..isRequest = false
+    ..numLikes = 0
+    ..numComments = 0
+    ..numVotes = 0
+    ..commentedBy = ListBuilder()
+    ..email = ''
+    ..displayName = ''
+    ..photoUrl = ''
+    ..uid = ''
+    ..phoneNumber = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('posts');
@@ -102,9 +133,6 @@ Map<String, dynamic> createPostsRecordData({
   String? postDescription,
   DocumentReference? postUser,
   DateTime? timePosted,
-  int? numComments,
-  int? numVotes,
-  int? numLikes,
   double? price,
   String? postType,
   String? priceType,
@@ -112,6 +140,17 @@ Map<String, dynamic> createPostsRecordData({
   String? postUserPhoto,
   String? postID,
   String? postUserName,
+  DateTime? timeEdited,
+  bool? isRequest,
+  int? numLikes,
+  int? numComments,
+  int? numVotes,
+  String? email,
+  String? displayName,
+  String? photoUrl,
+  String? uid,
+  DateTime? createdTime,
+  String? phoneNumber,
 }) {
   final firestoreData = serializers.toFirestore(
     PostsRecord.serializer,
@@ -121,10 +160,7 @@ Map<String, dynamic> createPostsRecordData({
         ..postDescription = postDescription
         ..postUser = postUser
         ..timePosted = timePosted
-        ..numComments = numComments
-        ..numVotes = numVotes
         ..likedBy = null
-        ..numLikes = numLikes
         ..price = price
         ..postType = postType
         ..priceType = priceType
@@ -132,7 +168,19 @@ Map<String, dynamic> createPostsRecordData({
         ..postUserPhoto = postUserPhoto
         ..postID = postID
         ..postUserName = postUserName
-        ..postPhoto = null,
+        ..postPhoto = null
+        ..timeEdited = timeEdited
+        ..isRequest = isRequest
+        ..numLikes = numLikes
+        ..numComments = numComments
+        ..numVotes = numVotes
+        ..commentedBy = null
+        ..email = email
+        ..displayName = displayName
+        ..photoUrl = photoUrl
+        ..uid = uid
+        ..createdTime = createdTime
+        ..phoneNumber = phoneNumber,
     ),
   );
 

@@ -9,7 +9,9 @@ import '../flutter_flow/upload_media.dart';
 import '../flutter_flow/random_data_util.dart' as random_data;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class AddServiceProvideWidget extends StatefulWidget {
   const AddServiceProvideWidget({Key? key}) : super(key: key);
@@ -44,6 +46,8 @@ class _AddServiceProvideWidgetState extends State<AddServiceProvideWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
@@ -102,10 +106,11 @@ class _AddServiceProvideWidgetState extends State<AddServiceProvideWidget> {
                     if (!snapshot.hasData) {
                       return Center(
                         child: SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: CircularProgressIndicator(
-                            color: FlutterFlowTheme.of(context).primaryColor,
+                          width: 24,
+                          height: 24,
+                          child: SpinKitFadingCube(
+                            color: FlutterFlowTheme.of(context).tertiaryColor,
+                            size: 24,
                           ),
                         ),
                       );
@@ -117,7 +122,7 @@ class _AddServiceProvideWidgetState extends State<AddServiceProvideWidget> {
                           ...createPostsRecordData(
                             postUser: currentUserReference,
                             timePosted: getCurrentTimestamp,
-                            price: double.parse(postPriceController!.text),
+                            price: double.tryParse(postPriceController!.text),
                             priceType: priceTypeValue,
                             postType: postTypeValue,
                             postID: random_data.randomString(
@@ -180,7 +185,7 @@ class _AddServiceProvideWidgetState extends State<AddServiceProvideWidget> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Expanded(
-                      child: FlutterFlowDropDown(
+                      child: FlutterFlowDropDown<String>(
                         options: [
                           'سائق',
                           'حداد',
@@ -368,7 +373,7 @@ class _AddServiceProvideWidgetState extends State<AddServiceProvideWidget> {
                           ),
                     ),
                     Expanded(
-                      child: FlutterFlowDropDown(
+                      child: FlutterFlowDropDown<String>(
                         options: ['ساعة', 'يوم', 'متر', 'قطعة', 'طلب'],
                         onChanged: (val) =>
                             setState(() => priceTypeValue = val),

@@ -24,10 +24,11 @@ abstract class FlutterFlowTheme {
       ? _prefs?.remove(kThemeModeKey)
       : _prefs?.setBool(kThemeModeKey, mode == ThemeMode.dark);
 
-  static FlutterFlowTheme of(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.dark
-          ? DarkModeTheme()
-          : LightModeTheme();
+  static FlutterFlowTheme of(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? DarkModeTheme()
+        : LightModeTheme();
+  }
 
   late Color primaryColor;
   late Color secondaryColor;
@@ -37,6 +38,13 @@ abstract class FlutterFlowTheme {
   late Color secondaryBackground;
   late Color primaryText;
   late Color secondaryText;
+
+  late Color btnText;
+  late Color lineColor;
+  late Color customColor3;
+  late Color customColor4;
+  late Color white;
+  late Color background;
 
   String get title1Family => typography.title1Family;
   TextStyle get title1 => typography.title1;
@@ -60,11 +68,18 @@ class LightModeTheme extends FlutterFlowTheme {
   late Color primaryColor = const Color(0xFF212121);
   late Color secondaryColor = const Color(0xFFEEEEEE);
   late Color tertiaryColor = const Color(0xFF329DC9);
-  late Color alternate = const Color(0x8B212121);
+  late Color alternate = const Color(0x4A212121);
   late Color primaryBackground = const Color(0xFFFFFFFF);
   late Color secondaryBackground = const Color(0xFFFFFFFF);
   late Color primaryText = const Color(0xFF101213);
   late Color secondaryText = const Color(0xFF205072);
+
+  late Color btnText = Color(0xFFFFFFFF);
+  late Color lineColor = Color(0xFFDBE2E7);
+  late Color customColor3 = Color(0xFFDF3F3F);
+  late Color customColor4 = Color(0xFF090F13);
+  late Color white = Color(0xFFFFFFFF);
+  late Color background = Color(0xFF1D2429);
 }
 
 abstract class Typography {
@@ -144,11 +159,18 @@ class DarkModeTheme extends FlutterFlowTheme {
   late Color primaryColor = const Color(0xFFEEEEEE);
   late Color secondaryColor = const Color(0xFF161616);
   late Color tertiaryColor = const Color(0xFF329DC9);
-  late Color alternate = const Color(0xADEEEEEE);
+  late Color alternate = const Color(0x6DEEEEEE);
   late Color primaryBackground = const Color(0xFF0F0F0F);
   late Color secondaryBackground = const Color(0xFF101213);
   late Color primaryText = const Color(0xFFFFFFFF);
   late Color secondaryText = const Color(0xFF376280);
+
+  late Color btnText = Color(0xFFFFFFFF);
+  late Color lineColor = Color(0xFF323B45);
+  late Color customColor3 = Color(0xFFDF3F3F);
+  late Color customColor4 = Color(0xFF090F13);
+  late Color white = Color(0xFFFFFFFF);
+  late Color background = Color(0xFF1D2429);
 }
 
 extension TextStyleHelper on TextStyle {

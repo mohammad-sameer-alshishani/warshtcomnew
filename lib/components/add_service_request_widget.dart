@@ -6,8 +6,10 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/upload_media.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class AddServiceRequestWidget extends StatefulWidget {
   const AddServiceRequestWidget({Key? key}) : super(key: key);
@@ -45,6 +47,8 @@ class _AddServiceRequestWidgetState extends State<AddServiceRequestWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
@@ -106,10 +110,11 @@ class _AddServiceRequestWidgetState extends State<AddServiceRequestWidget> {
                     if (!snapshot.hasData) {
                       return Center(
                         child: SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: CircularProgressIndicator(
-                            color: FlutterFlowTheme.of(context).primaryColor,
+                          width: 24,
+                          height: 24,
+                          child: SpinKitFadingCube(
+                            color: FlutterFlowTheme.of(context).tertiaryColor,
+                            size: 24,
                           ),
                         ),
                       );
@@ -226,7 +231,7 @@ class _AddServiceRequestWidgetState extends State<AddServiceRequestWidget> {
                       ),
                     ),
                     Expanded(
-                      child: FlutterFlowDropDown(
+                      child: FlutterFlowDropDown<String>(
                         options: [
                           'سائق',
                           'حداد',
@@ -419,7 +424,7 @@ class _AddServiceRequestWidgetState extends State<AddServiceRequestWidget> {
                       ),
                     ),
                     Expanded(
-                      child: FlutterFlowDropDown(
+                      child: FlutterFlowDropDown<String>(
                         options: ['ساعة', 'يوم', 'متر', 'قطعة', 'طلب'],
                         onChanged: (val) =>
                             setState(() => priceTypeValue = val),

@@ -30,6 +30,9 @@ abstract class ReveiwsRecord
   @BuiltValueField(wireName: 'reviewed_by')
   String? get reviewedBy;
 
+  @BuiltValueField(wireName: 'reviewed_by_ref')
+  DocumentReference? get reviewedByRef;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -71,6 +74,7 @@ Map<String, dynamic> createReveiwsRecordData({
   String? reviewedPost,
   String? reviewedPerson,
   String? reviewedBy,
+  DocumentReference? reviewedByRef,
 }) {
   final firestoreData = serializers.toFirestore(
     ReveiwsRecord.serializer,
@@ -82,7 +86,8 @@ Map<String, dynamic> createReveiwsRecordData({
         ..rating = rating
         ..reviewedPost = reviewedPost
         ..reviewedPerson = reviewedPerson
-        ..reviewedBy = reviewedBy,
+        ..reviewedBy = reviewedBy
+        ..reviewedByRef = reviewedByRef,
     ),
   );
 

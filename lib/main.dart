@@ -1,3 +1,4 @@
+import 'package:provider/provider.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -8,6 +9,7 @@ import 'auth/auth_util.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'flutter_flow/nav/nav.dart';
@@ -16,11 +18,15 @@ import 'index.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
   await FlutterFlowTheme.initialize();
 
-  FFAppState(); // Initialize FFAppState
+  final appState = FFAppState(); // Initialize FFAppState
 
-  runApp(MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => appState,
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -64,8 +70,10 @@ class _MyAppState extends State<MyApp> {
     super.dispose();
   }
 
-  void setLocale(String language) =>
-      setState(() => _locale = createLocale(language));
+  void setLocale(String language) {
+    setState(() => _locale = createLocale(language));
+  }
+
   void setThemeMode(ThemeMode mode) => setState(() {
         _themeMode = mode;
         FlutterFlowTheme.saveThemeMode(mode);
@@ -120,8 +128,7 @@ class _NavBarPageState extends State<NavBarPage> {
   Widget build(BuildContext context) {
     final tabs = {
       'HomePage': HomePageWidget(),
-      'SearchPage': SearchPageWidget(),
-      'AddPost': AddPostWidget(),
+      'SearchPageCopy': SearchPageCopyWidget(),
       'messagePage': MessagePageWidget(),
       'MyProfilePage': MyProfilePageWidget(),
     };
@@ -158,20 +165,13 @@ class _NavBarPageState extends State<NavBarPage> {
           ),
           GButton(
             icon: currentIndex == 2
-                ? Icons.add_circle
-                : Icons.add_circle_outline_rounded,
-            text: '',
-            iconSize: 24,
-          ),
-          GButton(
-            icon: currentIndex == 3
                 ? Icons.chat_bubble_rounded
                 : Icons.chat_bubble_outline,
             text: '',
             iconSize: 24,
           ),
           GButton(
-            icon: currentIndex == 4
+            icon: currentIndex == 3
                 ? Icons.person_rounded
                 : Icons.person_outline_rounded,
             text: '',

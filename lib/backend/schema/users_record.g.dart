@@ -106,14 +106,6 @@ class _$UsersRecordSerializer implements StructuredSerializer<UsersRecord> {
                   DocumentReference, const [const FullType.nullable(Object)])
             ])));
     }
-    value = object.userRate;
-    if (value != null) {
-      result
-        ..add('user_rate')
-        ..add(serializers.serialize(value,
-            specifiedType:
-                const FullType(BuiltList, const [const FullType(double)])));
-    }
     value = object.allPosts;
     if (value != null) {
       result
@@ -172,6 +164,26 @@ class _$UsersRecordSerializer implements StructuredSerializer<UsersRecord> {
         ..add('ownsCar')
         ..add(
             serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.likedRequestPosts;
+    if (value != null) {
+      result
+        ..add('liked_request_posts')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(BuiltList, const [
+              const FullType(
+                  DocumentReference, const [const FullType.nullable(Object)])
+            ])));
+    }
+    value = object.reviewedBy;
+    if (value != null) {
+      result
+        ..add('reviewed_by')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(BuiltList, const [
+              const FullType(
+                  DocumentReference, const [const FullType.nullable(Object)])
+            ])));
     }
     value = object.ffRef;
     if (value != null) {
@@ -246,12 +258,6 @@ class _$UsersRecordSerializer implements StructuredSerializer<UsersRecord> {
                     DocumentReference, const [const FullType.nullable(Object)])
               ]))! as BuiltList<Object?>);
           break;
-        case 'user_rate':
-          result.userRate.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(double)]))!
-              as BuiltList<Object?>);
-          break;
         case 'all_posts':
           result.allPosts.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltList, const [
@@ -290,6 +296,20 @@ class _$UsersRecordSerializer implements StructuredSerializer<UsersRecord> {
         case 'ownsCar':
           result.ownsCar = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'liked_request_posts':
+          result.likedRequestPosts.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltList, const [
+                const FullType(
+                    DocumentReference, const [const FullType.nullable(Object)])
+              ]))! as BuiltList<Object?>);
+          break;
+        case 'reviewed_by':
+          result.reviewedBy.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltList, const [
+                const FullType(
+                    DocumentReference, const [const FullType.nullable(Object)])
+              ]))! as BuiltList<Object?>);
           break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
@@ -330,8 +350,6 @@ class _$UsersRecord extends UsersRecord {
   @override
   final BuiltList<DocumentReference<Object?>>? likedPosts;
   @override
-  final BuiltList<double>? userRate;
-  @override
   final BuiltList<DocumentReference<Object?>>? allPosts;
   @override
   final BuiltList<String>? searchHistory;
@@ -345,6 +363,10 @@ class _$UsersRecord extends UsersRecord {
   final bool? isGuest;
   @override
   final bool? ownsCar;
+  @override
+  final BuiltList<DocumentReference<Object?>>? likedRequestPosts;
+  @override
+  final BuiltList<DocumentReference<Object?>>? reviewedBy;
   @override
   final DocumentReference<Object?>? ffRef;
 
@@ -364,7 +386,6 @@ class _$UsersRecord extends UsersRecord {
       this.userBio,
       this.updatedTime,
       this.likedPosts,
-      this.userRate,
       this.allPosts,
       this.searchHistory,
       this.allReviewsAboutMe,
@@ -372,6 +393,8 @@ class _$UsersRecord extends UsersRecord {
       this.provider,
       this.isGuest,
       this.ownsCar,
+      this.likedRequestPosts,
+      this.reviewedBy,
       this.ffRef})
       : super._();
 
@@ -398,7 +421,6 @@ class _$UsersRecord extends UsersRecord {
         userBio == other.userBio &&
         updatedTime == other.updatedTime &&
         likedPosts == other.likedPosts &&
-        userRate == other.userRate &&
         allPosts == other.allPosts &&
         searchHistory == other.searchHistory &&
         allReviewsAboutMe == other.allReviewsAboutMe &&
@@ -406,6 +428,8 @@ class _$UsersRecord extends UsersRecord {
         provider == other.provider &&
         isGuest == other.isGuest &&
         ownsCar == other.ownsCar &&
+        likedRequestPosts == other.likedRequestPosts &&
+        reviewedBy == other.reviewedBy &&
         ffRef == other.ffRef;
   }
 
@@ -429,25 +453,25 @@ class _$UsersRecord extends UsersRecord {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc($jc(0, email.hashCode), displayName.hashCode),
-                                                                                photoUrl.hashCode),
-                                                                            uid.hashCode),
-                                                                        createdTime.hashCode),
-                                                                    phoneNumber.hashCode),
-                                                                userGender.hashCode),
-                                                            userLocation.hashCode),
-                                                        userWork.hashCode),
-                                                    userBio.hashCode),
-                                                updatedTime.hashCode),
-                                            likedPosts.hashCode),
-                                        userRate.hashCode),
-                                    allPosts.hashCode),
-                                searchHistory.hashCode),
-                            allReviewsAboutMe.hashCode),
-                        allReviewsByMe.hashCode),
-                    provider.hashCode),
-                isGuest.hashCode),
-            ownsCar.hashCode),
+                                                                            $jc($jc($jc($jc(0, email.hashCode), displayName.hashCode), photoUrl.hashCode),
+                                                                                uid.hashCode),
+                                                                            createdTime.hashCode),
+                                                                        phoneNumber.hashCode),
+                                                                    userGender.hashCode),
+                                                                userLocation.hashCode),
+                                                            userWork.hashCode),
+                                                        userBio.hashCode),
+                                                    updatedTime.hashCode),
+                                                likedPosts.hashCode),
+                                            allPosts.hashCode),
+                                        searchHistory.hashCode),
+                                    allReviewsAboutMe.hashCode),
+                                allReviewsByMe.hashCode),
+                            provider.hashCode),
+                        isGuest.hashCode),
+                    ownsCar.hashCode),
+                likedRequestPosts.hashCode),
+            reviewedBy.hashCode),
         ffRef.hashCode));
   }
 
@@ -466,7 +490,6 @@ class _$UsersRecord extends UsersRecord {
           ..add('userBio', userBio)
           ..add('updatedTime', updatedTime)
           ..add('likedPosts', likedPosts)
-          ..add('userRate', userRate)
           ..add('allPosts', allPosts)
           ..add('searchHistory', searchHistory)
           ..add('allReviewsAboutMe', allReviewsAboutMe)
@@ -474,6 +497,8 @@ class _$UsersRecord extends UsersRecord {
           ..add('provider', provider)
           ..add('isGuest', isGuest)
           ..add('ownsCar', ownsCar)
+          ..add('likedRequestPosts', likedRequestPosts)
+          ..add('reviewedBy', reviewedBy)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -532,11 +557,6 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
   set likedPosts(ListBuilder<DocumentReference<Object?>>? likedPosts) =>
       _$this._likedPosts = likedPosts;
 
-  ListBuilder<double>? _userRate;
-  ListBuilder<double> get userRate =>
-      _$this._userRate ??= new ListBuilder<double>();
-  set userRate(ListBuilder<double>? userRate) => _$this._userRate = userRate;
-
   ListBuilder<DocumentReference<Object?>>? _allPosts;
   ListBuilder<DocumentReference<Object?>> get allPosts =>
       _$this._allPosts ??= new ListBuilder<DocumentReference<Object?>>();
@@ -575,6 +595,20 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
   bool? get ownsCar => _$this._ownsCar;
   set ownsCar(bool? ownsCar) => _$this._ownsCar = ownsCar;
 
+  ListBuilder<DocumentReference<Object?>>? _likedRequestPosts;
+  ListBuilder<DocumentReference<Object?>> get likedRequestPosts =>
+      _$this._likedRequestPosts ??=
+          new ListBuilder<DocumentReference<Object?>>();
+  set likedRequestPosts(
+          ListBuilder<DocumentReference<Object?>>? likedRequestPosts) =>
+      _$this._likedRequestPosts = likedRequestPosts;
+
+  ListBuilder<DocumentReference<Object?>>? _reviewedBy;
+  ListBuilder<DocumentReference<Object?>> get reviewedBy =>
+      _$this._reviewedBy ??= new ListBuilder<DocumentReference<Object?>>();
+  set reviewedBy(ListBuilder<DocumentReference<Object?>>? reviewedBy) =>
+      _$this._reviewedBy = reviewedBy;
+
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -598,7 +632,6 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
       _userBio = $v.userBio;
       _updatedTime = $v.updatedTime;
       _likedPosts = $v.likedPosts?.toBuilder();
-      _userRate = $v.userRate?.toBuilder();
       _allPosts = $v.allPosts?.toBuilder();
       _searchHistory = $v.searchHistory?.toBuilder();
       _allReviewsAboutMe = $v.allReviewsAboutMe?.toBuilder();
@@ -606,6 +639,8 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
       _provider = $v.provider;
       _isGuest = $v.isGuest;
       _ownsCar = $v.ownsCar;
+      _likedRequestPosts = $v.likedRequestPosts?.toBuilder();
+      _reviewedBy = $v.reviewedBy?.toBuilder();
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -643,7 +678,6 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
               userBio: userBio,
               updatedTime: updatedTime,
               likedPosts: _likedPosts?.build(),
-              userRate: _userRate?.build(),
               allPosts: _allPosts?.build(),
               searchHistory: _searchHistory?.build(),
               allReviewsAboutMe: _allReviewsAboutMe?.build(),
@@ -651,14 +685,14 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
               provider: provider,
               isGuest: isGuest,
               ownsCar: ownsCar,
+              likedRequestPosts: _likedRequestPosts?.build(),
+              reviewedBy: _reviewedBy?.build(),
               ffRef: ffRef);
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'likedPosts';
         _likedPosts?.build();
-        _$failedField = 'userRate';
-        _userRate?.build();
         _$failedField = 'allPosts';
         _allPosts?.build();
         _$failedField = 'searchHistory';
@@ -667,6 +701,11 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
         _allReviewsAboutMe?.build();
         _$failedField = 'allReviewsByMe';
         _allReviewsByMe?.build();
+
+        _$failedField = 'likedRequestPosts';
+        _likedRequestPosts?.build();
+        _$failedField = 'reviewedBy';
+        _reviewedBy?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'UsersRecord', _$failedField, e.toString());

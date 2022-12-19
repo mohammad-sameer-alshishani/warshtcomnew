@@ -3,9 +3,12 @@ import '../flutter_flow/chat/index.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class ChatpageWidget extends StatefulWidget {
   const ChatpageWidget({
@@ -52,10 +55,12 @@ class _ChatpageWidgetState extends State<ChatpageWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: FlutterFlowTheme.of(context).secondaryColor,
         automaticallyImplyLeading: false,
         leading: FlutterFlowIconButton(
           borderColor: Colors.transparent,
@@ -64,7 +69,7 @@ class _ChatpageWidgetState extends State<ChatpageWidget> {
           buttonSize: 60,
           icon: Icon(
             Icons.arrow_back_rounded,
-            color: Colors.black,
+            color: FlutterFlowTheme.of(context).primaryText,
             size: 24,
           ),
           onPressed: () async {
@@ -73,43 +78,96 @@ class _ChatpageWidgetState extends State<ChatpageWidget> {
         ),
         title: Stack(
           children: [
-            Text(
-              widget.chatUser!.displayName!,
-              style: FlutterFlowTheme.of(context).bodyText1.override(
-                    fontFamily: 'Lexend Deca',
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+            Align(
+              alignment: AlignmentDirectional(0, 0),
+              child: StreamBuilder<UsersRecord>(
+                stream: UsersRecord.getDocument(widget.chatUser!.reference),
+                builder: (context, snapshot) {
+                  // Customize what your widget looks like when it's loading.
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: SpinKitFadingCube(
+                          color: FlutterFlowTheme.of(context).tertiaryColor,
+                          size: 24,
+                        ),
+                      ),
+                    );
+                  }
+                  final rowUsersRecord = snapshot.data!;
+                  return InkWell(
+                    onTap: () async {
+                      context.pushNamed(
+                        'UserProfilePage',
+                        queryParams: {
+                          'userInfo': serializeParam(
+                            rowUsersRecord.reference,
+                            ParamType.DocumentReference,
+                          ),
+                        }.withoutNulls,
+                      );
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Stack(
+                          children: [
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: FlutterFlowTheme.of(context)
+                                      .primaryBackground,
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: CachedNetworkImageProvider(
+                                      rowUsersRecord.photoUrl != ''
+                                          ? rowUsersRecord.photoUrl!
+                                          : ' ',
+                                    ),
+                                  ),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Visibility(
+                                  visible: rowUsersRecord.photoUrl == '',
+                                  child: Icon(
+                                    Icons.person_rounded,
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryColor,
+                                    size: 24,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          widget.chatUser!.displayName!,
+                          style: FlutterFlowTheme.of(context)
+                              .bodyText1
+                              .override(
+                                fontFamily: 'Lexend Deca',
+                                color: FlutterFlowTheme.of(context).primaryText,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         ),
-        actions: [
-          Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
-            child: InkWell(
-              onTap: () async {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      'Navigate to add users page!',
-                      style: TextStyle(),
-                    ),
-                    duration: Duration(milliseconds: 4000),
-                    backgroundColor: Color(0x00000000),
-                  ),
-                );
-              },
-              child: Icon(
-                Icons.person_add,
-                color: Colors.black,
-                size: 24,
-              ),
-            ),
-          ),
-        ],
+        actions: [],
         centerTitle: false,
-        elevation: 2,
+        elevation: 0,
       ),
       body: SafeArea(
         child: GestureDetector(
@@ -147,12 +205,11 @@ class _ChatpageWidgetState extends State<ChatpageWidget> {
                       fontSize: 14,
                       fontStyle: FontStyle.normal,
                     ),
-                    otherUsersTextStyle: GoogleFonts.getFont(
-                      'DM Sans',
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                    ),
+                    otherUsersTextStyle:
+                        FlutterFlowTheme.of(context).bodyText2.override(
+                              fontFamily: 'Noto Kufi Arabic',
+                              color: Color(0xFFEEEEEE),
+                            ),
                     inputHintTextStyle: GoogleFonts.getFont(
                       'DM Sans',
                       color: Color(0xFF95A1AC),
@@ -165,16 +222,14 @@ class _ChatpageWidgetState extends State<ChatpageWidget> {
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                     ),
-                    emptyChatWidget: Image.asset(
-                      'assets/images/icons8-communication-64.png',
-                    ),
                   )
                 : Center(
                     child: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: CircularProgressIndicator(
-                        color: FlutterFlowTheme.of(context).primaryColor,
+                      width: 24,
+                      height: 24,
+                      child: SpinKitFadingCube(
+                        color: FlutterFlowTheme.of(context).tertiaryColor,
+                        size: 24,
                       ),
                     ),
                   ),

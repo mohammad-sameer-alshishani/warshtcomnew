@@ -48,18 +48,6 @@ class _$PostsRecordSerializer implements StructuredSerializer<PostsRecord> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(DateTime)));
     }
-    value = object.numComments;
-    if (value != null) {
-      result
-        ..add('num_comments')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
-    }
-    value = object.numVotes;
-    if (value != null) {
-      result
-        ..add('num_votes')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
-    }
     value = object.likedBy;
     if (value != null) {
       result
@@ -69,12 +57,6 @@ class _$PostsRecordSerializer implements StructuredSerializer<PostsRecord> {
               const FullType(
                   DocumentReference, const [const FullType.nullable(Object)])
             ])));
-    }
-    value = object.numLikes;
-    if (value != null) {
-      result
-        ..add('num_likes')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
     value = object.price;
     if (value != null) {
@@ -133,6 +115,90 @@ class _$PostsRecordSerializer implements StructuredSerializer<PostsRecord> {
             specifiedType:
                 const FullType(BuiltList, const [const FullType(String)])));
     }
+    value = object.timeEdited;
+    if (value != null) {
+      result
+        ..add('time_edited')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(DateTime)));
+    }
+    value = object.isRequest;
+    if (value != null) {
+      result
+        ..add('isRequest')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.numLikes;
+    if (value != null) {
+      result
+        ..add('num_likes')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.numComments;
+    if (value != null) {
+      result
+        ..add('num_comments')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.numVotes;
+    if (value != null) {
+      result
+        ..add('num_votes')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.commentedBy;
+    if (value != null) {
+      result
+        ..add('commented_by')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(BuiltList, const [
+              const FullType(
+                  DocumentReference, const [const FullType.nullable(Object)])
+            ])));
+    }
+    value = object.email;
+    if (value != null) {
+      result
+        ..add('email')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.displayName;
+    if (value != null) {
+      result
+        ..add('display_name')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.photoUrl;
+    if (value != null) {
+      result
+        ..add('photo_url')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.uid;
+    if (value != null) {
+      result
+        ..add('uid')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.createdTime;
+    if (value != null) {
+      result
+        ..add('created_time')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(DateTime)));
+    }
+    value = object.phoneNumber;
+    if (value != null) {
+      result
+        ..add('phone_number')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.ffRef;
     if (value != null) {
       result
@@ -173,24 +239,12 @@ class _$PostsRecordSerializer implements StructuredSerializer<PostsRecord> {
           result.timePosted = serializers.deserialize(value,
               specifiedType: const FullType(DateTime)) as DateTime?;
           break;
-        case 'num_comments':
-          result.numComments = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
-          break;
-        case 'num_votes':
-          result.numVotes = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
-          break;
         case 'liked_by':
           result.likedBy.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltList, const [
                 const FullType(
                     DocumentReference, const [const FullType.nullable(Object)])
               ]))! as BuiltList<Object?>);
-          break;
-        case 'num_likes':
-          result.numLikes = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
           break;
         case 'price':
           result.price = serializers.deserialize(value,
@@ -226,6 +280,57 @@ class _$PostsRecordSerializer implements StructuredSerializer<PostsRecord> {
                       BuiltList, const [const FullType(String)]))!
               as BuiltList<Object?>);
           break;
+        case 'time_edited':
+          result.timeEdited = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime?;
+          break;
+        case 'isRequest':
+          result.isRequest = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'num_likes':
+          result.numLikes = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'num_comments':
+          result.numComments = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'num_votes':
+          result.numVotes = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'commented_by':
+          result.commentedBy.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltList, const [
+                const FullType(
+                    DocumentReference, const [const FullType.nullable(Object)])
+              ]))! as BuiltList<Object?>);
+          break;
+        case 'email':
+          result.email = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'display_name':
+          result.displayName = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'photo_url':
+          result.photoUrl = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'uid':
+          result.uid = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'created_time':
+          result.createdTime = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime?;
+          break;
+        case 'phone_number':
+          result.phoneNumber = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -249,13 +354,7 @@ class _$PostsRecord extends PostsRecord {
   @override
   final DateTime? timePosted;
   @override
-  final int? numComments;
-  @override
-  final int? numVotes;
-  @override
   final BuiltList<DocumentReference<Object?>>? likedBy;
-  @override
-  final int? numLikes;
   @override
   final double? price;
   @override
@@ -273,6 +372,30 @@ class _$PostsRecord extends PostsRecord {
   @override
   final BuiltList<String>? postPhoto;
   @override
+  final DateTime? timeEdited;
+  @override
+  final bool? isRequest;
+  @override
+  final int? numLikes;
+  @override
+  final int? numComments;
+  @override
+  final int? numVotes;
+  @override
+  final BuiltList<DocumentReference<Object?>>? commentedBy;
+  @override
+  final String? email;
+  @override
+  final String? displayName;
+  @override
+  final String? photoUrl;
+  @override
+  final String? uid;
+  @override
+  final DateTime? createdTime;
+  @override
+  final String? phoneNumber;
+  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$PostsRecord([void Function(PostsRecordBuilder)? updates]) =>
@@ -283,10 +406,7 @@ class _$PostsRecord extends PostsRecord {
       this.postDescription,
       this.postUser,
       this.timePosted,
-      this.numComments,
-      this.numVotes,
       this.likedBy,
-      this.numLikes,
       this.price,
       this.postType,
       this.priceType,
@@ -295,6 +415,18 @@ class _$PostsRecord extends PostsRecord {
       this.postID,
       this.postUserName,
       this.postPhoto,
+      this.timeEdited,
+      this.isRequest,
+      this.numLikes,
+      this.numComments,
+      this.numVotes,
+      this.commentedBy,
+      this.email,
+      this.displayName,
+      this.photoUrl,
+      this.uid,
+      this.createdTime,
+      this.phoneNumber,
       this.ffRef})
       : super._();
 
@@ -313,10 +445,7 @@ class _$PostsRecord extends PostsRecord {
         postDescription == other.postDescription &&
         postUser == other.postUser &&
         timePosted == other.timePosted &&
-        numComments == other.numComments &&
-        numVotes == other.numVotes &&
         likedBy == other.likedBy &&
-        numLikes == other.numLikes &&
         price == other.price &&
         postType == other.postType &&
         priceType == other.priceType &&
@@ -325,6 +454,18 @@ class _$PostsRecord extends PostsRecord {
         postID == other.postID &&
         postUserName == other.postUserName &&
         postPhoto == other.postPhoto &&
+        timeEdited == other.timeEdited &&
+        isRequest == other.isRequest &&
+        numLikes == other.numLikes &&
+        numComments == other.numComments &&
+        numVotes == other.numVotes &&
+        commentedBy == other.commentedBy &&
+        email == other.email &&
+        displayName == other.displayName &&
+        photoUrl == other.photoUrl &&
+        uid == other.uid &&
+        createdTime == other.createdTime &&
+        phoneNumber == other.phoneNumber &&
         ffRef == other.ffRef;
   }
 
@@ -347,27 +488,26 @@ class _$PostsRecord extends PostsRecord {
                                                             $jc(
                                                                 $jc(
                                                                     $jc(
-                                                                        0,
-                                                                        postTitle
-                                                                            .hashCode),
-                                                                    postDescription
-                                                                        .hashCode),
-                                                                postUser
-                                                                    .hashCode),
-                                                            timePosted
-                                                                .hashCode),
-                                                        numComments.hashCode),
-                                                    numVotes.hashCode),
-                                                likedBy.hashCode),
-                                            numLikes.hashCode),
-                                        price.hashCode),
-                                    postType.hashCode),
-                                priceType.hashCode),
-                            postUserLocation.hashCode),
-                        postUserPhoto.hashCode),
-                    postID.hashCode),
-                postUserName.hashCode),
-            postPhoto.hashCode),
+                                                                        $jc(
+                                                                            $jc($jc($jc($jc($jc($jc($jc($jc(0, postTitle.hashCode), postDescription.hashCode), postUser.hashCode), timePosted.hashCode), likedBy.hashCode), price.hashCode), postType.hashCode),
+                                                                                priceType.hashCode),
+                                                                            postUserLocation.hashCode),
+                                                                        postUserPhoto.hashCode),
+                                                                    postID.hashCode),
+                                                                postUserName.hashCode),
+                                                            postPhoto.hashCode),
+                                                        timeEdited.hashCode),
+                                                    isRequest.hashCode),
+                                                numLikes.hashCode),
+                                            numComments.hashCode),
+                                        numVotes.hashCode),
+                                    commentedBy.hashCode),
+                                email.hashCode),
+                            displayName.hashCode),
+                        photoUrl.hashCode),
+                    uid.hashCode),
+                createdTime.hashCode),
+            phoneNumber.hashCode),
         ffRef.hashCode));
   }
 
@@ -378,10 +518,7 @@ class _$PostsRecord extends PostsRecord {
           ..add('postDescription', postDescription)
           ..add('postUser', postUser)
           ..add('timePosted', timePosted)
-          ..add('numComments', numComments)
-          ..add('numVotes', numVotes)
           ..add('likedBy', likedBy)
-          ..add('numLikes', numLikes)
           ..add('price', price)
           ..add('postType', postType)
           ..add('priceType', priceType)
@@ -390,6 +527,18 @@ class _$PostsRecord extends PostsRecord {
           ..add('postID', postID)
           ..add('postUserName', postUserName)
           ..add('postPhoto', postPhoto)
+          ..add('timeEdited', timeEdited)
+          ..add('isRequest', isRequest)
+          ..add('numLikes', numLikes)
+          ..add('numComments', numComments)
+          ..add('numVotes', numVotes)
+          ..add('commentedBy', commentedBy)
+          ..add('email', email)
+          ..add('displayName', displayName)
+          ..add('photoUrl', photoUrl)
+          ..add('uid', uid)
+          ..add('createdTime', createdTime)
+          ..add('phoneNumber', phoneNumber)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -416,23 +565,11 @@ class PostsRecordBuilder implements Builder<PostsRecord, PostsRecordBuilder> {
   DateTime? get timePosted => _$this._timePosted;
   set timePosted(DateTime? timePosted) => _$this._timePosted = timePosted;
 
-  int? _numComments;
-  int? get numComments => _$this._numComments;
-  set numComments(int? numComments) => _$this._numComments = numComments;
-
-  int? _numVotes;
-  int? get numVotes => _$this._numVotes;
-  set numVotes(int? numVotes) => _$this._numVotes = numVotes;
-
   ListBuilder<DocumentReference<Object?>>? _likedBy;
   ListBuilder<DocumentReference<Object?>> get likedBy =>
       _$this._likedBy ??= new ListBuilder<DocumentReference<Object?>>();
   set likedBy(ListBuilder<DocumentReference<Object?>>? likedBy) =>
       _$this._likedBy = likedBy;
-
-  int? _numLikes;
-  int? get numLikes => _$this._numLikes;
-  set numLikes(int? numLikes) => _$this._numLikes = numLikes;
 
   double? _price;
   double? get price => _$this._price;
@@ -470,6 +607,56 @@ class PostsRecordBuilder implements Builder<PostsRecord, PostsRecordBuilder> {
   set postPhoto(ListBuilder<String>? postPhoto) =>
       _$this._postPhoto = postPhoto;
 
+  DateTime? _timeEdited;
+  DateTime? get timeEdited => _$this._timeEdited;
+  set timeEdited(DateTime? timeEdited) => _$this._timeEdited = timeEdited;
+
+  bool? _isRequest;
+  bool? get isRequest => _$this._isRequest;
+  set isRequest(bool? isRequest) => _$this._isRequest = isRequest;
+
+  int? _numLikes;
+  int? get numLikes => _$this._numLikes;
+  set numLikes(int? numLikes) => _$this._numLikes = numLikes;
+
+  int? _numComments;
+  int? get numComments => _$this._numComments;
+  set numComments(int? numComments) => _$this._numComments = numComments;
+
+  int? _numVotes;
+  int? get numVotes => _$this._numVotes;
+  set numVotes(int? numVotes) => _$this._numVotes = numVotes;
+
+  ListBuilder<DocumentReference<Object?>>? _commentedBy;
+  ListBuilder<DocumentReference<Object?>> get commentedBy =>
+      _$this._commentedBy ??= new ListBuilder<DocumentReference<Object?>>();
+  set commentedBy(ListBuilder<DocumentReference<Object?>>? commentedBy) =>
+      _$this._commentedBy = commentedBy;
+
+  String? _email;
+  String? get email => _$this._email;
+  set email(String? email) => _$this._email = email;
+
+  String? _displayName;
+  String? get displayName => _$this._displayName;
+  set displayName(String? displayName) => _$this._displayName = displayName;
+
+  String? _photoUrl;
+  String? get photoUrl => _$this._photoUrl;
+  set photoUrl(String? photoUrl) => _$this._photoUrl = photoUrl;
+
+  String? _uid;
+  String? get uid => _$this._uid;
+  set uid(String? uid) => _$this._uid = uid;
+
+  DateTime? _createdTime;
+  DateTime? get createdTime => _$this._createdTime;
+  set createdTime(DateTime? createdTime) => _$this._createdTime = createdTime;
+
+  String? _phoneNumber;
+  String? get phoneNumber => _$this._phoneNumber;
+  set phoneNumber(String? phoneNumber) => _$this._phoneNumber = phoneNumber;
+
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -485,10 +672,7 @@ class PostsRecordBuilder implements Builder<PostsRecord, PostsRecordBuilder> {
       _postDescription = $v.postDescription;
       _postUser = $v.postUser;
       _timePosted = $v.timePosted;
-      _numComments = $v.numComments;
-      _numVotes = $v.numVotes;
       _likedBy = $v.likedBy?.toBuilder();
-      _numLikes = $v.numLikes;
       _price = $v.price;
       _postType = $v.postType;
       _priceType = $v.priceType;
@@ -497,6 +681,18 @@ class PostsRecordBuilder implements Builder<PostsRecord, PostsRecordBuilder> {
       _postID = $v.postID;
       _postUserName = $v.postUserName;
       _postPhoto = $v.postPhoto?.toBuilder();
+      _timeEdited = $v.timeEdited;
+      _isRequest = $v.isRequest;
+      _numLikes = $v.numLikes;
+      _numComments = $v.numComments;
+      _numVotes = $v.numVotes;
+      _commentedBy = $v.commentedBy?.toBuilder();
+      _email = $v.email;
+      _displayName = $v.displayName;
+      _photoUrl = $v.photoUrl;
+      _uid = $v.uid;
+      _createdTime = $v.createdTime;
+      _phoneNumber = $v.phoneNumber;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -526,10 +722,7 @@ class PostsRecordBuilder implements Builder<PostsRecord, PostsRecordBuilder> {
               postDescription: postDescription,
               postUser: postUser,
               timePosted: timePosted,
-              numComments: numComments,
-              numVotes: numVotes,
               likedBy: _likedBy?.build(),
-              numLikes: numLikes,
               price: price,
               postType: postType,
               priceType: priceType,
@@ -538,6 +731,18 @@ class PostsRecordBuilder implements Builder<PostsRecord, PostsRecordBuilder> {
               postID: postID,
               postUserName: postUserName,
               postPhoto: _postPhoto?.build(),
+              timeEdited: timeEdited,
+              isRequest: isRequest,
+              numLikes: numLikes,
+              numComments: numComments,
+              numVotes: numVotes,
+              commentedBy: _commentedBy?.build(),
+              email: email,
+              displayName: displayName,
+              photoUrl: photoUrl,
+              uid: uid,
+              createdTime: createdTime,
+              phoneNumber: phoneNumber,
               ffRef: ffRef);
     } catch (_) {
       late String _$failedField;
@@ -547,6 +752,9 @@ class PostsRecordBuilder implements Builder<PostsRecord, PostsRecordBuilder> {
 
         _$failedField = 'postPhoto';
         _postPhoto?.build();
+
+        _$failedField = 'commentedBy';
+        _commentedBy?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'PostsRecord', _$failedField, e.toString());

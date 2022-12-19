@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:page_transition/page_transition.dart';
 import '../flutter_flow_theme.dart';
 import '../../backend/backend.dart';
+
 import '../../auth/firebase_user_provider.dart';
 
 import '../../index.dart';
@@ -92,20 +94,80 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     ),
             ),
             FFRoute(
-              name: 'SearchPage',
-              path: 'searchPage',
-              builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'SearchPage')
-                  : SearchPageWidget(),
+              name: 'UserProfilePage',
+              path: 'userProfilePage',
+              builder: (context, params) => NavBarPage(
+                initialPage: '',
+                page: UserProfilePageWidget(
+                  userInfo: params.getParam(
+                      'userInfo', ParamType.DocumentReference, false, 'users'),
+                ),
+              ),
             ),
             FFRoute(
-              name: 'AddPost',
-              path: 'addPost',
+              name: 'SearchPageCopy',
+              path: 'searchPageCopy',
               builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'AddPost')
-                  : AddPostWidget(
-                      addedReview: params.getParam('addedReview',
-                          ParamType.DocumentReference, false, 'reveiws'),
+                  ? NavBarPage(initialPage: 'SearchPageCopy')
+                  : SearchPageCopyWidget(),
+            ),
+            FFRoute(
+              name: 'ServiceProvide',
+              path: 'serviceProvide',
+              builder: (context, params) => ServiceProvideWidget(),
+            ),
+            FFRoute(
+              name: 'CreateUserPage',
+              path: 'createUserPage',
+              builder: (context, params) => CreateUserPageWidget(
+                createUserRef: params.getParam('createUserRef',
+                    ParamType.DocumentReference, false, 'users'),
+              ),
+            ),
+            FFRoute(
+              name: 'LoginPage',
+              path: 'loginPage',
+              builder: (context, params) => LoginPageWidget(
+                userRecordRef: params.getParam('userRecordRef',
+                    ParamType.DocumentReference, false, 'users'),
+              ),
+            ),
+            FFRoute(
+              name: 'EditProfile',
+              path: 'editProfile',
+              builder: (context, params) => EditProfileWidget(
+                userRecordRef: params.getParam('userRecordRef',
+                    ParamType.DocumentReference, false, 'users'),
+              ),
+            ),
+            FFRoute(
+              name: 'messagePage',
+              path: 'messagePage',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'messagePage')
+                  : MessagePageWidget(),
+            ),
+            FFRoute(
+              name: 'ChangeToProvider',
+              path: 'changeToProvider',
+              builder: (context, params) => ChangeToProviderWidget(),
+            ),
+            FFRoute(
+              name: 'EditPost',
+              path: 'editPost',
+              builder: (context, params) => EditPostWidget(
+                editPost: params.getParam(
+                    'editPost', ParamType.DocumentReference, false, 'posts'),
+              ),
+            ),
+            FFRoute(
+              name: 'MyProfilePage',
+              path: 'myProfilePage',
+              builder: (context, params) => params.isEmpty
+                  ? NavBarPage(initialPage: 'MyProfilePage')
+                  : MyProfilePageWidget(
+                      userRefRecieve: params.getParam('userRefRecieve',
+                          ParamType.DocumentReference, false, 'users'),
                     ),
             ),
             FFRoute(
@@ -121,103 +183,38 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ),
             ),
             FFRoute(
-              name: 'messagePage',
-              path: 'messagePage',
-              builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'messagePage')
-                  : MessagePageWidget(),
-            ),
-            FFRoute(
-              name: 'MyProfilePage',
-              path: 'myProfilePage',
-              builder: (context, params) => params.isEmpty
-                  ? NavBarPage(initialPage: 'MyProfilePage')
-                  : MyProfilePageWidget(
-                      userRefRecieve: params.getParam('userRefRecieve',
-                          ParamType.DocumentReference, false, 'users'),
-                    ),
-            ),
-            FFRoute(
-              name: 'profileInfoPage',
-              path: 'profileInfoPage',
-              builder: (context, params) => ProfileInfoPageWidget(),
-            ),
-            FFRoute(
-              name: 'ServiceRequest',
-              path: 'serviceRequest',
-              builder: (context, params) => ServiceRequestWidget(),
-            ),
-            FFRoute(
-              name: 'ServiceProvide',
-              path: 'serviceProvide',
-              builder: (context, params) => ServiceProvideWidget(),
-            ),
-            FFRoute(
-              name: 'EditProfile',
-              path: 'editProfile',
-              builder: (context, params) => EditProfileWidget(
-                userRecordRef: params.getParam('userRecordRef',
-                    ParamType.DocumentReference, false, 'users'),
+              name: 'EditRequestPost',
+              path: 'editRequestPost',
+              builder: (context, params) => EditRequestPostWidget(
+                editRequestPost: params.getParam('editRequestPost',
+                    ParamType.DocumentReference, false, 'requestPost'),
               ),
             ),
             FFRoute(
-              name: 'LoginPage',
-              path: 'loginPage',
-              builder: (context, params) => LoginPageWidget(
-                userRecordRef: params.getParam('userRecordRef',
-                    ParamType.DocumentReference, false, 'users'),
-              ),
-            ),
-            FFRoute(
-              name: 'CreateUserPage',
-              path: 'createUserPage',
-              builder: (context, params) => CreateUserPageWidget(
-                createUserRef: params.getParam('createUserRef',
-                    ParamType.DocumentReference, false, 'users'),
-              ),
-            ),
-            FFRoute(
-              name: 'UserProfilePage',
-              path: 'userProfilePage',
-              builder: (context, params) => UserProfilePageWidget(
-                userInfo: params.getParam(
-                    'userInfo', ParamType.DocumentReference, false, 'users'),
+              name: 'RequestPostPage',
+              path: 'requestPostPage',
+              builder: (context, params) => NavBarPage(
+                initialPage: '',
+                page: RequestPostPageWidget(
+                  requestpostId:
+                      params.getParam('requestpostId', ParamType.String),
+                ),
               ),
             ),
             FFRoute(
               name: 'postPage',
               path: 'postPage',
-              builder: (context, params) => PostPageWidget(
-                postId: params.getParam('postId', ParamType.String),
+              builder: (context, params) => NavBarPage(
+                initialPage: '',
+                page: PostPageWidget(
+                  postId: params.getParam('postId', ParamType.String),
+                ),
               ),
             ),
             FFRoute(
-              name: 'allReviewPage',
-              path: 'allReviewPage',
-              builder: (context, params) => AllReviewPageWidget(
-                userReviewRef: params.getParam<DocumentReference>(
-                    'userReviewRef',
-                    ParamType.DocumentReference,
-                    true,
-                    'reveiws'),
-                userInformation: params.getParam('userInformation',
-                    ParamType.DocumentReference, false, 'users'),
-              ),
-            ),
-            FFRoute(
-              name: 'AddReveiw',
-              path: 'addReveiw',
-              builder: (context, params) => AddReveiwWidget(
-                userToReviewRef: params.getParam('userToReviewRef',
-                    ParamType.DocumentReference, false, 'users'),
-                reviewPar: params.getParam<DocumentReference>(
-                    'reviewPar', ParamType.DocumentReference, true, 'reveiws'),
-              ),
-            ),
-            FFRoute(
-              name: 'ChangeToProvider',
-              path: 'changeToProvider',
-              builder: (context, params) => ChangeToProviderWidget(),
+              name: 'ReportPage',
+              path: 'reportPage',
+              builder: (context, params) => ReportPageWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),
@@ -391,10 +388,10 @@ class FFRoute {
               : builder(context, ffParams);
           final child = appStateNotifier.loading
               ? Container(
-                  color: Colors.transparent,
+                  color: FlutterFlowTheme.of(context).secondaryBackground,
                   child: Image.asset(
-                    'assets/images/Photo_1667408219990.png',
-                    fit: BoxFit.cover,
+                    'assets/images/WarchtcomSplashPng.png',
+                    fit: BoxFit.contain,
                   ),
                 )
               : page;

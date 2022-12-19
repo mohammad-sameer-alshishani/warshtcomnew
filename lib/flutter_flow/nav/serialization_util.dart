@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:from_css_color/from_css_color.dart';
 
 import '../../backend/backend.dart';
+
 import '../../flutter_flow/lat_lng.dart';
 import '../../flutter_flow/place.dart';
 
@@ -160,7 +161,7 @@ dynamic deserializeParam<T>(
       return paramValues
           .where((p) => p is String)
           .map((p) => p as String)
-          .map((p) => deserializeParam(p, paramType, false, collectionName))
+          .map((p) => deserializeParam<T>(p, paramType, false, collectionName))
           .where((p) => p != null)
           .map((p) => p! as T)
           .toList();

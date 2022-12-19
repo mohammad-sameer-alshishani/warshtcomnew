@@ -8,8 +8,10 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class ChangeToProviderWidget extends StatefulWidget {
@@ -32,7 +34,8 @@ class _ChangeToProviderWidgetState extends State<ChangeToProviderWidget> {
   void initState() {
     super.initState();
     providerBioController = TextEditingController();
-    providerNameController = TextEditingController();
+    providerNameController =
+        TextEditingController(text: currentUserDisplayName);
     providerWorkController = TextEditingController();
     providerNumberController = TextEditingController();
   }
@@ -48,6 +51,8 @@ class _ChangeToProviderWidgetState extends State<ChangeToProviderWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -86,6 +91,7 @@ class _ChangeToProviderWidgetState extends State<ChangeToProviderWidget> {
                       width: 100,
                       height: 100,
                       decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).secondaryColor,
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: Color(0x00376280),
@@ -99,7 +105,7 @@ class _ChangeToProviderWidgetState extends State<ChangeToProviderWidget> {
                           child: Image.network(
                             valueOrDefault<String>(
                               currentUserPhoto,
-                              'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/warshtcomnew-apn0sl/assets/u445vifv2ogw/Photo_1667408356874.png',
+                              'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/warshtcomnew-apn0sl/assets/0fx5uqsamw0c/WarchtcomSplashPng.png',
                             ),
                             width: 100,
                             height: 100,
@@ -123,18 +129,19 @@ class _ChangeToProviderWidgetState extends State<ChangeToProviderWidget> {
                         if (!snapshot.hasData) {
                           return Center(
                             child: SizedBox(
-                              width: 50,
-                              height: 50,
-                              child: CircularProgressIndicator(
+                              width: 24,
+                              height: 24,
+                              child: SpinKitFadingCube(
                                 color:
-                                    FlutterFlowTheme.of(context).primaryColor,
+                                    FlutterFlowTheme.of(context).tertiaryColor,
+                                size: 24,
                               ),
                             ),
                           );
                         }
                         List<UsersRecord> providerGenderUsersRecordList =
                             snapshot.data!;
-                        // Return an empty Container when the document does not exist.
+                        // Return an empty Container when the item does not exist.
                         if (snapshot.data!.isEmpty) {
                           return Container();
                         }
@@ -194,63 +201,68 @@ class _ChangeToProviderWidgetState extends State<ChangeToProviderWidget> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(40, 10, 40, 5),
-                  child: TextFormField(
-                    controller: providerNameController,
-                    onChanged: (_) => EasyDebounce.debounce(
-                      'providerNameController',
-                      Duration(milliseconds: 2000),
-                      () async {
-                        final usersUpdateData = createUsersRecordData(
-                          displayName: providerNameController!.text,
-                        );
-                        await currentUserReference!.update(usersUpdateData);
-                      },
+                if (currentUserDisplayName == null ||
+                    currentUserDisplayName == '')
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(40, 10, 40, 5),
+                    child: AuthUserStreamWidget(
+                      child: TextFormField(
+                        controller: providerNameController,
+                        onChanged: (_) => EasyDebounce.debounce(
+                          'providerNameController',
+                          Duration(milliseconds: 2000),
+                          () async {
+                            final usersUpdateData = createUsersRecordData(
+                              displayName: providerNameController!.text,
+                            );
+                            await currentUserReference!.update(usersUpdateData);
+                          },
+                        ),
+                        obscureText: false,
+                        decoration: InputDecoration(
+                          labelText: 'اسم المستخدم',
+                          hintStyle: FlutterFlowTheme.of(context).bodyText2,
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0x00000000),
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0x00000000),
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0x00000000),
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0x00000000),
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          filled: true,
+                          fillColor:
+                              FlutterFlowTheme.of(context).secondaryColor,
+                        ),
+                        style: FlutterFlowTheme.of(context).bodyText1.override(
+                              fontFamily: 'Noto Kufi Arabic',
+                              color: FlutterFlowTheme.of(context).primaryColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                        keyboardType: TextInputType.name,
+                      ),
                     ),
-                    obscureText: false,
-                    decoration: InputDecoration(
-                      labelText: 'اسم المستخدم',
-                      hintStyle: FlutterFlowTheme.of(context).bodyText2,
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0x00000000),
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0x00000000),
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0x00000000),
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0x00000000),
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      filled: true,
-                      fillColor: FlutterFlowTheme.of(context).secondaryColor,
-                    ),
-                    style: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Noto Kufi Arabic',
-                          color: FlutterFlowTheme.of(context).primaryColor,
-                          fontWeight: FontWeight.w500,
-                        ),
-                    keyboardType: TextInputType.name,
                   ),
-                ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(40, 10, 40, 5),
                   child: TextFormField(
@@ -423,7 +435,7 @@ class _ChangeToProviderWidgetState extends State<ChangeToProviderWidget> {
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(40, 5, 40, 5),
-                  child: FlutterFlowDropDown(
+                  child: FlutterFlowDropDown<String>(
                     options: [
                       'عمان',
                       'الزرقاء',

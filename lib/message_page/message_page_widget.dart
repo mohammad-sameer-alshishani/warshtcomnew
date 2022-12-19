@@ -1,10 +1,15 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/chat/index.dart';
+import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class MessagePageWidget extends StatefulWidget {
   const MessagePageWidget({Key? key}) : super(key: key);
@@ -13,11 +18,33 @@ class MessagePageWidget extends StatefulWidget {
   _MessagePageWidgetState createState() => _MessagePageWidgetState();
 }
 
-class _MessagePageWidgetState extends State<MessagePageWidget> {
+class _MessagePageWidgetState extends State<MessagePageWidget>
+    with TickerProviderStateMixin {
+  final animationsMap = {
+    'textOnPageLoadAnimation': AnimationInfo(
+      trigger: AnimationTrigger.onPageLoad,
+      effects: [
+        MoveEffect(
+          curve: Curves.easeInOut,
+          delay: 0.ms,
+          duration: 600.ms,
+          begin: Offset(0, -100),
+          end: Offset(0, 0),
+        ),
+      ],
+    ),
+  };
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -32,7 +59,7 @@ class _MessagePageWidgetState extends State<MessagePageWidget> {
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
               ),
-        ),
+        ).animateOnPageLoad(animationsMap['textOnPageLoadAnimation']!),
         actions: [],
         centerTitle: true,
         elevation: 4,
@@ -51,10 +78,11 @@ class _MessagePageWidgetState extends State<MessagePageWidget> {
               if (!snapshot.hasData) {
                 return Center(
                   child: SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: CircularProgressIndicator(
-                      color: FlutterFlowTheme.of(context).primaryColor,
+                    width: 24,
+                    height: 24,
+                    child: SpinKitFadingCube(
+                      color: FlutterFlowTheme.of(context).tertiaryColor,
+                      size: 24,
                     ),
                   ),
                 );
@@ -67,64 +95,63 @@ class _MessagePageWidgetState extends State<MessagePageWidget> {
                 itemBuilder: (context, listViewIndex) {
                   final listViewChatsRecord =
                       listViewChatsRecordList[listViewIndex];
-                  return StreamBuilder<FFChatInfo>(
-                    stream: FFChatManager.instance
-                        .getChatInfo(chatRecord: listViewChatsRecord),
-                    builder: (context, snapshot) {
-                      final chatInfo =
-                          snapshot.data ?? FFChatInfo(listViewChatsRecord);
-                      return FFChatPreview(
-                        onTap: () => context.pushNamed(
-                          'chatpage',
-                          queryParams: {
-                            'chatUser': serializeParam(
-                              chatInfo.otherUsers.length == 1
+                  return Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
+                    child: StreamBuilder<FFChatInfo>(
+                      stream: FFChatManager.instance
+                          .getChatInfo(chatRecord: listViewChatsRecord),
+                      builder: (context, snapshot) {
+                        final chatInfo =
+                            snapshot.data ?? FFChatInfo(listViewChatsRecord);
+                        return FFChatPreview(
+                          onTap: () => context.pushNamed(
+                            'chatpage',
+                            queryParams: {
+                              'chatUser': serializeParam(
+                                chatInfo.otherUsers.length == 1
+                                    ? chatInfo.otherUsersList.first
+                                    : null,
+                                ParamType.Document,
+                              ),
+                              'chatRef': serializeParam(
+                                chatInfo.chatRecord.reference,
+                                ParamType.DocumentReference,
+                              ),
+                            }.withoutNulls,
+                            extra: <String, dynamic>{
+                              'chatUser': chatInfo.otherUsers.length == 1
                                   ? chatInfo.otherUsersList.first
                                   : null,
-                              ParamType.Document,
-                            ),
-                            'chatRef': serializeParam(
-                              chatInfo.chatRecord.reference,
-                              ParamType.DocumentReference,
-                            ),
-                          }.withoutNulls,
-                          extra: <String, dynamic>{
-                            'chatUser': chatInfo.otherUsers.length == 1
-                                ? chatInfo.otherUsersList.first
-                                : null,
-                          },
-                        ),
-                        lastChatText: chatInfo.chatPreviewMessage(),
-                        lastChatTime: listViewChatsRecord.lastMessageTime,
-                        seen: listViewChatsRecord.lastMessageSeenBy!
-                            .contains(currentUserReference),
-                        title: chatInfo.chatPreviewTitle(),
-                        userProfilePic: chatInfo.chatPreviewPic(),
-                        color: FlutterFlowTheme.of(context).secondaryColor,
-                        unreadColor: Colors.blue,
-                        titleTextStyle: GoogleFonts.getFont(
-                          'DM Sans',
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                        dateTextStyle: GoogleFonts.getFont(
-                          'DM Sans',
-                          color: FlutterFlowTheme.of(context).alternate,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 14,
-                        ),
-                        previewTextStyle: GoogleFonts.getFont(
-                          'DM Sans',
-                          color: FlutterFlowTheme.of(context).alternate,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 14,
-                        ),
-                        contentPadding:
-                            EdgeInsetsDirectional.fromSTEB(3, 3, 3, 3),
-                        borderRadius: BorderRadius.circular(0),
-                      );
-                    },
+                            },
+                          ),
+                          lastChatText: chatInfo.chatPreviewMessage(),
+                          lastChatTime: listViewChatsRecord.lastMessageTime,
+                          seen: listViewChatsRecord.lastMessageSeenBy!
+                              .contains(currentUserReference),
+                          title: chatInfo.chatPreviewTitle(),
+                          userProfilePic: chatInfo.chatPreviewPic(),
+                          color: FlutterFlowTheme.of(context).secondaryColor,
+                          unreadColor: Colors.blue,
+                          titleTextStyle:
+                              FlutterFlowTheme.of(context).subtitle2,
+                          dateTextStyle: GoogleFonts.getFont(
+                            'DM Sans',
+                            color: FlutterFlowTheme.of(context).alternate,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 14,
+                          ),
+                          previewTextStyle: GoogleFonts.getFont(
+                            'DM Sans',
+                            color: FlutterFlowTheme.of(context).alternate,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 14,
+                          ),
+                          contentPadding:
+                              EdgeInsetsDirectional.fromSTEB(3, 3, 3, 3),
+                          borderRadius: BorderRadius.circular(0),
+                        );
+                      },
+                    ),
                   );
                 },
               );

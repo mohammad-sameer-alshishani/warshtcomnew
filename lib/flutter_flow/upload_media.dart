@@ -13,8 +13,13 @@ import 'flutter_flow_util.dart';
 const allowedFormats = {'image/png', 'image/jpeg', 'video/mp4', 'image/gif'};
 
 class SelectedMedia {
-  const SelectedMedia(this.storagePath, this.bytes);
+  const SelectedMedia({
+    this.storagePath = '',
+    this.filePath,
+    required this.bytes,
+  });
   final String storagePath;
+  final String? filePath;
   final Uint8List bytes;
 }
 
@@ -26,6 +31,7 @@ enum MediaSource {
 
 Future<List<SelectedMedia>?> selectMediaWithSourceBottomSheet({
   required BuildContext context,
+  String? storageFolderPath,
   double? maxWidth,
   double? maxHeight,
   int? imageQuality,
@@ -114,6 +120,7 @@ Future<List<SelectedMedia>?> selectMediaWithSourceBottomSheet({
     return null;
   }
   return selectMedia(
+    storageFolderPath: storageFolderPath,
     maxWidth: maxWidth,
     maxHeight: maxHeight,
     imageQuality: imageQuality,
@@ -124,6 +131,7 @@ Future<List<SelectedMedia>?> selectMediaWithSourceBottomSheet({
 }
 
 Future<List<SelectedMedia>?> selectMedia({
+  String? storageFolderPath,
   double? maxWidth,
   double? maxHeight,
   int? imageQuality,
@@ -147,8 +155,12 @@ Future<List<SelectedMedia>?> selectMedia({
       final index = e.key;
       final media = e.value;
       final mediaBytes = await media.readAsBytes();
-      final path = storagePath(currentUserUid, media.name, false, index);
-      return SelectedMedia(path, mediaBytes);
+      final path = _getStoragePath(storageFolderPath, media.name, false, index);
+      return SelectedMedia(
+        storagePath: path,
+        filePath: media.path,
+        bytes: mediaBytes,
+      );
     }));
   }
 
@@ -168,8 +180,14 @@ Future<List<SelectedMedia>?> selectMedia({
   if (mediaBytes == null) {
     return null;
   }
-  final path = storagePath(currentUserUid, pickedMedia!.name, isVideo);
-  return [SelectedMedia(path, mediaBytes)];
+  final path = _getStoragePath(storageFolderPath, pickedMedia!.name, isVideo);
+  return [
+    SelectedMedia(
+      storagePath: path,
+      filePath: pickedMedia.path,
+      bytes: mediaBytes,
+    ),
+  ];
 }
 
 bool validateFileFormat(String filePath, BuildContext context) {
@@ -185,6 +203,7 @@ bool validateFileFormat(String filePath, BuildContext context) {
 }
 
 Future<SelectedMedia?> selectFile({
+  String? storageFolderPath,
   List<String> allowedExtensions = const ['pdf'],
 }) async {
   final pickedFiles = await FilePicker.platform.pickFiles(
@@ -200,22 +219,35 @@ Future<SelectedMedia?> selectFile({
   if (file.bytes == null) {
     return null;
   }
-  final path = storagePath(currentUserUid, file.name, false);
-  return SelectedMedia(path, file.bytes!);
+  final storagePath = _getStoragePath(storageFolderPath, file.name, false);
+  return SelectedMedia(
+    storagePath: storagePath,
+    filePath: isWeb ? null : file.path,
+    bytes: file.bytes!,
+  );
 }
 
-String storagePath(String uid, String filePath, bool isVideo, [int? index]) {
+String _getStoragePath(
+  String? pathPrefix,
+  String filePath,
+  bool isVideo, [
+  int? index,
+]) {
+  pathPrefix ??= _firebasePathPrefix();
+  pathPrefix = _removeTrailingSlash(pathPrefix);
   final timestamp = DateTime.now().microsecondsSinceEpoch;
   // Workaround fixed by https://github.com/flutter/plugins/pull/3685
   // (not yet in stable).
   final ext = isVideo ? 'mp4' : filePath.split('.').last;
   final indexStr = index != null ? '_$index' : '';
-  return 'users/$uid/uploads/$timestamp$indexStr.$ext';
+  return '$pathPrefix/$timestamp$indexStr.$ext';
 }
 
-String signatureStoragePath(String uid) {
+String getSignatureStoragePath([String? pathPrefix]) {
+  pathPrefix ??= _firebasePathPrefix();
+  pathPrefix = _removeTrailingSlash(pathPrefix);
   final timestamp = DateTime.now().microsecondsSinceEpoch;
-  return 'users/$uid/uploads/signature_$timestamp.png';
+  return '$pathPrefix/signature_$timestamp.png';
 }
 
 void showUploadMessage(BuildContext context, String message,
@@ -237,3 +269,9 @@ void showUploadMessage(BuildContext context, String message,
       ),
     );
 }
+
+String? _removeTrailingSlash(String? path) => path != null && path.endsWith('/')
+    ? path.substring(0, path.length - 1)
+    : path;
+
+String _firebasePathPrefix() => 'users/$currentUserUid/uploads';

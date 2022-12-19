@@ -26,6 +26,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   auto_size_text: 3.0.0
+  barcode_widget: 2.0.3
   built_collection: 5.1.1
   built_value: 8.4.0
   cached_network_image: 3.2.1
@@ -45,8 +46,11 @@ dependencies:
   firebase_storage_platform_interface: 4.1.10
   firebase_storage_web: 3.2.19
   flutter_animate: 1.0.0
+  flutter_barcode_scanner: 
+    git:
+      url: https://github.com/FlutterFlow/flutter_barcode_scanner
   flutter_cache_manager: 3.3.0
-  flutter_facebook_auth:
+  flutter_facebook_auth: 
     git:
       url: https://github.com/asmengistu/flutter-facebook-auth
       ref: b65ffb049c9f1e2704adbeb1aa19c61693c946a5
@@ -81,6 +85,7 @@ dependencies:
   permission_handler: 10.0.0
   photo_view: 0.14.0
   plugin_platform_interface: 2.1.2
+  provider: 6.0.4
   rxdart: 0.27.4
   share_plus: 2.1.4
   shared_preferences: 2.0.15
@@ -88,7 +93,6 @@ dependencies:
   sign_in_with_apple_platform_interface: 1.0.0
   sign_in_with_apple_web: 1.0.1
   simple_gradient_text: 1.2.3
-  smooth_page_indicator: 1.0.0+2
   sqflite: 2.2.0+2
   text_search: 0.0.2
   timeago: 3.2.2
